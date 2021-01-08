@@ -1,36 +1,35 @@
-console.log("Hello world");
-
-const electron = requere("electron");
+const electron = require("electron");
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
-const path = require("path");
-const url = require("url");
+//const {app, BrowserWindow} = require('electron')
+const path = require('path')
+const url = require('url')
+
 
 let win;
 
-function createWindow(){
-    win = new BrowserWindow({
-        webPreferences: {
-            nodeIntegration: true
-        }
-    });
-    win.loadURL(url.format({
-        pathname: path.join(__dirname, 'index.html'),
-        protocol: 'file',
-        slashes: true
-    }));  // 'index.html' 파일을 이용하여 browser window생성
+function createWindow () {
 
-    //win.webContents.openDevTools();
+  win = new BrowserWindow({width: 800, height: 600})
+
+  win.loadURL(url.format({
+    pathname: path.join(__dirname, '/html/index.html'),
+    protocol: 'file:',
+    slashes: true
+  })); // 'index.html' 파일을 이용하여 browser window생성
+
+
+  win.webContents.openDevTools();
     //사용자 툴이 나오도록 하는 코드
 
-    win.on('closed', () => {
-        win = null;
-    }); //사용자가 윈도우를 닫을 수 있도록 설정
-} 
+
+  win.on('closed', () => {
+    win = null
+  }); //사용자가 윈도우를 닫을 수 있도록 설정
+}
 
 app.on('ready', createWindow);
 //initialize 작업이 완료되면 createWindow를 실행.
-
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
