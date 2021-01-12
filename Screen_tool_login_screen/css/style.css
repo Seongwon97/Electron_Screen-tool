@@ -32,7 +32,7 @@
    font-family: KoPubWorldDotumMedium,"Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 .login_sub1 {
-   margin-top: 130px;
+   margin-top: 160px;
 }
 .login_sub2 {
    margin: 0 auto;
@@ -43,7 +43,10 @@
 }
 
 .login_box {
-   margin-top: 60px;
+   margin-top: 70px;
+}
+.login_box h4 {
+   line-height: 0px;
 }
 .mt40 {
    margin-top: 40px;
@@ -58,15 +61,18 @@
 input[type=text] {
    width: 100%;
    padding: 12px 10px;
-   border-radius: 8px;
+   border-radius: 10px;
    border-color: #666!important;
+   border-width: thin;
+   
  }
 
  input[type=password] {
    width: 100%;
    padding: 12px 10px;
-   border-radius: 8px;
+   border-radius: 10px;
    border-color:#666!important;
+   border-width: thin;
  }
 
 .sign_btn {
@@ -82,6 +88,13 @@ input[type=text] {
    box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.25);
    cursor: pointer;
 }
+.sign_btn:hover {background-color:#FFC305}
+
+.sign_btn:active {
+  background-color:#FFC305;
+  transform: translateY(4px);
+}
+
 .login_sub3 {
    margin-top: 20px;
    color: #666!important;
@@ -162,6 +175,12 @@ input[type=text] {
    box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.25);
    cursor: pointer;
 }
+.signUp_btn:hover {background-color:#FFC305}
+
+.signUp_btn:active {
+  background-color:#FFC305;
+  transform: translateY(4px);
+}
 
 .pwd_re_sub1 {
    margin-top: 200px;
@@ -180,7 +199,7 @@ input[type=text] {
    margin: 0 auto;
    width: 250px;
 }
-.find_pwd_button {
+.find_pwd_btn {
    font-size: 13px;
    margin-top: 30px;
    padding: 15px 30px;
@@ -192,7 +211,12 @@ input[type=text] {
    box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.25);
    cursor: pointer;
 }
+.find_pwd_btn:hover {background-color:#FFC305}
 
+.find_pwd_btn:active {
+  background-color:#FFC305;
+  transform: translateY(4px);
+}
 .floating-btn {
    width: 35px;
    height: 35px;
@@ -200,7 +224,6 @@ input[type=text] {
    position: fixed;
    left: 30px;
    top: 30px;
-   
 }
 .blank {
    width: 100%;

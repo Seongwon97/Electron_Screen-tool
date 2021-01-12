@@ -10,10 +10,9 @@ let win;
 
 function createWindow () {
 
-  win = new BrowserWindow({width: 1200, height: 800})
+  win = new BrowserWindow({width: 1200, height: 800, resizable: false})
   
   win.removeMenu()
-
   win.loadURL(url.format({
     pathname: path.join(__dirname, '/html/login.html'),
     protocol: 'file:',
