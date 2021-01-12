@@ -79,6 +79,8 @@ input[type=text] {
    border: 0px;
    outline: 0px;
    color: black;
+   box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.25);
+   cursor: pointer;
 }
 .login_sub3 {
    margin-top: 20px;
@@ -157,6 +159,8 @@ input[type=text] {
    border: 0px;
    outline: 0px;
    color: black;
+   box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.25);
+   cursor: pointer;
 }
 
 .pwd_re_sub1 {
@@ -182,7 +186,23 @@ input[type=text] {
    padding: 15px 30px;
    background-color: #FFD659;
    border-radius: 30px;
-   border: 0px;
+   border: none;
    outline: 0px;
    color: black;
+   box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.25);
+   cursor: pointer;
+}
+
+.floating-btn {
+   width: 35px;
+   height: 35px;
+   display: flex;
+   position: fixed;
+   left: 30px;
+   top: 30px;
+   
+}
+.blank {
+   width: 100%;
+   height: 50px;
 }
