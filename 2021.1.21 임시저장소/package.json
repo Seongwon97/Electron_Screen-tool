@@ -1,0 +1,11 @@
+{
+    "name": "screen_tool",
+    "version": "1.0.0",
+    "main": "start.js",
+    "devDependencies": {
+        "electron": "^11.1.1"
+    },
+    "scripts": {
+        "start": "electron ."
+    }
+}
