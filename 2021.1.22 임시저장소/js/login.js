@@ -3,7 +3,7 @@ function login(){
     //var email=document.getElementById("userEmail").value();
     //const email="abcdef"
     alert("email");
-    location.href="../html/main.html"
+    location.href="../html/editing.html"
 }
 $('body').on('click', '#messages-view a', (event) => {
     event.preventDefault();

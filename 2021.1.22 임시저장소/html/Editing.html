@@ -1,0 +1,83 @@
+<html lang="en">
+
+<title>Coudike Feedback</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        header, aside, section, footer{text-align: center; }
+        body {background-color: #FCFCFC;}
+        @media screen and (max-width: 1250px) { #right_aside { display:none; } } 
+    </style>
+    
+    <title>Document</title>
+</head>
+<body>
+    <div class="container flex_column">
+        <div class="header">
+            <nav>
+                <div class="header_left">
+                    <a href="https://www.cloudike.co.kr/main"><img src="../image/cloudieditor.png" height="43px"></a></div>
+    
+                <div class="header_right_box">
+                    <div class="header_user_icon"><img src="../image/icon_temp.png" width="40" ></div>
+                    
+                    <div class="header_alarm"><img src="../image/alarm.png" width="20" ></div>
+                    
+                </div>
+            </nav>
+        </div>
+    
+        <div class="main_container">
+            <aside class="left_aside" id="left_aside">
+                
+                <div class="editing_tool_box">
+                    <p><b>Editig tool</b></p>
+                    <div class="edit_btn_div">
+                        <div class="edit_btn_div2">
+                            <button class="edit_btn capture_btn" id="capture_btn"><img src="../image/capture.png" alt="capture" style="display: block; margin: 0 auto; margin-bottom: 8px;" width="45%"><b>Capture</b></button>
+                        </div>
+                    </div>
+                    <div class="edit_btn_div">
+                        <div class="edit_btn_div2">
+                            <button class="edit_btn pencil_btn" id="pencil_btn"><img src="../image/pencil.png" alt="pencil" style="display: block; margin: 0 auto; margin-bottom: 8px;" width="45%"><b>Pencil</b></button>
+                        </div>
+                    </div>
+                    <div class="edit_btn_div">
+                        <div class="edit_btn_div2">
+                            <button class="edit_btn square_btn" id="square_btn"><img src="../image/square.png" alt="square" style="display: block; margin: 0 auto; margin-bottom: 8px;" width="45%"><b>Square</b></button>
+                        </div>
+                    </div>
+                    <div class="edit_btn_div">
+                        <div class="edit_btn_div2">
+                            <button class="edit_btn circle_btn" id="circle_btn"><img src="../image/circle.png" alt="circle" style="display: block; margin: 0 auto; margin-bottom: 8px;" width="45%"><b>Circle</b></button>
+                        </div>
+                    </div>
+                    <div class="edit_btn_div">
+                        <div class="edit_btn_div2">
+                            <button class="edit_btn arrow_btn" id="arrow_btn"><img src="../image/arrow.png" alt="arrow" style="display: block; margin: 0 auto; margin-bottom: 8px;" width="45%"><b>Arrow</b></button>
+                        </div>
+                    </div>
+                    <div class="edit_btn_div">
+                        <div class="edit_btn_div2">
+                            <button class="edit_btn comment_btn" id="comment_btn"><img src="../image/comment.png" alt="comment" style="display: block; margin: 0 auto; margin-bottom: 8px;" width="45%"><b>Comment</b></button>
+                        </div>
+                    </div>
+
+                </div>
+            </aside> 
+            <section class="content"> 
+                <div class="project_info">
+                    <div class="project_name"><h1 id="project_name">Project -1</h1></div>
+                    <div class="revise_time"><p id="revise_time">최근 수정일: 2020.01.22</p></div>
+                </div>
+                <div class="editing_canvas">
+                    canvas
+                </div>
+            </section> 
+            <aside class="right_aside" id="right_aside">#asideRight</aside>
+        </div>
+    </div>
+</body>
+</html>
