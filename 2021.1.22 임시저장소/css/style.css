@@ -247,7 +247,6 @@ input[type=text] {
    margin: 0 10px;
    flex-grow: 1;
    height: 100%;
-   border: 2px solid black;
 
 }
 .flex_column {
@@ -350,8 +349,7 @@ input[type=text] {
    height: 90px;
    margin-top: 10px;
    margin-left: 20px;
-   border: 2px solid red;
-   float: left;
+   text-align: left;
 }
 .project_info h1 {
    line-height: 0px;
@@ -364,9 +362,23 @@ input[type=text] {
    margin-left: 10px;
 }
 .editing_canvas {
-   border-radius: 5px;
-   border: 2px solid red;
+   border-radius: 10px;
    margin-bottom: 5px;
+   width: 100%;
+   flex: 1;
+   box-shadow : 2px 2px 5px #707070;
+}
+.zoom_btn {
+   background: #393E46;
+   border-radius: 5px;
+   width: 180px;
+   height: 40px;
+   display: flex;
+   position: relative;
+   left: 50%;
+   top: 92%;
+   transform: translate(-50%, 0);
+   
 }
 
 
