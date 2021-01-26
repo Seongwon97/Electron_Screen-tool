@@ -4,11 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="../js/editing.js"></script>
     <link rel="stylesheet" href="../css/style.css">
     <style>
         header, aside, section, footer{text-align: center; }
         body {background-color: #FCFCFC;}
-        @media screen and (max-width: 1250px) { #right_aside { display:none; } } 
+        @media screen and (max-width: 1250px) { #right_aside { display:none; } }
+        select {
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.25);
+            font-size: 15px;
+            padding: 8px 10px;
+            border: none;
+            width: 110px;
+            height: 40px;
+            background: none;
+            border-radius: 5px;
+        }
     </style>
     
     <title>Document</title>
@@ -73,13 +84,44 @@
                     <div class="revise_time"><p id="revise_time">최근 수정일: 2020.01.22</p></div>
                 </div>
                 <div class="editing_canvas">
-                    
-                    <div class="zoom_btn">
+                    <div class="canvas"></div>
 
+                    <div class="progress_critical">
+                        <!--<div class="progress" id="progress"></div>-->
+                        <div class="progress">
+                            <select id="progress">
+                                <option value="to_do">To do</option>
+                                <option value="in_progress">In progress</option>
+                                <option value="confirmed">Confirmed</option>
+                            </select>
+                            <span class="custom-arrow"></span>
+                        </div>
+                        <div class="critical">
+                            <select id="critical">
+                                <option value="critical">Critical</option>
+                                <option value="normal">Normal</option>
+                                <option value="minor">Minor</option>
+                            </select>
+                            <span class="custom-arrow"></span>
+                        </div>
+                    </div>
+                    <div class="zoom_btn">
+                        <button class="zoom_in" id="zoom_in_btn"><img src="../image/zoom_in.png" alt="zoom_in" style="display: block; margin: 0 auto; margin-bottom: 2px;" height="80%"></button>
+                        <button class="zoom_out" id="zoom_out_btn"><img src="../image/zoom_out.png" alt="zoom_in" style="display: block; margin: 0 auto; margin-bottom: 2px;" height="80%"></button>
                     </div>
                 </div>
             </section> 
-            <aside class="right_aside" id="right_aside">#asideRight</aside>
+            <aside class="right_aside flex_column" id="right_aside">
+                <div class="right_aside_top">
+                    <button class="right_aside_btn1">File</button>
+                    <button class="right_aside_btn1">Comment</button>
+                    <button class="right_aside_btn2"><img src="../image/download.png" alt="download" style="display: block; margin: 0 auto;" height="60%"></button>
+                    <button class="right_aside_btn2"><img src="../image/share.png" alt="share" style="display: block; margin: 0 auto;" height="60%"></button>
+                </div>
+                <div class="right_aside_content"></div>
+
+
+            </aside>
         </div>
     </div>
 </body>
