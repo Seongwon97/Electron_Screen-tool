@@ -18,13 +18,12 @@
         <div class="header">
             <nav>
                 <div class="header_left">
-                    <a href="https://www.cloudike.co.kr/main"><img src="../image/cloudike_logo.png" width="130"></a></div>
+                    <a href="https://www.cloudike.co.kr/main"><img src="../image/cloudieditor.png" height="43px"></a></div>
     
-                <div class="header_right_box">
-                    <div class="header_user_icon"><img src="../image/icon_temp.png" width="40" ></div>
-                    
-                    <div class="header_alarm"><img src="../image/alarm.png" width="20" ></div>
-                    
+                <div class="header_right_box">   
+                    <button class="header_alarm" id="header_alarm"><img src="../image/alarm.png" width="20" ></button>
+
+                    <button class="header_user_icon"><img src="../image/icon_temp.png" width="40" ></button>
                 </div>
             </nav>
         </div>
@@ -57,12 +56,27 @@
                   </nav>
                 
             </aside> 
-            <section class="content"> 
-                <article id="article"> 
-                    <div id="article">canvas</div> 
-                </article> 
+            <section class="content flex_column"> 
+                <div class="project_info">
+                    <div class="project_name"><h1 id="project_name">Project -1</h1></div>
+                    <div class="revise_time"><p id="revise_time">최근 수정일: 2020.01.22</p></div>
+                </div>
+                <div class="editing_canvas">
+                    <canvas class="canvas"></canvas>
+            
+                </div>
             </section> 
-            <aside class="right_aside" id="right_aside">#asideRight</aside>
+            <aside class="right_aside flex_column" id="right_aside">
+                <div class="right_aside_top">
+                    <button class="right_aside_btn1">File</button>
+                    <button class="right_aside_btn1">Comment</button>
+                    <button class="right_aside_btn2"><img src="../image/download.png" alt="download" style="display: block; margin: 0 auto;" height="60%"></button>
+                    <button class="right_aside_btn2"><img src="../image/share.png" alt="share" style="display: block; margin: 0 auto;" height="60%"></button>
+                </div>
+                <div class="right_aside_content"></div>
+
+
+            </aside>
         </div>
     </div>
 </body>

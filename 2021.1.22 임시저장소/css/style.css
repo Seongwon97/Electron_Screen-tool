@@ -271,9 +271,8 @@ input[type=text] {
 }
 .header_right_box {
    float: right;
-   margin-right: 10px;
    height: 100%;
-   width: 180px;
+   width: 200px;
    position: relative;
 }
 .header_alarm {
@@ -282,6 +281,9 @@ input[type=text] {
    left: 50%;
    transform: translate(-50%, -50%);
    cursor: pointer;
+   background: none;
+   outline: none;
+   border: none;
 }
 .header_user_icon {
    position: absolute;
@@ -289,6 +291,9 @@ input[type=text] {
    right: 0%;
    transform: translate(-50%, -50%);
    cursor: pointer;
+   background: none;
+   outline: none;
+   border: none;
 }
 .editing_tool_box {
    height: 100%;

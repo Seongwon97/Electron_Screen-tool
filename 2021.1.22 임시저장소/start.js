@@ -10,7 +10,7 @@ let win;
 
 function createWindow () {
 
-  win = new BrowserWindow({width: 1350, height: 900})
+  win = new BrowserWindow({width: 1350, height: 900, minHeight: 820, minWidth: 700})
   //윈도우 크기를 고정하려면 13번째 줄 height:800다음에 , resizable: false추가
   win.removeMenu()
   win.loadURL(url.format({
