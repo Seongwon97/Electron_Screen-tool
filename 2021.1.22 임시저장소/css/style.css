@@ -231,7 +231,7 @@ input[type=text] {
    flex-grow: 0;
    background-color: #393E46;
    height: 100%;
-   width: 170px;
+   width: 150px;
    border-top-right-radius: 15px;
 }
 .right_aside {
@@ -271,9 +271,9 @@ input[type=text] {
 }
 .header_right_box {
    float: right;
-   margin-right: 20px;
+   margin-right: 10px;
    height: 100%;
-   width: 300px;
+   width: 180px;
    position: relative;
 }
 .header_alarm {
@@ -281,12 +281,14 @@ input[type=text] {
    top: 50%;
    left: 50%;
    transform: translate(-50%, -50%);
+   cursor: pointer;
 }
 .header_user_icon {
    position: absolute;
    top: 50%;
    right: 0%;
    transform: translate(-50%, -50%);
+   cursor: pointer;
 }
 .editing_tool_box {
    height: 100%;
@@ -303,7 +305,7 @@ input[type=text] {
 .edit_btn_div {
    display: inline-block;
    width: 100%;
-   height: 15%;
+   height: 14%;
    padding: 13% 0%;
    color: white;
 }
@@ -311,6 +313,30 @@ input[type=text] {
    border-radius: 15px;
    width: 100%;
    height: 100%;
+}
+.edit_btn_div3 {
+   display: flex;
+   width: 100%;
+   height: 5%;
+   color: white;
+   justify-content: space-between;
+   margin-top: 5%;
+}
+.edit_btn_color {
+   width: 30%;
+   background-color: blue;
+   border-radius: 10px;
+   margin-right: 7%;
+   cursor: pointer;
+   border: 2px solid #515761;
+}
+.edit_btn_div4:after {
+   content: "";
+   display: block;
+   padding-bottom: 100%;
+}
+.edit_btn_color:hover {
+   border: 2px solid #c8cbd1
 }
 .edit_btn {
    width: 100%;
@@ -321,6 +347,16 @@ input[type=text] {
    outline: none;
    border-radius: 15px;
    cursor: pointer;
+}
+.edit_btn_thick {
+   width: 40%;
+   height: 100%;
+   background: #393E46;
+   border: none;
+   outline: none;
+   border-radius: 15px;
+   cursor: pointer;
+   margin-left: 7%;
 }
 .capture_btn:hover, 
 .pencil_btn:hover, 
