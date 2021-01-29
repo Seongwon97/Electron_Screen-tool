@@ -328,12 +328,9 @@ input[type=text] {
    margin-top: 5%;
 }
 .edit_btn_color {
-   width: 30%;
-   background-color: blue;
-   border-radius: 10px;
+   width: 40px;
+   height: 40px;
    margin-right: 7%;
-   cursor: pointer;
-   border: 2px solid #515761;
 }
 .edit_btn_div4:after {
    content: "";
@@ -341,6 +338,9 @@ input[type=text] {
    padding-bottom: 100%;
 }
 .edit_btn_color:hover {
+   border: 2px solid #c8cbd1
+}
+.edit_btn_color:active {
    border: 2px solid #c8cbd1
 }
 .edit_btn {
@@ -598,7 +598,30 @@ label > span {
       -ms-transform: rotate(90deg);
           transform: rotate(90deg);
 }
+.file_list {
+   margin-top: 10px;
+   width: 100%;
+   position: relative;
+   flex: 1;
+   border: 2px solid red;
+}
+.file_setting {
+   height: 50px;
+   margin: 10px 20px;
+   text-align: left;
+   border-bottom: 1px solid #E6E6E6;
+}
 
 
 
 
+.browse-btn {
+	background: url( "buttonImage/uploadButton.png" ) no-repeat;
+	border: none;
+	width: 150px;
+	height: 75px;
+
+	background-size: cover;
+/*	padding: 0;*/
+/*	object-fit: fill;*/
+}
