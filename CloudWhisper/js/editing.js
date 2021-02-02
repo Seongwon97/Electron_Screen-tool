@@ -13,7 +13,7 @@ window.onload = function(){
     //var img = document.getElementById('img'); 
     
     var img = new Image();
-    img.src = "../image/temp2.jpg";
+    img.src = "../image/temp.jpg";
     img.onload = function(){
 
         canvas.width = canvas.offsetWidth;
@@ -38,6 +38,20 @@ window.onload = function(){
 	canvas.addEventListener("mousemove", function(e){
 		if(isMouseDown) {		
 			if (pencil==true) // pencil 버튼 클릭 시
+			{
+				console.log(document.getElementById("edit_btn_color").value);
+				console.log("captureClicked function starts");
+				context.beginPath();
+				context.moveTo(lastEvent.offsetX,lastEvent.offsetY); // 마우스 시작점 좌표 부터 ~
+				context.lineTo(e.offsetX,e.offsetY); // ~ 마우스 끝점 좌표 까지
+//				context.strokeStyle = color; // 색깔 지정
+				context.strokeStyle = document.getElementById("edit_btn_color").value; // 색깔 지정
+
+				context.stroke(); // 그리기 실행
+				lastEvent = e; // 마우스 좌표 맞추기
+				console.log("captureClicked function ends");
+            }
+            else if (square==true) // pencil 버튼 클릭 시
 			{
 				console.log(document.getElementById("edit_btn_color").value);
 				console.log("captureClicked function starts");
