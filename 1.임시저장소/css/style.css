@@ -363,18 +363,6 @@ input[type=text] {
    cursor: pointer;
    margin-left: 7%;
 }
-.capture_btn:hover, 
-.pencil_btn:hover, 
-.square_btn:hover, 
-.circle_btn:hover, 
-.arrow_btn:hover, 
-.comment_btn:hover, 
-.edit_btn_div2:hover {
-   background: white;
-   color: #393E46;
-   border: none;
-   outline: none;
-}
 
 .capture_btn:focus, 
 .pencil_btn:focus, 
