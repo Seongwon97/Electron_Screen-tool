@@ -6,31 +6,48 @@ var circle=false;
 var arrow=false;
 var comment=false;
 var color = document.getElementById("edit_btn_color").value;
-window.onload = function(){
 
+const browseBtn = document.querySelector('.browse-btn'); // 화면에 보여질 업로드 버튼
+const realInput = document.querySelector('#real-input'); // 실제로는 button이 아닌 input을 통해 업로드를 하는 것
+
+var saveImageButton = document.getElementById("download");
+
+window.onload = function(){
+	
     var canvas =  document.querySelector("canvas");
     var context = canvas.getContext("2d");
-    //var img = document.getElementById('img'); 
-    
-    var img = new Image();
-    img.src = "../image/temp2.jpg";
-    img.onload = function(){
 
-        canvas.width = canvas.offsetWidth;
-        canvas.height = canvas.offsetHeight;
-        var scale = Math.min(canvas.width / img.width, canvas.height / img.height);
-        // get the top left position of the image
-        var x = (canvas.width / 2) - (img.width / 2) * scale;
-        var y = (canvas.height / 2) - (img.height / 2) * scale;
-        context.drawImage(img, x, y, img.width * scale, img.height * scale);
-        console.log(canvas.width, canvas.height, img.width, img.height, scale);
-    }
-    
-    /* image on canvas 
+	// Upload image on cavas
+	function readInputFile(e) {
+	  var file = e.target.files; // 이미지 파일 객체
+		  var reader = new FileReader(); // 경로 오류가 안뜨기 위해 전역객체인 FileReader 사용
+	  reader.onload = function (e) {
+		var img = new Image();
+		img.onload = function () {
+			canvas.width = canvas.offsetWidth;
+			canvas.height = canvas.offsetHeight;
+			var scale = Math.min(canvas.width / img.width, canvas.height / img.height);
+			// get the top left position of the image
+			var x = (canvas.width / 2) - (img.width / 2) * scale;
+			var y = (canvas.height / 2) - (img.height / 2) * scale;
+			context.drawImage(img, x, y, img.width * scale, img.height * scale);
+			console.log(canvas.width, canvas.height, img.width, img.height, scale);
+		};
+		img.src = e.target.result;
+	  };
+	  reader.readAsDataURL(file[0]); // 첫번째 사진을 읽어옴
+	}
 
-    */
+	realInput.addEventListener('change', readInputFile);
 
-    canvas.addEventListener("mousedown", function(e){
+	// 업로드 버튼을 클릭하면 input이 실행되며 사진 파일 고르기 가능
+	browseBtn.addEventListener('click',()=>{
+		realInput.click();
+	});
+	// End - Upload image on cavas
+	
+	
+   canvas.addEventListener("mousedown", function(e){
 		lastEvent = e;
 		isMouseDown = true;	
 	});
@@ -316,45 +333,22 @@ window.onload = function(){
     document.getElementById("header_alarm").onclick = function() {
         alert("alarm..");
     }
-    document.getElementById("saveImage").onclick =function() {
-        alert("!");
-        var downloadLink = document.createElement("a");
-        downloadLink.href = canvas.toDataURL();
-        downloadLink.download = "image.png";
-        downloadLink.target = "_blank";
-        downloadLink.click();
-        //추후 수정
-    }
-
-    /*
-    var canvas = document.getElementById("canvas");
-    if(canvas.getContext){
-        var draw = canvas.getContext("2d");
-        
-        var img = new Image();
-        img.src = "../image/temp.jpg";
-        img.onload = function(){
-            var scale = Math.min(canvas.width / img.width, canvas.height / img.height);
-            // get the top left position of the image
-            var x = (canvas.width / 2) - (img.width / 2) * scale;
-            var y = (canvas.height / 2) - (img.height / 2) * scale;
-            //이미지의 원하는 부분만 잘라서 그리기
-            //drawImage(이미지객체, 
-            //        이미지의 왼위 부분x, 이미지의 왼위 부분y, 이미지의 원하는 가로크기, 이미지의 원하는 세로크기,
-            //        사각형 부분x, 사각형 부분y, 가로크기, 세로크기)
-            //draw.drawImage(img, 100,100, 300,300, 50,50, 250,300);
-            
-            //전체 이미지 그리기
-            //drawImage(이미지객체, 사각형 왼위 x, 사각형 왼위 y, 가로크기, 세로크기)
-            draw.drawImage(img, x, y, img.width * scale, img.height * scale);
-        }
-    }*/
+	
+	
+	saveImageButton.addEventListener("click", function(){
+		var downloadLink = document.createElement("a");
+		downloadLink.href = canvas.toDataURL();
+		downloadLink.download = "image.png";
+		downloadLink.target = "_blank";
+		downloadLink.click();
+	});
 }
+
 window.onresize = function(){
     var canvas =  document.querySelector("canvas");
     var context = canvas.getContext("2d");
     var img = new Image();
-    img.src = "../image/temp.jpg";
+    img.src = "../image/test.png";
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
     var scale = Math.min(canvas.width / img.width, canvas.height / img.height);

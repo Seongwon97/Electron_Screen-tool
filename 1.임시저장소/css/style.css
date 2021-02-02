@@ -226,6 +226,8 @@ input[type=text] {
    left: 30px;
    top: 30px;
 }
+
+/* editing page */
 .left_aside {
    float: left;
    flex-grow: 0;
@@ -327,20 +329,32 @@ input[type=text] {
    justify-content: space-between;
    margin-top: 5%;
 }
+
 .edit_btn_color {
-   width: 40px;
-   height: 40px;
+   width: 30%;
+   background-color: blue;
+   border-radius: 10px;
    margin-right: 7%;
+   cursor: pointer;
+   border: 2px solid #515761;
 }
+
+input[type="color"] {
+   width: 30%;
+   height: 80%;
+   background-color: #AEAEAE;
+   border-radius: 10px;
+   margin-right: 7%;
+   cursor: pointer;
+   border: 2px solid #515761;
+}
+
 .edit_btn_div4:after {
    content: "";
    display: block;
    padding-bottom: 100%;
 }
 .edit_btn_color:hover {
-   border: 2px solid #c8cbd1
-}
-.edit_btn_color:active {
    border: 2px solid #c8cbd1
 }
 .edit_btn {
@@ -362,6 +376,18 @@ input[type=text] {
    border-radius: 15px;
    cursor: pointer;
    margin-left: 7%;
+}
+.capture_btn:hover, 
+.pencil_btn:hover, 
+.square_btn:hover, 
+.circle_btn:hover, 
+.arrow_btn:hover, 
+.comment_btn:hover, 
+.edit_btn_div2:hover {
+   background: white;
+   color: #393E46;
+   border: none;
+   outline: none;
 }
 
 .capture_btn:focus, 
@@ -385,11 +411,49 @@ input[type=text] {
    font-size: 35px;
    color: #393E46;
 }
+
 .revise_time {
    color: #393E46;
    margin-top: 5px;
    margin-left: 10px;
 }
+
+/* Upload button */
+.upload {
+	background: url( "../image/uploadButton.png" ) no-repeat;
+	border: none;
+	width: 150px;
+	height: 75px;
+
+	background-size: cover;
+/*	padding: 0;*/
+/*	object-fit: fill;*/
+}
+
+.browse-btn {
+	background: url( "../image/uploadButton.png" ) no-repeat;
+	border: none;
+	width: 150px;
+	height: 75px;
+
+	background-size: cover;
+/*	padding: 0;*/
+/*	object-fit: fill;*/
+}
+
+#real-input {
+	display:none;
+}
+
+/* test image */
+#img {
+	display: none;
+}
+
+#real-input {
+	display:none;
+}
+
 .editing_canvas {
    border-radius: 10px;
    margin-bottom: 5px;
@@ -401,7 +465,6 @@ input[type=text] {
 .canvas {
    width: 100%;
    height: 100%;
-   border-radius: 10px;
 }
 .progress_critical {
    display: flex;
@@ -587,30 +650,7 @@ label > span {
       -ms-transform: rotate(90deg);
           transform: rotate(90deg);
 }
-.file_list {
-   margin-top: 10px;
-   width: 100%;
-   position: relative;
-   flex: 1;
-   border: 2px solid red;
-}
-.file_setting {
-   height: 50px;
-   margin: 10px 20px;
-   text-align: left;
-   border-bottom: 1px solid #E6E6E6;
-}
 
 
 
 
-.browse-btn {
-	background: url( "buttonImage/uploadButton.png" ) no-repeat;
-	border: none;
-	width: 150px;
-	height: 75px;
-
-	background-size: cover;
-/*	padding: 0;*/
-/*	object-fit: fill;*/
-}
