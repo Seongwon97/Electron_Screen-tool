@@ -86,7 +86,7 @@
                     <div class="edit_btn_div3">
                         <button class="edit_btn_thick comment_btn" id="thickness"><img src="../image/thickness.png" alt="thickness" style="display: block; margin: 0 auto; margin-bottom: 8px;" width="100%"></button>
                         <div class="edit_btn_color">
-                            <input type="color">
+                            <input type="color" id="edit_btn_color">
                         </div>
                     </div>
 
@@ -98,7 +98,6 @@
                     <div class="revise_time"><p id="revise_time">최근 수정일: 2020.01.22</p></div>
                 </div>
 
-                <input type="file" id="inputfile" onchange="handleImageView(this.files)">
                 <div class="editing_canvas">
                     <canvas id="canvas" class="canvas"></canvas>
                     
@@ -131,7 +130,7 @@
                 <div class="right_aside_top">
                     <button class="right_aside_btn1">File</button>
                     <button class="right_aside_btn1">Comment</button>
-                    <button class="right_aside_btn2"><img src="../image/download.png" alt="download" style="display: block; margin: 0 auto;" height="60%"></button>
+                    <button class="right_aside_btn2" id="saveImage"><img src="../image/download.png" alt="download" style="display: block; margin: 0 auto;" height="60%"></button>
                     <button class="right_aside_btn2"><img src="../image/share.png" alt="share" style="display: block; margin: 0 auto;" height="60%"></button>
                 </div>
                 <div class="right_aside_content"></div>

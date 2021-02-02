@@ -1,9 +1,66 @@
+var lastEvent;
+var isMouseDown = false;
+var pencil=false;
+var square=false;
+var circle=false;
+var arrow=false;
+var comment=false;
+var color = document.getElementById("edit_btn_color").value;
 window.onload = function(){
-    var pencil=false;
-    var square=false;
-    var circle=false;
-    var arrow=false;
-    var comment=false;
+
+    var canvas =  document.querySelector("canvas");
+    var context = canvas.getContext("2d");
+    //var img = document.getElementById('img'); 
+    
+    var img = new Image();
+    img.src = "../image/temp.jpg";
+    img.onload = function(){
+        /*
+        canvas.width = img.width;
+        canvas.height = img.height;
+        context.drawImage(img, 0, 0); */
+        var scale = Math.min(canvas.width / img.width, canvas.height / img.height);
+        // get the top left position of the image
+        var x = (canvas.width / 2) - (img.width / 2) * scale;
+        var y = (canvas.height / 2) - (img.height / 2) * scale;
+        context.drawImage(img, x, y, img.width * scale, img.height * scale);
+        console.log(canvas.width, canvas.height, img.width, img.height, scale);
+    }
+    
+    /* image on canvas 
+
+    */
+
+    canvas.addEventListener("mousedown", function(e){
+		lastEvent = e;
+		isMouseDown = true;	
+	});
+
+	canvas.addEventListener("mousemove", function(e){
+		if(isMouseDown) {		
+			if (pencil==true) // pencil 버튼 클릭 시
+			{
+				console.log(document.getElementById("edit_btn_color").value);
+				console.log("captureClicked function starts");
+				context.beginPath();
+				context.moveTo(lastEvent.offsetX,lastEvent.offsetY); // 마우스 시작점 좌표 부터 ~
+				context.lineTo(e.offsetX,e.offsetY); // ~ 마우스 끝점 좌표 까지
+//				context.strokeStyle = color; // 색깔 지정
+				context.strokeStyle = document.getElementById("edit_btn_color").value; // 색깔 지정
+
+				context.stroke(); // 그리기 실행
+				lastEvent = e; // 마우스 좌표 맞추기
+				console.log("captureClicked function ends");
+			}
+		}
+	});
+
+	canvas.addEventListener("mouseup", function(){
+		isMouseDown = false;
+	});
+
+
+
     document.getElementById("capture_btn").onclick = function() {
         document.getElementById("pencil_btn").style.backgroundColor='#393E46';
         document.getElementById("pencil_btn").style.color='#ACACAC';
@@ -260,25 +317,37 @@ window.onload = function(){
     document.getElementById("header_alarm").onclick = function() {
         alert("alarm..");
     }
-}
-
-
-
-function handleImageView(files){		
-    canvas=document.getElementById("canvas")
-    var file = files[0];
-    if(!file.type.match(/image.*/)){
-        alert("not image file!");
-    }			
-    var reader = new FileReader();	
-    reader.onload = function(e){
-        var img = new Image();
-        img.onload = function(){
-            var ctx = document.getElementById("canvas").getContext("2d");
-            ctx.drawImage(img,0,0, canvas.width, canvas.height);
-        }
-        img.src = e.target.result;
+    document.getElementById("saveImage").onclick =function() {
+        alert("!");
+        var downloadLink = document.createElement("a");
+        downloadLink.href = canvas.toDataURL();
+        downloadLink.download = "image.png";
+        downloadLink.target = "_blank";
+        downloadLink.click();
+        //추후 수정
     }
 
-    reader.readAsDataURL(file);
+    /*
+    var canvas = document.getElementById("canvas");
+    if(canvas.getContext){
+        var draw = canvas.getContext("2d");
+        
+        var img = new Image();
+        img.src = "../image/temp.jpg";
+        img.onload = function(){
+            var scale = Math.min(canvas.width / img.width, canvas.height / img.height);
+            // get the top left position of the image
+            var x = (canvas.width / 2) - (img.width / 2) * scale;
+            var y = (canvas.height / 2) - (img.height / 2) * scale;
+            //이미지의 원하는 부분만 잘라서 그리기
+            //drawImage(이미지객체, 
+            //        이미지의 왼위 부분x, 이미지의 왼위 부분y, 이미지의 원하는 가로크기, 이미지의 원하는 세로크기,
+            //        사각형 부분x, 사각형 부분y, 가로크기, 세로크기)
+            //draw.drawImage(img, 100,100, 300,300, 50,50, 250,300);
+            
+            //전체 이미지 그리기
+            //drawImage(이미지객체, 사각형 왼위 x, 사각형 왼위 y, 가로크기, 세로크기)
+            draw.drawImage(img, x, y, img.width * scale, img.height * scale);
+        }
+    }*/
 }
