@@ -13,12 +13,11 @@ window.onload = function(){
     //var img = document.getElementById('img'); 
     
     var img = new Image();
-    img.src = "../image/temp.jpg";
+    img.src = "../image/temp2.jpg";
     img.onload = function(){
-        /*
-        canvas.width = img.width;
-        canvas.height = img.height;
-        context.drawImage(img, 0, 0); */
+
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
         var scale = Math.min(canvas.width / img.width, canvas.height / img.height);
         // get the top left position of the image
         var x = (canvas.width / 2) - (img.width / 2) * scale;
@@ -350,4 +349,17 @@ window.onload = function(){
             draw.drawImage(img, x, y, img.width * scale, img.height * scale);
         }
     }*/
+}
+window.onresize = function(){
+    var canvas =  document.querySelector("canvas");
+    var context = canvas.getContext("2d");
+    var img = new Image();
+    img.src = "../image/temp.jpg";
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+    var scale = Math.min(canvas.width / img.width, canvas.height / img.height);
+        // get the top left position of the image
+        var x = (canvas.width / 2) - (img.width / 2) * scale;
+        var y = (canvas.height / 2) - (img.height / 2) * scale;
+        context.drawImage(img, x, y, img.width * scale, img.height * scale);
 }
