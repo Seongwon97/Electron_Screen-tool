@@ -83,8 +83,11 @@
                             <button class="edit_btn comment_btn" id="comment_btn"><img src="../image/comment.png" alt="comment" style="display: block; margin: 0 auto; margin-bottom: 8px;" width="40%"><b>Comment</b></button>
                         </div>
                     </div>
+                    <div class="line_thickness" id="line_thickness">
+                        <input type="range" id="thickness_range" min="1" max="4">
+                    </div>
                     <div class="edit_btn_div3">
-                        <button class="edit_btn_thick comment_btn" id="thickness"><img src="../image/thickness.png" alt="thickness" style="display: block; margin: 0 auto; margin-bottom: 8px;" width="100%"></button>
+                        <button class="edit_btn_thick comment_btn" id="thickness_btn"><img src="../image/thickness.png" alt="thickness" style="display: block; margin: 0 auto; margin-bottom: 8px;" width="100%"></button>
                         <div class="edit_btn_color">
                             <input type="color" id="edit_btn_color">
                         </div>
@@ -142,5 +145,6 @@
 
 
     <script type="text/javascript" src="../js/editing.js"></script>
+    <script src="../js/jquery-3.5.1.js"></script>
 </body>
 </html>
