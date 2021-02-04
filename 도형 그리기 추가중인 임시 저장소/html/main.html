@@ -1,0 +1,69 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        header, aside, section, footer{text-align: center; }
+        body {background-color: #FCFCFC;}
+        @media screen and (max-width: 1250px) { #right_aside { display:none; } } 
+    </style>
+    
+    <title>Coudike Feedback</title>
+</head>
+<body>
+    <div class="container flex_column">
+        <div class="header">
+            <nav>
+                <div class="header_left">
+                    <a href="https://www.cloudike.co.kr/main"><img src="../image/cloudieditor.png" height="43px"></a></div>
+    
+                <div class="header_right_box">   
+                    <button class="header_alarm" id="header_alarm"><img src="../image/alarm.png" width="20" ></button>
+
+                    <button class="header_user_icon"><img src="../image/icon_temp.png" width="40" ></button>
+                </div>
+            </nav>
+        </div>
+    
+        <div class="main_container">
+            <aside class="left_aside" id="left_aside">
+                <nav class="nav" role="navigation">
+                    <ul class="nav__list">
+                      <li>
+                        <input id="group-1" type="checkbox" hidden />
+                        <label for="group-1"><span class="fa fa-angle-right"></span>Team/Group</label>
+                        <ul class="group-list">
+                          <li><a href="#">Team1</a></li>
+                          <li><a href="#">Team2</a></li>
+                          <li><a href="#">Team3</a></li>
+                          <li><a href="#">Team4</a></li>
+                        </ul>
+                      </li>
+                      <li>
+                        <input id="group-2" type="checkbox" hidden />
+                        <label for="group-2"><span class="fa fa-angle-right"></span>Project</label>
+                        <ul class="group-list">
+                            <li><a href="#">Project1</a></li>
+                            <li><a href="#">Project2</a></li>
+                            <li><a href="#">Project3</a></li>
+                            <li><a href="#">Project4</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </nav>
+                
+            </aside> 
+            <section class="content flex_column"> 
+                <div class="file_setting"></div>
+                <div class="file_list"></div>
+            </section> 
+            <aside class="right_aside flex_column" id="right_aside">
+                <div class="right_aside_content"></div>
+
+
+            </aside>
+        </div>
+    </div>
+</body>
+</html>
