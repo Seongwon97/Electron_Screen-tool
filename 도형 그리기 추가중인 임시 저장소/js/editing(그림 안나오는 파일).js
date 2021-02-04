@@ -14,11 +14,6 @@ var rec_height;
 var cir_center_x;       //원의 중심점, 반지름
 var cir_center_y;
 var cir_radius;
-var x, y, scale;
-var annotation =[];
-var line_color;
-var line_width;
-var count = 1;
 window.onload = function(){
 
     var canvas =  document.getElementById("canvas");
@@ -26,16 +21,17 @@ window.onload = function(){
     //var img = document.getElementById('img'); 
     
     var img = new Image();
-    img.src = "../image/temp2.jpg";
+    img.src = "../image/temp.jpg";
     img.onload = function(){
 
         canvas.width = canvas.offsetWidth;
         canvas.height = canvas.offsetHeight;
-        scale = Math.min(canvas.width / img.width, canvas.height / img.height);
+        var scale = Math.min(canvas.width / img.width, canvas.height / img.height);
         // get the top left position of the image
-        x = (canvas.width / 2) - (img.width / 2) * scale;
-        y = (canvas.height / 2) - (img.height / 2) * scale;
-        context.drawImage(img, x, y, img.width * scale, img.height * scale);
+        var x = (canvas.width / 2) - (img.width / 2) * scale;
+        var y = (canvas.height / 2) - (img.height / 2) * scale;
+        //context.drawImage(img, x, y, img.width * scale, img.height * scale);
+        console.log(canvas.width, canvas.height, img.width, img.height, scale);
     }
     
     /* image on canvas 
@@ -59,6 +55,9 @@ window.onload = function(){
         isMouseDown = true;	
         sx = canvasX(lastEvent.clientX);
         sy = canvasY(lastEvent.clientY);
+        backup = context.getImageData(0, 0, canvas.width, canvas.height);
+        console.log(lastEvent);
+        console.log("sy,sx", sx, sy);
 	});
 
 	canvas.addEventListener("mousemove", function(e){
@@ -67,14 +66,10 @@ window.onload = function(){
         ey = canvasY(lastEvent.clientY);
         if(isMouseDown) {		
 			if (line) // line 버튼 클릭 시
-			{         
-                context.clearRect(0, 0, canvas.width, canvas.height);
-                context.drawImage(img, x, y, img.width * scale, img.height * scale);
-                     
-                line_width = 3; 
-                line_color = document.getElementById("edit_btn_color").value;
-                context.lineWidth = line_width;
-				context.strokeStyle = line_color // 색깔 지정
+			{            
+                context.lineWidth = 3;
+				context.strokeStyle = document.getElementById("edit_btn_color").value; // 색깔 지정
+                context.putImageData(backup, 0, 0);
                 context.beginPath();
                 context.moveTo(sx, sy);
                 context.lineTo(ex, ey);
@@ -82,34 +77,24 @@ window.onload = function(){
                 
             }
             else if (square) // square 버튼 클릭 시
-			{    
-                context.clearRect(0, 0, canvas.width, canvas.height);
-                context.drawImage(img, x, y, img.width * scale, img.height * scale);
-                
-                line_width = 3; 
-                line_color = document.getElementById("edit_btn_color").value;
-                context.lineWidth = line_width;
-                context.strokeStyle = line_color // 색깔 지정
-                
+			{      
                 rec_width = ex-sx;
                 rec_height = ey-sy;
+                context.lineWidth = 3;
+				context.strokeStyle = document.getElementById("edit_btn_color").value; // 색깔 지정
+                context.putImageData(backup, 0, 0);
                 context.beginPath();
                 context.rect(sx, sy, rec_width, rec_height);
                 context.stroke(); // 그리기 실행
             }
             else if (circle) // circle 버튼 클릭 시
 			{   
-                context.clearRect(0, 0, canvas.width, canvas.height);
-                context.drawImage(img, x, y, img.width * scale, img.height * scale);
-                
-                line_width = 3; 
-                line_color = document.getElementById("edit_btn_color").value;
-                context.lineWidth = line_width;
-                context.strokeStyle = line_color // 색깔 지정
-
                 cir_center_x = (sx + ex)/2;
                 cir_center_y = (sy + ey)/2;
                 cir_radius = Math.sqrt(Math.pow((sx - ex),2) + Math.pow((sy - ey),2))/2;
+                context.lineWidth = 3;
+				context.strokeStyle = document.getElementById("edit_btn_color").value; // 색깔 지정
+                context.putImageData(backup, 0, 0);
                 context.beginPath();
                 context.arc(cir_center_x, cir_center_y, cir_radius, 0, 2*Math.PI);
                 context.stroke(); // 그리기 실행
@@ -146,88 +131,9 @@ window.onload = function(){
 	});
 
 	canvas.addEventListener("mouseup", function(){
-        isMouseDown = false;       
-        if (line) {
-            sx=(sx-x)/(img.width * scale);
-            sy=(sy-y)/(img.height * scale);
-            ex=(ex-x)/(img.width * scale);
-            ey=(ey-y)/(img.height * scale);
-            annotation.push({
-                num : count,
-                start_x: sx,
-                start_y: sy,
-                end_x: ex,
-                end_y: ey,
-                type: 1,
-                color: line_color,
-                lineWidth: line_width,
-                remain: true
-            });          
-        }
-        else if(square) {
-            sx=(sx-x)/(img.width * scale);
-            sy=(sy-y)/(img.height * scale);
-            ex = rec_width /(img.width * scale);
-            ey = rec_height /(img.height * scale);
-            
-            annotation.push({
-                num : count,
-                start_x: sx,
-                start_y: sy,
-                end_x: ex,
-                end_y: ey,
-                type: 2,
-                color: line_color,
-                lineWidth: line_width,
-                remain: true
-            });  
-            //square에서 end_x, end_y는 rec_width, height로 사용     
-        }
-        else if(circle) {
-            sx=(cir_center_x-x)/(img.width * scale);
-            sy=(cir_center_y-y)/(img.height * scale);
-            ex = cir_radius /(img.width * scale);
-            annotation.push({
-                num : count,
-                start_x: sx,
-                start_y: sy,
-                end_x: ex,
-                end_y: null,
-                type: 3,
-                color: line_color,
-                lineWidth: line_width,
-                remain: true
-            });
-            //circle에서는 start_x,y가 원의 중심, end_x는 원의 반지름으로 사용
-        }
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        context.drawImage(img, x, y, img.width * scale, img.height * scale);
-        for (var i = 0; i < count; i++) {
-            if (annotation[i].remain) {
-                context.lineWidth = annotation[i].lineWidth;
-                context.strokeStyle = annotation[i].color;
-                if (annotation[i].type==1) {
-                    context.beginPath();
-                    context.moveTo(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y);
-                    context.lineTo(annotation[i].end_x * img.width * scale + x, annotation[i].end_y * img.height * scale + y);
-                    context.stroke();
-                }
-                else if (annotation[i].type==2) {
-                    context.beginPath();
-                    context.rect(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y,
-                         annotation[i].end_x * img.width * scale, annotation[i].end_y * img.height * scale);
-                    context.stroke();
-                }
-                else if (annotation[i].type==3) {
-                    context.beginPath();
-                    context.arc(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y,
-                        annotation[i].end_x * img.width * scale, 0, 2*Math.PI);
-                    context.stroke();
-                }
-            }
-        }  
-        count++;    
-        
+        console.log("all", sx, sy, ex, sy);
+        //이곳에서 그림 그린 것의 데이터를 firebase로 전송
+		isMouseDown = false;
 	});
 
 
@@ -526,38 +432,12 @@ window.onresize = function(){
     var canvas =  document.querySelector("canvas");
     var context = canvas.getContext("2d");
     var img = new Image();
-    img.src = "../image/temp2.jpg";
+    img.src = "../image/temp.jpg";
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
-    scale = Math.min(canvas.width / img.width, canvas.height / img.height);
+    var scale = Math.min(canvas.width / img.width, canvas.height / img.height);
         // get the top left position of the image
-    x = (canvas.width / 2) - (img.width / 2) * scale;
-    y = (canvas.height / 2) - (img.height / 2) * scale;
-
-//        context.clearRect(0, 0, canvas.width, canvas.height);
-    context.drawImage(img, x, y, img.width * scale, img.height * scale);
-    for (var i = 0; i < count; i++) {
-        if (annotation[i].remain) {
-            context.lineWidth = annotation[i].lineWidth;
-            context.strokeStyle = annotation[i].color;
-            if (annotation[i].type==1) {
-                context.beginPath();
-                context.moveTo(annotation[i].start_x*img.width * scale + x, annotation[i].start_y*img.height * scale + y);
-                context.lineTo(annotation[i].end_x*img.width * scale + x, annotation[i].end_y*img.height * scale + y);
-                context.stroke();
-            }
-            else if (annotation[i].type==2) {
-                context.beginPath();
-                context.rect(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y,
-                    annotation[i].end_x * img.width * scale, annotation[i].end_y * img.height * scale);
-                context.stroke();
-            }
-            else if (annotation[i].type==3) {
-                context.beginPath();
-                context.arc(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y,
-                    annotation[i].end_x * img.width * scale, 0, 2*Math.PI);
-                context.stroke();
-            }
-        }
-    }
+        var x = (canvas.width / 2) - (img.width / 2) * scale;
+        var y = (canvas.height / 2) - (img.height / 2) * scale;
+        context.drawImage(img, x, y, img.width * scale, img.height * scale);
 }
