@@ -24,9 +24,7 @@
             height: 100%;
             background-color: transparent;
             border: none;
-            border-radius: 100%;
             cursor: pointer;
-            border: 2px solid #515761;
             outline: none;
         }
     </style>
@@ -60,7 +58,7 @@
                     </div>
                     <div class="edit_btn_div">
                         <div class="edit_btn_div2">
-                            <button class="edit_btn pencil_btn" id="pencil_btn"><img src="../image/pencil.png" alt="pencil" style="display: block; margin: 0 auto; margin-bottom: 8px;" width="40%"><b>Pencil</b></button>
+                            <button class="edit_btn line_btn" id="line_btn"><img src="../image/line.png" alt="line" style="display: block; margin: 0 auto; margin-bottom: 8px;" width="40%"><b>line</b></button>
                         </div>
                     </div>
                     <div class="edit_btn_div">
@@ -83,10 +81,13 @@
                             <button class="edit_btn comment_btn" id="comment_btn"><img src="../image/comment.png" alt="comment" style="display: block; margin: 0 auto; margin-bottom: 8px;" width="40%"><b>Comment</b></button>
                         </div>
                     </div>
+                    <div class="line_thickness" id="line_thickness">
+                        <input type="range" id="thickness_range" min="2" max="8" value="5">
+                    </div>
                     <div class="edit_btn_div3">
-                        <button class="edit_btn_thick comment_btn" id="thickness"><img src="../image/thickness.png" alt="thickness" style="display: block; margin: 0 auto; margin-bottom: 8px;" width="100%"></button>
+                        <button class="edit_btn_thick comment_btn" id="thickness_btn"><img src="../image/thickness.png" alt="thickness" style="display: block; margin: 0 auto; margin-bottom: 8px;" width="100%"></button>
                         <div class="edit_btn_color">
-                            <input type="color" id="edit_btn_color">
+                            <input type="color" id="edit_btn_color" value="#FE5585">
                         </div>
                     </div>
 
@@ -142,5 +143,6 @@
 
 
     <script type="text/javascript" src="../js/editing.js"></script>
+    <script src="../js/jquery-3.5.1.js"></script>
 </body>
 </html>

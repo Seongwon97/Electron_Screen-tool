@@ -411,6 +411,17 @@ input[type=text] {
    right: 20px;
    top: 15px;
 }
+.line_thickness {
+   display: none;
+   position: absolute;
+   background: white;
+   width: 140px;
+   height: 40px;
+   left: 20px;
+   top: 86%;
+   border-radius: 5px;
+   box-shadow : 2px 2px 5px #707070;
+}
 .progress {
    float: left;
    border-radius: 5px;
