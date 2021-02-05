@@ -181,6 +181,36 @@ window.onload = function(){
     document.getElementById("square_btn").onmouseover = function() {
         document.getElementById("square_btn").style.backgroundColor='white';
         document.getElementById("square_btn").style.color='#393E46';
+		
+//		context.font = "15px Helvetica";
+//		var text = 'hello test test';
+//
+//		function drawBubble(context, x, y, w, h, radius, text)
+//		{
+//		   var r = x + w;
+//		   var b = y + h;
+//
+//		   context.beginPath();
+//		   context.fillStyle = "red";
+//		   context.fill();
+//		   context.strokeStyle = "black";
+//		   context.lineWidth = "2";
+//		   context.moveTo(x + radius, y);
+//
+//		   context.lineTo(r - radius, y);
+//		   context.quadraticCurveTo(r, y, r, y + radius);
+//		   context.lineTo(r, y + h-radius);
+//		   context.quadraticCurveTo(r, b, r - radius, b);
+//		   context.lineTo(x + radius, b);
+//		   context.quadraticCurveTo(x, b, x, b - radius);
+//		   context.lineTo(x, y + radius);
+//		   context.quadraticCurveTo(x, y, x + radius, y);
+//		   context.stroke();
+//		   context.fillText(text, x + 20, y + 30);
+//		}
+//
+//		drawBubble(context, 10, 60, context.measureText(text).width + 40, 50, 20, text);
+		
     }
     document.getElementById("square_btn").onmouseout = function() {
         if (square == false) {
@@ -310,7 +340,102 @@ window.onload = function(){
     document.getElementById("comment_btn").onmouseover = function() {
         document.getElementById("comment_btn").style.backgroundColor='white';
         document.getElementById("comment_btn").style.color='#393E46';
+		
+		  // Add comment function
+		  var font = '17px sans-serif';
+		  var hasInput = false;
+
+		  var arrowH = 20; // 말풍선 화살표(삼각형) 높이
+		  var arrowW = 20; // 말풍선 화살표(삼각형) 너비
+		
+		  canvas.onclick = function(e) {
+			if (hasInput) return;
+			addInput(e.clientX, e.clientY);
+		  }
+
+		  function addInput(x, y) {
+			var input = document.createElement('input');
+
+			input.type = 'text'; // HTML <input type="text">
+			input.style.position = 'fixed';
+//			input.style.left = (x - 4) + 'px';
+//			input.style.top = (y - 4) + 'px';
+			input.style.left = x;
+			input.style.top = y;
+
+			input.onkeydown = handleEnter; // 엔터 키 동작
+
+			document.body.appendChild(input);
+
+			input.focus();
+
+			hasInput = true;
+		  }
+
+		// 엔터 키 눌림 
+		  function handleEnter(e) {
+			var keyCode = e.keyCode;
+			if (keyCode === 13) {
+//			  drawBubble(ctx, 10, 60, ctx.measureText(text).width + 40, 50, 20, text);
+//							  x   y                 w                   h  radius 
+			  drawBubble(context, arrowW, arrowH, 50, 8, this.value);
+							     //x  //y //w										 //h //radius //text		
+			  
+			  drawText(this.value, parseInt(this.style.left, 10), parseInt(this.style.top, 10)); // 캔버스에 문자 입력 
+			  document.body.removeChild(this);
+			  hasInput = false;
+			}
+		  }
+		
+		// 캔버스에 문자 입력
+		  function drawText(txt, x, y) {
+			context.textBaseline = 'top';
+			context.textAlign = 'left';
+			context.font = font;
+//			context.fillText(txt, x - 4, y - 4);
+			context.fillStyle = "rgba(0,0,0,1)"
+			context.fillText(txt, lastEvent.offsetX - arrowW/2, lastEvent.offsetY - arrowH - 35); // text 위치
+		  }
+		
+		function drawBubble(context, arrowH, arrowW, h, radius, text)
+		{
+		   var arrowH = 20; // 말풍선 화살표(삼각형) 높이
+		   var arrowW = 20; // 말풍선 화살표(삼각형) 너비
+		   var r = lastEvent.offsetX - arrowW/2 + context.measureText(text).width + radius + 40; // 말풍선 사각형 오른쪽 x좌표
+		   var b = lastEvent.offsetY - arrowH - h - radius*2; // 말풍선 사각형 위 y좌표
+		   var x = lastEvent.offsetX - arrowW/2 - radius; // 말풍선 사각형 왼쪽 x좌표
+		   var y = lastEvent.offsetY - arrowH; // 말풍선 사각형 아래 y좌표
+			
+		   context.beginPath();
+		   context.fillStyle = "rgba(252,252,252,1)";
+		   context.strokeStyle = "rgba(149,155,165,1)"; 
+		   context.lineWidth = "3";
+
+		   context.moveTo(lastEvent.offsetX, lastEvent.offsetY); // 시작점
+
+		   context.lineTo(lastEvent.offsetX + arrowW/2, lastEvent.offsetY - arrowH); // arrow - right side
+
+		   context.lineTo(r - radius, y); //L1 
+		   context.quadraticCurveTo(r, y, r, y - radius); //Q1
+
+			
+		   context.lineTo(r, y - h); //L2
+		   context.quadraticCurveTo(r, b, r - radius, b); //Q2
+
+		   context.lineTo(x + radius, b); //L3
+		   context.quadraticCurveTo(x, b, x, b + radius); //Q3
+			
+		   context.lineTo(x, y - radius); //L4
+		   context.quadraticCurveTo(x, y, x + radius, y); //Q4
+			
+		   context.lineTo(lastEvent.offsetX, lastEvent.offsetY); //L5
+			
+		   context.fill(); // 채우기
+		   context.stroke(); // 선
+		}
+	   	  // End - Add comment function
     }
+	
     document.getElementById("comment_btn").onmouseout = function() {
         if (comment == false) {
             document.getElementById("comment_btn").style.backgroundColor='#393E46';
