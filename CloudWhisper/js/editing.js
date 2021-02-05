@@ -72,8 +72,7 @@ window.onload = function(){
         if(isMouseDown) {		
 			if (line) // line 버튼 클릭 시
 			{         
-                context.clearRect(0, 0, canvas.width, canvas.height);
-                context.drawImage(img, x, y, img.width * scale, img.height * scale);
+                draw_annotation(img, context);
                      
                 line_color = document.getElementById("edit_btn_color").value;
                 context.lineWidth = line_width;
@@ -86,9 +85,8 @@ window.onload = function(){
             }
             else if (square) // square 버튼 클릭 시
 			{    
-                context.clearRect(0, 0, canvas.width, canvas.height);
-                context.drawImage(img, x, y, img.width * scale, img.height * scale);
-                
+                draw_annotation(img, context);
+
                 line_color = document.getElementById("edit_btn_color").value;
                 context.lineWidth = line_width;
                 context.strokeStyle = line_color // 색깔 지정
@@ -101,8 +99,7 @@ window.onload = function(){
             }
             else if (circle) // circle 버튼 클릭 시
 			{   
-                context.clearRect(0, 0, canvas.width, canvas.height);
-                context.drawImage(img, x, y, img.width * scale, img.height * scale);
+                draw_annotation(img, context);
                 
                 line_color = document.getElementById("edit_btn_color").value;
                 context.lineWidth = line_width;
@@ -117,8 +114,7 @@ window.onload = function(){
             }
             else if (arrow) // arrow 버튼 클릭 시
 			{   
-                context.clearRect(0, 0, canvas.width, canvas.height);
-                context.drawImage(img, x, y, img.width * scale, img.height * scale);
+                draw_annotation(img, context);
                 
                 line_color = document.getElementById("edit_btn_color").value;
                 context.lineWidth = line_width;
@@ -127,22 +123,6 @@ window.onload = function(){
                 canvas_arrow(context, sx, sy, ex, ey);
                  // 그리기 실행
             }
-
-
-
-//             else if (pencil) {
-//                 console.log(document.getElementById("edit_btn_color").value);
-// 				console.log("captureClicked function starts");
-// 				context.beginPath();
-// 				context.moveTo(lastEvent.offsetX,lastEvent.offsetY); // 마우스 시작점 좌표 부터 ~
-// 				context.lineTo(e.offsetX,e.offsetY); // ~ 마우스 끝점 좌표 까지
-// //				context.strokeStyle = color; // 색깔 지정
-// 				context.strokeStyle = document.getElementById("edit_btn_color").value; // 색깔 지정
-
-// 				context.stroke(); // 그리기 실행
-// 				lastEvent = e; // 마우스 좌표 맞추기
-// 				console.log("captureClicked function ends");
-//             }
 		}
 	});
 
@@ -151,9 +131,6 @@ window.onload = function(){
     //그 후 캔버스를 초기화하고 이전의 annotation을 다시 출력
 	canvas.addEventListener("mouseup", function(){
         isMouseDown = false;
-        console.log(sx,sy,ex,ey);
-        
-        console.log("temp");
         if (line) {
             if (!((Math.abs(sx-ex)<10)&&(Math.abs(sy-ey)<10))) {
                 sx=(sx-x)/(img.width * scale);
@@ -248,42 +225,8 @@ window.onload = function(){
                 count++;        
             }
         }
-             
-         
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        context.drawImage(img, x, y, img.width * scale, img.height * scale);
-        console.log(count);
-        for (var i = 0; i < count; i++) {
-            if (annotation[i].remain) {
-                context.lineWidth = annotation[i].lineWidth;
-                context.strokeStyle = annotation[i].color;
-                if (annotation[i].type==1) {
-                    context.beginPath();
-                    context.moveTo(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y);
-                    context.lineTo(annotation[i].end_x * img.width * scale + x, annotation[i].end_y * img.height * scale + y);
-                    context.stroke();
-                }
-                else if (annotation[i].type==2) {
-                    context.beginPath();
-                    context.rect(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y,
-                         annotation[i].end_x * img.width * scale, annotation[i].end_y * img.height * scale);
-                    context.stroke();
-                }
-                else if (annotation[i].type==3) {
-                    context.beginPath();
-                    context.arc(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y,
-                        annotation[i].end_x * img.width * scale, 0, 2*Math.PI);
-                    context.stroke();
-                }
-                else if (annotation[i].type==4) {
-                    context.beginPath();
-                    canvas_arrow(context, annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y, 
-                        annotation[i].end_x * img.width * scale + x, annotation[i].end_y * img.height * scale + y);
-                }
-            }
-        }  
-           
-        
+        console.log("Number of annotation: ", count);
+        draw_annotation(img, context);     
 	});
 
 
@@ -550,7 +493,6 @@ window.onload = function(){
     });
     document.getElementById("thickness_range").onchange = function(event) {
         line_width = event.target.value;
-        console.log(line_width);
     }
 
     document.getElementById("editing_file_list").onclick = function() {
@@ -599,29 +541,7 @@ window.onload = function(){
         downloadLink.click();
         //추후 수정
     }
-    /*
-    var canvas = document.getElementById("canvas");
-    if(canvas.getContext){
-        var draw = canvas.getContext("2d");
-        
-        var img = new Image();
-        img.src = "../image/temp.jpg";
-        img.onload = function(){
-            var scale = Math.min(canvas.width / img.width, canvas.height / img.height);
-            // get the top left position of the image
-            var x = (canvas.width / 2) - (img.width / 2) * scale;
-            var y = (canvas.height / 2) - (img.height / 2) * scale;
-            //이미지의 원하는 부분만 잘라서 그리기
-            //drawImage(이미지객체, 
-            //        이미지의 왼위 부분x, 이미지의 왼위 부분y, 이미지의 원하는 가로크기, 이미지의 원하는 세로크기,
-            //        사각형 부분x, 사각형 부분y, 가로크기, 세로크기)
-            //draw.drawImage(img, 100,100, 300,300, 50,50, 250,300);
-            
-            //전체 이미지 그리기
-            //drawImage(이미지객체, 사각형 왼위 x, 사각형 왼위 y, 가로크기, 세로크기)
-            draw.drawImage(img, x, y, img.width * scale, img.height * scale);
-        }
-    }*/
+
 }
 window.onresize = function(){
     var canvas =  document.querySelector("canvas");
@@ -635,37 +555,7 @@ window.onresize = function(){
     x = (canvas.width / 2) - (img.width / 2) * scale;
     y = (canvas.height / 2) - (img.height / 2) * scale;
 
-//        context.clearRect(0, 0, canvas.width, canvas.height);
-    context.drawImage(img, x, y, img.width * scale, img.height * scale);
-    for (var i = 0; i < count; i++) {
-        if (annotation[i].remain) {
-            context.lineWidth = annotation[i].lineWidth;
-            context.strokeStyle = annotation[i].color;
-            if (annotation[i].type==1) {
-                context.beginPath();
-                context.moveTo(annotation[i].start_x*img.width * scale + x, annotation[i].start_y*img.height * scale + y);
-                context.lineTo(annotation[i].end_x*img.width * scale + x, annotation[i].end_y*img.height * scale + y);
-                context.stroke();
-            }
-            else if (annotation[i].type==2) {
-                context.beginPath();
-                context.rect(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y,
-                    annotation[i].end_x * img.width * scale, annotation[i].end_y * img.height * scale);
-                context.stroke();
-            }
-            else if (annotation[i].type==3) {
-                context.beginPath();
-                context.arc(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y,
-                    annotation[i].end_x * img.width * scale, 0, 2*Math.PI);
-                context.stroke();
-            }
-            else if (annotation[i].type==4) {
-                context.beginPath();
-                    canvas_arrow(context, annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y, 
-                        annotation[i].end_x * img.width * scale + x, annotation[i].end_y * img.height * scale + y);
-            }
-        }
-    }
+    draw_annotation(img, context);
 }
 
 
@@ -682,4 +572,37 @@ function canvas_arrow(context, sx, sy, ex, ey) {
     context.stroke();
   }
 
+function draw_annotation(img, context){
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.drawImage(img, x, y, img.width * scale, img.height * scale);
+        for (var i = 0; i < count; i++) {
+            if (annotation[i].remain) {
+                context.lineWidth = annotation[i].lineWidth;
+                context.strokeStyle = annotation[i].color;
+                if (annotation[i].type==1) {
+                    context.beginPath();
+                    context.moveTo(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y);
+                    context.lineTo(annotation[i].end_x * img.width * scale + x, annotation[i].end_y * img.height * scale + y);
+                    context.stroke();
+                }
+                else if (annotation[i].type==2) {
+                    context.beginPath();
+                    context.rect(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y,
+                         annotation[i].end_x * img.width * scale, annotation[i].end_y * img.height * scale);
+                    context.stroke();
+                }
+                else if (annotation[i].type==3) {
+                    context.beginPath();
+                    context.arc(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y,
+                        annotation[i].end_x * img.width * scale, 0, 2*Math.PI);
+                    context.stroke();
+                }
+                else if (annotation[i].type==4) {
+                    context.beginPath();
+                    canvas_arrow(context, annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y, 
+                        annotation[i].end_x * img.width * scale + x, annotation[i].end_y * img.height * scale + y);
+                }
+            }
+        }  
+}
 
