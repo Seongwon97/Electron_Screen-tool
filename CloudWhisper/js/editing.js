@@ -148,74 +148,87 @@ window.onload = function(){
 	});
 
 	canvas.addEventListener("mouseup", function(){
-        isMouseDown = false;       
+        isMouseDown = false;
+        console.log(sx,sy,ex,ey);
+        
+        console.log("temp");
         if (line) {
-            sx=(sx-x)/(img.width * scale);
-            sy=(sy-y)/(img.height * scale);
-            ex=(ex-x)/(img.width * scale);
-            ey=(ey-y)/(img.height * scale);
-            annotation.push({
-                num : count,
-                start_x: sx,
-                start_y: sy,
-                end_x: ex,
-                end_y: ey,
-                type: 1,
-                color: line_color,
-                lineWidth: line_width,
-                remain: true,
-                user: user_name,
-                comment: comment_content,
-                date: new Date()
-            });          
+            if (!((Math.abs(sx-ex)<10)&&(Math.abs(sy-ey)<10))) {
+                sx=(sx-x)/(img.width * scale);
+                sy=(sy-y)/(img.height * scale);
+                ex=(ex-x)/(img.width * scale);
+                ey=(ey-y)/(img.height * scale);
+                annotation.push({
+                    num : count,
+                    start_x: sx,
+                    start_y: sy,
+                    end_x: ex,
+                    end_y: ey,
+                    type: 1,
+                    color: line_color,
+                    lineWidth: line_width,
+                    remain: true,
+                    user: user_name,
+                    comment: comment_content,
+                    date: new Date()
+                });
+                count++; 
+            }         
         }
         else if(square) {
-            sx=(sx-x)/(img.width * scale);
-            sy=(sy-y)/(img.height * scale);
-            ex = rec_width /(img.width * scale);
-            ey = rec_height /(img.height * scale);
-            
-            annotation.push({
-                num : count,
-                start_x: sx,
-                start_y: sy,
-                end_x: ex,
-                end_y: ey,
-                type: 2,
-                color: line_color,
-                lineWidth: line_width,
-                remain: true,
-                user: user_name,
-                comment: comment_content,
-                date: new Date()
-            });  
-            //square에서 end_x, end_y는 rec_width, height로 사용     
+            if ((Math.abs(sx-ex)>10)&&(Math.abs(sy-ey)>10)) {
+                sx=(sx-x)/(img.width * scale);
+                sy=(sy-y)/(img.height * scale);
+                ex = rec_width /(img.width * scale);
+                ey = rec_height /(img.height * scale);
+                
+                annotation.push({
+                    num : count,
+                    start_x: sx,
+                    start_y: sy,
+                    end_x: ex,
+                    end_y: ey,
+                    type: 2,
+                    color: line_color,
+                    lineWidth: line_width,
+                    remain: true,
+                    user: user_name,
+                    comment: comment_content,
+                    date: new Date()
+                });  
+                //square에서 end_x, end_y는 rec_width, height로 사용  
+                count++; 
+            }   
         }
         else if(circle) {
-            sx=(cir_center_x-x)/(img.width * scale);
-            sy=(cir_center_y-y)/(img.height * scale);
-            ex = cir_radius /(img.width * scale);
-            annotation.push({
-                num : count,
-                start_x: sx,
-                start_y: sy,
-                end_x: ex,
-                end_y: null,
-                type: 3,
-                color: line_color,
-                lineWidth: line_width,
-                remain: true,
-                user: user_name,
-                comment: comment_content,
-                date: new Date()
-            });
-            //circle에서는 start_x,y가 원의 중심, end_x는 원의 반지름으로 사용
+            if ((Math.abs(sx-ex)>10)&&(Math.abs(sy-ey)>10)) {
+                sx=(cir_center_x-x)/(img.width * scale);
+                sy=(cir_center_y-y)/(img.height * scale);
+                ex = cir_radius /(img.width * scale);
+                annotation.push({
+                    num : count,
+                    start_x: sx,
+                    start_y: sy,
+                    end_x: ex,
+                    end_y: null,
+                    type: 3,
+                    color: line_color,
+                    lineWidth: line_width,
+                    remain: true,
+                    user: user_name,
+                    comment: comment_content,
+                    date: new Date()
+                });
+                //circle에서는 start_x,y가 원의 중심, end_x는 원의 반지름으로 사용
+                count++; 
+            }
         }
-        count++; 
+             
+         
         context.clearRect(0, 0, canvas.width, canvas.height);
         context.drawImage(img, x, y, img.width * scale, img.height * scale);
+        console.log(count);
         for (var i = 0; i < count; i++) {
-            console.log(annotation[i].date);
             if (annotation[i].remain) {
                 context.lineWidth = annotation[i].lineWidth;
                 context.strokeStyle = annotation[i].color;
@@ -244,7 +257,13 @@ window.onload = function(){
 	});
 
 
-
+    $(function() { 
+        $("#capture_btn img").hover(function(){ 
+            $(this).attr({src: "../image/capture_hover.png"}); 
+        }, function(){ 
+            $(this).attr({src: "../image/capture.png"}); 
+        }); 
+    });
     document.getElementById("capture_btn").onclick = function() {
         document.getElementById("line_btn").style.backgroundColor='#393E46';
         document.getElementById("line_btn").style.color='#ACACAC';
