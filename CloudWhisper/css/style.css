@@ -506,12 +506,8 @@ input[type=text] {
    padding: 3 9px;
 }
 .right_aside_btn1:hover, .right_aside_btn1:visited {
-   background: #959BA5;
    height: 58px;
-   padding-bottom: 18;
-   border-radius: 0px;
-   border-top-left-radius: 8px;
-   border-top-right-radius: 8px;
+   padding-bottom: 18px;
 }
 .right_aside_btn2:hover {
    background: #393E46;
@@ -522,6 +518,16 @@ input[type=text] {
    width: 95%;
    margin: 0 auto;
    margin-bottom: 10px;
+   border-radius: 10px;
+   flex: 1
+}
+.right_aside_content2 {
+   overflow: auto;
+   background: #1f68e6;
+   width: 95%;
+   height: 97%;
+   margin: 0 auto;
+   margin-top: 10px;
    border-radius: 10px;
    flex: 1
 }

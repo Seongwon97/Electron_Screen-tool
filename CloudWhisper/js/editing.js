@@ -6,6 +6,9 @@ var circle=false;
 var arrow=false;
 var comment=false;
 
+var file=false;
+var comment=true;
+
 var sx, sy;                  // 드래그 시작점
 var ex, ey;                  // 드래그 끝점
 
@@ -120,13 +123,9 @@ window.onload = function(){
                 line_color = document.getElementById("edit_btn_color").value;
                 context.lineWidth = line_width;
                 context.strokeStyle = line_color // 색깔 지정
-
-                cir_center_x = (sx + ex)/2;
-                cir_center_y = (sy + ey)/2;
-                cir_radius = Math.sqrt(Math.pow((sx - ex),2) + Math.pow((sy - ey),2))/2;
                 context.beginPath();
-                context.arc(cir_center_x, cir_center_y, cir_radius, 0, 2*Math.PI);
-                context.stroke(); // 그리기 실행
+                canvas_arrow(context, sx, sy, ex, ey);
+                 // 그리기 실행
             }
 
 
@@ -147,6 +146,9 @@ window.onload = function(){
 		}
 	});
 
+
+    //마우스를 놓으면 해당하는 도형에 맞게 annotation array에 데이터가 저장되고
+    //그 후 캔버스를 초기화하고 이전의 annotation을 다시 출력
 	canvas.addEventListener("mouseup", function(){
         isMouseDown = false;
         console.log(sx,sy,ex,ey);
@@ -223,6 +225,29 @@ window.onload = function(){
                 count++; 
             }
         }
+        else if(arrow) {
+            if (!((Math.abs(sx-ex)<10)&&(Math.abs(sy-ey)<10))) {
+                sx=(sx-x)/(img.width * scale);
+                sy=(sy-y)/(img.height * scale);
+                ex=(ex-x)/(img.width * scale);
+                ey=(ey-y)/(img.height * scale);
+                annotation.push({
+                    num : count,
+                    start_x: sx,
+                    start_y: sy,
+                    end_x: ex,
+                    end_y: ey,
+                    type: 4,
+                    color: line_color,
+                    lineWidth: line_width,
+                    remain: true,
+                    user: user_name,
+                    comment: comment_content,
+                    date: new Date()
+                });
+                count++;        
+            }
+        }
              
          
         context.clearRect(0, 0, canvas.width, canvas.height);
@@ -249,6 +274,11 @@ window.onload = function(){
                     context.arc(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y,
                         annotation[i].end_x * img.width * scale, 0, 2*Math.PI);
                     context.stroke();
+                }
+                else if (annotation[i].type==4) {
+                    context.beginPath();
+                    canvas_arrow(context, annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y, 
+                        annotation[i].end_x * img.width * scale + x, annotation[i].end_y * img.height * scale + y);
                 }
             }
         }  
@@ -522,6 +552,29 @@ window.onload = function(){
         line_width = event.target.value;
         console.log(line_width);
     }
+
+    document.getElementById("editing_file_list").onclick = function() {
+        file=true;
+        comment=false;
+        document.getElementById("editing_file_list").style.height="58px";
+        document.getElementById("editing_file_list").style.paddingBottom="18px"
+
+        document.getElementById("editing_comment_list").style.height="40px";
+        document.getElementById("editing_comment_list").style.padding="0 18px"
+
+    }
+    document.getElementById("editing_comment_list").onclick = function() {
+        comment=true;
+        file=false;
+        document.getElementById("editing_comment_list").style.height="57px";
+        document.getElementById("editing_comment_list").style.paddingBottom="18px"
+
+        document.getElementById("editing_file_list").style.height="40px";
+        document.getElementById("editing_file_list").style.padding="0 18px"
+
+    }
+
+
     document.getElementById("zoom_in_btn").onclick = function() {
         alert("zoom in");
     }
@@ -606,8 +659,27 @@ window.onresize = function(){
                     annotation[i].end_x * img.width * scale, 0, 2*Math.PI);
                 context.stroke();
             }
+            else if (annotation[i].type==4) {
+                context.beginPath();
+                    canvas_arrow(context, annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y, 
+                        annotation[i].end_x * img.width * scale + x, annotation[i].end_y * img.height * scale + y);
+            }
         }
     }
 }
+
+
+function canvas_arrow(context, sx, sy, ex, ey) {
+    var headlen = 20; // length of head in pixels
+    var dx = ex - sx;
+    var dy = ey - sy;
+    var angle = Math.atan2(dy, dx);
+    context.moveTo(sx, sy);
+    context.lineTo(ex, ey);
+    context.lineTo(ex - headlen * Math.cos(angle - Math.PI / 6), ey - headlen * Math.sin(angle - Math.PI / 6));
+    context.moveTo(ex, ey);
+    context.lineTo(ex - headlen * Math.cos(angle + Math.PI / 6), ey - headlen * Math.sin(angle + Math.PI / 6));
+    context.stroke();
+  }
 
 
