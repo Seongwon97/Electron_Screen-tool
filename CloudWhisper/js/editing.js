@@ -28,7 +28,13 @@ var annotation =[]; //firebase에서 annotation의 값을 받아와서 저장할
 var count = 0; //annotation의 개수를 카운트
 var comment_content = ""; //comment의 내용을 담을 변수
 var user_name = "user"; // firebase에서 값 받아와서 저장
+
+var windowHeight = 0;
 window.onload = function(){
+    //window load시 오른쪽에 위치한 context 높이 조정
+    windowHeight = window.innerHeight;
+    var right_aside_content = document.getElementById("editing_content");
+    right_aside_content.style.height = windowHeight -153;
 
     var canvas =  document.getElementById("canvas");
     var context = canvas.getContext("2d");
@@ -550,6 +556,12 @@ window.onload = function(){
 
 }
 window.onresize = function(){
+    //window resize시 오른쪽에 위치한 context 높이 조정
+    windowHeight = window.innerHeight;
+    var right_aside_content = document.getElementById("editing_content");
+    right_aside_content.style.height = windowHeight -153;
+
+    //window resize시 canvas의 크기 재조정 후 그에 맞게 그림 다시 그리기
     var canvas =  document.querySelector("canvas");
     var context = canvas.getContext("2d");
     var img = new Image();
@@ -615,9 +627,9 @@ function draw_annotation(img, context){
 function add_comment(type) {
     var div = document.createElement('div');
     div.innerHTML = "Num: " + annotation[count].num +"<br/>User name: " + annotation[count].user_name + "<br/>type: " + type + "<br/>Date: "+ annotation[count].date;
-    div.style.marginTop="15px";
+    div.style.marginBottom="10px";
     div.style.background="#F1F1F1";
     div.style.borderRadius="10px";
-    div.style.padding="15px";
+    div.style.padding="13px";
     document.getElementById('editing_content').appendChild(div);
 }

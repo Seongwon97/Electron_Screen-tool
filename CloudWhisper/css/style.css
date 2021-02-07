@@ -525,11 +525,18 @@ input[type=text] {
    overflow: auto;
    text-align: left;
    width: 90%;
-   height: 97%;
    margin: 0 auto;
    margin-top: 10px;
    border-radius: 10px;
    flex: 1
+}
+.right_aside_content2::-webkit-scrollbar {
+   width: 8px;
+}
+.right_aside_content2::-webkit-scrollbar-thumb {
+   border-radius: 10px;
+   background-color: #393E46;
+   box-shadow: inset 0px 0px 5px #959BA5;
 }
 .left_aside ul,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline}ol,ul{list-style:none}
 
