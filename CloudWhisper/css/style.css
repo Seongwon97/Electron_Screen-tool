@@ -523,8 +523,8 @@ input[type=text] {
 }
 .right_aside_content2 {
    overflow: auto;
-   background: #1f68e6;
-   width: 95%;
+   text-align: left;
+   width: 90%;
    height: 97%;
    margin: 0 auto;
    margin-top: 10px;

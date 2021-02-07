@@ -151,6 +151,7 @@ window.onload = function(){
                     comment: comment_content,
                     date: new Date()
                 });
+                add_comment('line', count);
                 count++; 
             }         
         }
@@ -175,7 +176,8 @@ window.onload = function(){
                     comment: comment_content,
                     date: new Date()
                 });  
-                //square에서 end_x, end_y는 rec_width, height로 사용  
+                //square에서 end_x, end_y는 rec_width, height로 사용 
+                add_comment('square', count); 
                 count++; 
             }   
         }
@@ -199,6 +201,7 @@ window.onload = function(){
                     date: new Date()
                 });
                 //circle에서는 start_x,y가 원의 중심, end_x는 원의 반지름으로 사용
+                add_comment('circle', count);
                 count++; 
             }
         }
@@ -222,6 +225,7 @@ window.onload = function(){
                     comment: comment_content,
                     date: new Date()
                 });
+                add_comment('arrow', count);
                 count++;        
             }
         }
@@ -542,6 +546,8 @@ window.onload = function(){
         //추후 수정
     }
 
+    
+
 }
 window.onresize = function(){
     var canvas =  document.querySelector("canvas");
@@ -606,3 +612,12 @@ function draw_annotation(img, context){
         }  
 }
 
+function add_comment(type) {
+    var div = document.createElement('div');
+    div.innerHTML = "Num: " + annotation[count].num +"<br/>User name: " + annotation[count].user_name + "<br/>type: " + type + "<br/>Date: "+ annotation[count].date;
+    div.style.marginTop="15px";
+    div.style.background="#F1F1F1";
+    div.style.borderRadius="10px";
+    div.style.padding="15px";
+    document.getElementById('editing_content').appendChild(div);
+}
