@@ -26,6 +26,7 @@ var line_width = 5;
 
 var annotation =[]; //firebase에서 annotation의 값을 받아와서 저장할 array
 var count = 0; //annotation의 개수를 카운트
+var del_count = 0; //삭제된 annotation의 개수
 var comment_content = ""; //comment의 내용을 담을 변수
 var user_name = "user"; // firebase에서 값 받아와서 저장
 
@@ -135,7 +136,7 @@ window.onload = function(){
                 context.lineWidth = line_width;
                 context.strokeStyle = line_color // 색깔 지정
                 context.beginPath();
-                canvas_arrow(context, sx, sy, ex, ey);
+                canvas_arrow(sx, sy, ex, ey);
                  // 그리기 실행
             }
 		}
@@ -158,13 +159,14 @@ window.onload = function(){
                     start_y: sy,
                     end_x: ex,
                     end_y: ey,
-                    type: 1,
+                    type: 'line',
                     color: line_color,
                     lineWidth: line_width,
                     remain: true,
                     user: user_name,
                     comment: comment_content,
-                    date: new Date().toLocaleString()
+                    date: new Date().toLocaleString(),
+                    clicked: false
                 });
                 if(comment_list){
                     add_comment(count);
@@ -185,13 +187,14 @@ window.onload = function(){
                     start_y: sy,
                     end_x: ex,
                     end_y: ey,
-                    type: 2,
+                    type: 'square',
                     color: line_color,
                     lineWidth: line_width,
                     remain: true,
                     user: user_name,
                     comment: comment_content,
-                    date: new Date().toLocaleString()
+                    date: new Date().toLocaleString(),
+                    clicked: false
                 });  
                 //square에서 end_x, end_y는 rec_width, height로 사용 
                 if(comment_list){
@@ -211,13 +214,14 @@ window.onload = function(){
                     start_y: sy,
                     end_x: ex,
                     end_y: null,
-                    type: 3,
+                    type: 'circle',
                     color: line_color,
                     lineWidth: line_width,
                     remain: true,
                     user: user_name,
                     comment: comment_content,
-                    date: new Date().toLocaleString()
+                    date: new Date().toLocaleString(),
+                    clicked: false
                 });
                 //circle에서는 start_x,y가 원의 중심, end_x는 원의 반지름으로 사용
                 if(comment_list){
@@ -238,13 +242,14 @@ window.onload = function(){
                     start_y: sy,
                     end_x: ex,
                     end_y: ey,
-                    type: 4,
+                    type: 'arrow',
                     color: line_color,
                     lineWidth: line_width,
                     remain: true,
                     user: user_name,
                     comment: comment_content,
-                    date: new Date().toLocaleString()
+                    date: new Date().toLocaleString(),
+                    clicked: false
                 });
                 if(comment_list){
                     add_comment(count);
@@ -252,7 +257,7 @@ window.onload = function(){
                 count++;        
             }
         }
-        console.log("Number of annotation: ", count);
+        console.log("Number of annotation: ", count-del_count);
         draw_annotation();     
 	});
 
@@ -520,6 +525,7 @@ window.onload = function(){
     });
     document.getElementById("thickness_range").onchange = function(event) {
         line_width = event.target.value;
+        line_width = Number(line_width);
     }
 
     document.getElementById("editing_file_list").onclick = function() {
@@ -605,11 +611,12 @@ window.onresize = function(){
 }
 
 
-function canvas_arrow(context, sx, sy, ex, ey) {
+function canvas_arrow(sx, sy, ex, ey) {
     var headlen = 20; // length of head in pixels
     var dx = ex - sx;
     var dy = ey - sy;
     var angle = Math.atan2(dy, dx);
+    context.beginPath();
     context.moveTo(sx, sy);
     context.lineTo(ex, ey);
     context.lineTo(ex - headlen * Math.cos(angle - Math.PI / 6), ey - headlen * Math.sin(angle - Math.PI / 6));
@@ -623,29 +630,70 @@ function draw_annotation(){
         context.drawImage(img, x, y, img.width * scale, img.height * scale);
         for (var i = 0; i < count; i++) {
             if (annotation[i].remain) {
-                context.lineWidth = annotation[i].lineWidth;
-                context.strokeStyle = annotation[i].color;
-                if (annotation[i].type==1) {
+                
+                if (annotation[i].type=='line') {
+                    if (annotation[i].clicked){
+                        context.lineWidth = annotation[i].lineWidth + 3;
+                        context.strokeStyle = "#FFFFFF";
+                        context.beginPath();
+                        context.moveTo(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y);
+                        context.lineTo(annotation[i].end_x * img.width * scale + x, annotation[i].end_y * img.height * scale + y);
+                        context.stroke();
+                    }
+                    context.lineWidth = annotation[i].lineWidth;
+                    context.strokeStyle = annotation[i].color;
                     context.beginPath();
                     context.moveTo(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y);
                     context.lineTo(annotation[i].end_x * img.width * scale + x, annotation[i].end_y * img.height * scale + y);
                     context.stroke();
+                
                 }
-                else if (annotation[i].type==2) {
+                else if (annotation[i].type=='square') {
+                    if (annotation[i].clicked){
+                        context.lineWidth = annotation[i].lineWidth + 2;
+                        context.strokeStyle = "#FFFFFF";
+                        context.beginPath();
+                        context.rect(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y,
+                            annotation[i].end_x * img.width * scale, annotation[i].end_y * img.height * scale);
+                        context.stroke();
+
+                    }
+                    context.lineWidth = annotation[i].lineWidth;
+                    context.strokeStyle = annotation[i].color;
                     context.beginPath();
                     context.rect(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y,
                          annotation[i].end_x * img.width * scale, annotation[i].end_y * img.height * scale);
                     context.stroke();
                 }
-                else if (annotation[i].type==3) {
+                else if (annotation[i].type=='circle') {
+                    if (annotation[i].clicked){
+                        context.lineWidth = annotation[i].lineWidth + 3;
+                        context.strokeStyle = "#FFFFFF";
+                        context.beginPath();
+                        context.arc(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y,
+                            annotation[i].end_x * img.width * scale, 0, 2*Math.PI);
+                        context.stroke();
+
+                    }
+                    context.lineWidth = annotation[i].lineWidth;
+                    context.strokeStyle = annotation[i].color;
                     context.beginPath();
                     context.arc(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y,
                         annotation[i].end_x * img.width * scale, 0, 2*Math.PI);
                     context.stroke();
                 }
-                else if (annotation[i].type==4) {
+                else if (annotation[i].type=='arrow') {
+                    if (annotation[i].clicked){
+                        context.lineWidth = annotation[i].lineWidth + 3;
+                        context.strokeStyle = "#FFFFFF";
+                        canvas_arrow(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y, 
+                            annotation[i].end_x * img.width * scale + x, annotation[i].end_y * img.height * scale + y);
+
+                    }
+                    context.lineWidth = annotation[i].lineWidth;
+                    context.strokeStyle = annotation[i].color;
                     context.beginPath();
-                    canvas_arrow(context, annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y, 
+                    canvas_arrow(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y, 
                         annotation[i].end_x * img.width * scale + x, annotation[i].end_y * img.height * scale + y);
                 }
             }
@@ -658,17 +706,26 @@ function add_comment(order) {
     var div_id = "annotation".concat(order);
     //div.innerHTML = "Num: " + annotation[order].num +"<br/>User name: " + annotation[order].user_name + "<br/>type: " + annotation[order].type + "<br/>Date: "+ annotation[order].date;
     div.id = div_id;
-    div.style.position="relative";
-    div.style.marginBottom="10px";
-    div.style.background="#F1F1F1";
-    div.style.borderRadius="10px";
-    div.style.padding="7px 13px";
+    div.classList.add("comment_list");
+    div.onclick= function() {
+        annotation[order].clicked=true;
+        for (var i = 0; i < count; i++) {
+            if (annotation[i].remain) {
+                if((annotation[i].num != order) && annotation[i].clicked) {
+                    annotation[i].clicked=false;
+                }
+            }
+        }
+
+        draw_annotation();
+    }
     document.getElementById('editing_content').appendChild(div);
 
     var user_info = document.createElement('div');
     user_info.innerHTML = annotation[order].user_name;
     user_info.style.fontSize="17px";
     user_info.style.marginBottom="7px";
+    user_info.style.fontWeight="bold";
     document.getElementById(div_id).appendChild(user_info);
 
     var date_info = document.createElement("div");
@@ -692,6 +749,10 @@ function add_comment(order) {
             var parent = comment_div.parentElement;
             parent.removeChild(comment_div);
             annotation[order].remain=false;
+            
+            del_count++;
+            console.log("Deleted the", annotation[order].num, "th annotation the ",annotation[order].type);
+            console.log("Number of annotation: ", count-del_count);
             //이곳에 firebase에서의 데이터 삭제 내용도 추가할 것.
             draw_annotation();
         }else{
