@@ -30,6 +30,8 @@ var comment_content = ""; //comment의 내용을 담을 변수
 var user_name = "user"; // firebase에서 값 받아와서 저장
 
 var windowHeight = 0;
+var img;
+var context;
 window.onload = function(){
     //window load시 오른쪽에 위치한 context 높이 조정
     windowHeight = window.innerHeight;
@@ -44,9 +46,9 @@ window.onload = function(){
 
 
     var canvas =  document.getElementById("canvas");
-    var context = canvas.getContext("2d");
+    context = canvas.getContext("2d");
     
-    var img = new Image();
+    img = new Image();
     img.src = "../image/temp2.jpg";
     img.onload = function(){
 
@@ -85,7 +87,7 @@ window.onload = function(){
         if(isMouseDown) {		
 			if (line) // line 버튼 클릭 시
 			{         
-                draw_annotation(img, context);
+                draw_annotation();
                      
                 line_color = document.getElementById("edit_btn_color").value;
                 context.lineWidth = line_width;
@@ -98,7 +100,7 @@ window.onload = function(){
             }
             else if (square) // square 버튼 클릭 시
 			{    
-                draw_annotation(img, context);
+                draw_annotation();
 
                 line_color = document.getElementById("edit_btn_color").value;
                 context.lineWidth = line_width;
@@ -112,7 +114,7 @@ window.onload = function(){
             }
             else if (circle) // circle 버튼 클릭 시
 			{   
-                draw_annotation(img, context);
+                draw_annotation();
                 
                 line_color = document.getElementById("edit_btn_color").value;
                 context.lineWidth = line_width;
@@ -127,7 +129,7 @@ window.onload = function(){
             }
             else if (arrow) // arrow 버튼 클릭 시
 			{   
-                draw_annotation(img, context);
+                draw_annotation();
                 
                 line_color = document.getElementById("edit_btn_color").value;
                 context.lineWidth = line_width;
@@ -189,7 +191,7 @@ window.onload = function(){
                     remain: true,
                     user: user_name,
                     comment: comment_content,
-                    date: new Date()
+                    date: new Date().toLocaleString()
                 });  
                 //square에서 end_x, end_y는 rec_width, height로 사용 
                 if(comment_list){
@@ -215,7 +217,7 @@ window.onload = function(){
                     remain: true,
                     user: user_name,
                     comment: comment_content,
-                    date: new Date()
+                    date: new Date().toLocaleString()
                 });
                 //circle에서는 start_x,y가 원의 중심, end_x는 원의 반지름으로 사용
                 if(comment_list){
@@ -242,7 +244,7 @@ window.onload = function(){
                     remain: true,
                     user: user_name,
                     comment: comment_content,
-                    date: new Date()
+                    date: new Date().toLocaleString()
                 });
                 if(comment_list){
                     add_comment(count);
@@ -251,7 +253,7 @@ window.onload = function(){
             }
         }
         console.log("Number of annotation: ", count);
-        draw_annotation(img, context);     
+        draw_annotation();     
 	});
 
 
@@ -554,9 +556,6 @@ window.onload = function(){
 
 
     document.getElementById("zoom_in_btn").onclick = function() {
-        var myDiv = document.getElementById("annotation1"); 
-        var parent = myDiv.parentElement; // 부모 객체 알아내기 
-        parent.removeChild(myDiv); // 부모로부터 myDiv 객체 떼어내기
         alert("zoom in");
     }
 
@@ -592,8 +591,8 @@ window.onresize = function(){
 
     //window resize시 canvas의 크기 재조정 후 그에 맞게 그림 다시 그리기
     var canvas =  document.querySelector("canvas");
-    var context = canvas.getContext("2d");
-    var img = new Image();
+    context = canvas.getContext("2d");
+    img = new Image();
     img.src = "../image/temp2.jpg";
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
@@ -602,7 +601,7 @@ window.onresize = function(){
     x = (canvas.width / 2) - (img.width / 2) * scale;
     y = (canvas.height / 2) - (img.height / 2) * scale;
 
-    draw_annotation(img, context);
+    draw_annotation();
 }
 
 
@@ -619,7 +618,7 @@ function canvas_arrow(context, sx, sy, ex, ey) {
     context.stroke();
   }
 
-function draw_annotation(img, context){
+function draw_annotation(){
         context.clearRect(0, 0, canvas.width, canvas.height);
         context.drawImage(img, x, y, img.width * scale, img.height * scale);
         for (var i = 0; i < count; i++) {
@@ -679,29 +678,31 @@ function add_comment(order) {
     document.getElementById(div_id).appendChild(date_info);
 
     var comment = document.createElement("div");
-    comment.style.fontSize = "14px";
-    comment.style.width = "100%"
-    comment.style.padding = "8px 2px"
-    comment.style.wordBreak = "normal"; 
-    comment.style.textOverflow= "ellipsis"
     comment.innerHTML="Comment가 남을 공간입니다.";
+    comment.classList.add("comment_list_comment_div");
     document.getElementById(div_id).appendChild(comment);
     
 
     var delete_btn = document.createElement('button');
     delete_btn.innerHTML = "Delete";
-    //delete_btn.style.display="flex"
-    delete_btn.style.position="absolute";
-    delete_btn.style.right="20px";
-    delete_btn.style.top="10px"
-    //delete_btn.style.marginBottom="10px";
-    delete_btn.style.background="#FFC700";
-    delete_btn.style.borderRadius="10px";
-    delete_btn.style.padding="2px 8px";
-    delete_btn.style.border="none";
-    delete_btn.style.outline="none";
-    delete_btn.style.cursor="pointer";
-    delete_btn.style.fontSize="15px"
+    //delete버튼을 클릭했을때 이벤트, 
+    delete_btn.onclick = function() {
+        if (confirm("정말 삭제하시겠습니까?") == true){
+            var comment_div = document.getElementById(div_id); 
+            var parent = comment_div.parentElement;
+            parent.removeChild(comment_div);
+            annotation[order].remain=false;
+            //이곳에 firebase에서의 데이터 삭제 내용도 추가할 것.
+            draw_annotation();
+        }else{
+            return;
+        }
+        
+    };
+    delete_btn.classList.add("comment_list_delete_btn");
     document.getElementById(div_id).appendChild(delete_btn);
 }
+
+
+    
 
