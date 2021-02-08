@@ -162,7 +162,7 @@ window.onload = function(){
                     remain: true,
                     user: user_name,
                     comment: comment_content,
-                    date: new Date()
+                    date: new Date().toLocaleString()
                 });
                 if(comment_list){
                     add_comment(count);
@@ -521,34 +521,42 @@ window.onload = function(){
     }
 
     document.getElementById("editing_file_list").onclick = function() {
-        file=true;
-        comment=false;
-        $("#editing_content").empty();
-        document.getElementById("editing_file_list").style.height="58px";
-        document.getElementById("editing_file_list").style.paddingBottom="18px"
+        if (!file_list) {
+            file_list=true;
+            comment_list=false;
+            $("#editing_content").empty();
+            document.getElementById("editing_file_list").style.height="58px";
+            document.getElementById("editing_file_list").style.paddingBottom="18px"
 
-        document.getElementById("editing_comment_list").style.height="40px";
-        document.getElementById("editing_comment_list").style.padding="0 18px"
+            document.getElementById("editing_comment_list").style.height="40px";
+            document.getElementById("editing_comment_list").style.padding="0 18px"
+        }
+        
 
     }
-    document.getElementById("editing_comment_list").onclick = function() {
-        comment=true;
-        file=false;
-        for (var i = 0; i < count; i++) {
-            if (annotation[i].remain) {
-                add_comment(i);
+    document.getElementById("editing_comment_list").onclick = function() {   
+        if (!comment_list) {
+            comment_list=true;
+            file_list=false;
+            for (var i = 0; i < count; i++) {
+                if (annotation[i].remain) {
+                    add_comment(i);
+                }
             }
+            document.getElementById("editing_comment_list").style.height="57px";
+            document.getElementById("editing_comment_list").style.paddingBottom="18px"
+    
+            document.getElementById("editing_file_list").style.height="40px";
+            document.getElementById("editing_file_list").style.padding="0 18px"
         }
-        document.getElementById("editing_comment_list").style.height="57px";
-        document.getElementById("editing_comment_list").style.paddingBottom="18px"
-
-        document.getElementById("editing_file_list").style.height="40px";
-        document.getElementById("editing_file_list").style.padding="0 18px"
-
+    
     }
 
 
     document.getElementById("zoom_in_btn").onclick = function() {
+        var myDiv = document.getElementById("annotation1"); 
+        var parent = myDiv.parentElement; // 부모 객체 알아내기 
+        parent.removeChild(myDiv); // 부모로부터 myDiv 객체 떼어내기
         alert("zoom in");
     }
 
@@ -648,11 +656,52 @@ function draw_annotation(img, context){
 //right_aside_content에 comment를 추가해주는 함수
 function add_comment(order) {
     var div = document.createElement('div');
-    div.innerHTML = "Num: " + annotation[order].num +"<br/>User name: " + annotation[order].user_name + "<br/>type: " + annotation[order].type + "<br/>Date: "+ annotation[order].date;
+    var div_id = "annotation".concat(order);
+    //div.innerHTML = "Num: " + annotation[order].num +"<br/>User name: " + annotation[order].user_name + "<br/>type: " + annotation[order].type + "<br/>Date: "+ annotation[order].date;
+    div.id = div_id;
+    div.style.position="relative";
     div.style.marginBottom="10px";
     div.style.background="#F1F1F1";
     div.style.borderRadius="10px";
-    div.style.padding="13px";
+    div.style.padding="7px 13px";
     document.getElementById('editing_content').appendChild(div);
+
+    var user_info = document.createElement('div');
+    user_info.innerHTML = annotation[order].user_name;
+    user_info.style.fontSize="17px";
+    user_info.style.marginBottom="7px";
+    document.getElementById(div_id).appendChild(user_info);
+
+    var date_info = document.createElement("div");
+    var date = annotation[order].date;
+    date_info.innerHTML = date;
+    date_info.style.fontSize="13px";
+    document.getElementById(div_id).appendChild(date_info);
+
+    var comment = document.createElement("div");
+    comment.style.fontSize = "14px";
+    comment.style.width = "100%"
+    comment.style.padding = "8px 2px"
+    comment.style.wordBreak = "normal"; 
+    comment.style.textOverflow= "ellipsis"
+    comment.innerHTML="Comment가 남을 공간입니다.";
+    document.getElementById(div_id).appendChild(comment);
+    
+
+    var delete_btn = document.createElement('button');
+    delete_btn.innerHTML = "Delete";
+    //delete_btn.style.display="flex"
+    delete_btn.style.position="absolute";
+    delete_btn.style.right="20px";
+    delete_btn.style.top="10px"
+    //delete_btn.style.marginBottom="10px";
+    delete_btn.style.background="#FFC700";
+    delete_btn.style.borderRadius="10px";
+    delete_btn.style.padding="2px 8px";
+    delete_btn.style.border="none";
+    delete_btn.style.outline="none";
+    delete_btn.style.cursor="pointer";
+    delete_btn.style.fontSize="15px"
+    document.getElementById(div_id).appendChild(delete_btn);
 }
 
