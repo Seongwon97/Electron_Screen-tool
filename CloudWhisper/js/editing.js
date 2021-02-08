@@ -1,3 +1,4 @@
+var project_name;
 var lastEvent;
 var isMouseDown = false;
 var line=false;
@@ -34,6 +35,9 @@ var windowHeight = 0;
 var img;
 var context;
 window.onload = function(){
+    //전 페이지에서 선택된 projcet의 이름을 받아오기
+    //저장은 project_name변수에
+
     //window load시 오른쪽에 위치한 context 높이 조정
     windowHeight = window.innerHeight;
     var right_aside_content = document.getElementById("editing_content");
@@ -45,6 +49,7 @@ window.onload = function(){
     document.getElementById("editing_comment_list").style.paddingBottom="18px"
     //comment를 firebase에서 읽어오고 출력하는 코드 추가해야함
 
+    
 
     var canvas =  document.getElementById("canvas");
     context = canvas.getContext("2d");
@@ -154,6 +159,7 @@ window.onload = function(){
                 ex=(ex-x)/(img.width * scale);
                 ey=(ey-y)/(img.height * scale);
                 annotation.push({
+                    project: project_name,
                     num : count,
                     start_x: sx,
                     start_y: sy,
@@ -182,6 +188,7 @@ window.onload = function(){
                 ey = rec_height /(img.height * scale);
                 
                 annotation.push({
+                    project: project_name,
                     num : count,
                     start_x: sx,
                     start_y: sy,
@@ -209,6 +216,7 @@ window.onload = function(){
                 sy=(cir_center_y-y)/(img.height * scale);
                 ex = cir_radius /(img.width * scale);
                 annotation.push({
+                    project: project_name,
                     num : count,
                     start_x: sx,
                     start_y: sy,
@@ -237,6 +245,7 @@ window.onload = function(){
                 ex=(ex-x)/(img.width * scale);
                 ey=(ey-y)/(img.height * scale);
                 annotation.push({
+                    project: project_name,
                     num : count,
                     start_x: sx,
                     start_y: sy,
@@ -585,6 +594,44 @@ window.onload = function(){
         downloadLink.click();
         //추후 수정
     }
+    
+
+    //project의 critical 값에 따른 색상 설정
+    var critical_div = document.getElementById("critical_div");
+    var project_critical = "critical";
+    if (project_critical == "critical"){
+        critical_div.style.backgroundColor="red";
+    }
+    else if (project_critical == "major"){
+
+        critical_div.style.backgroundColor="#FF7F27";
+    }
+    else if (project_critical == "normal"){
+        critical_div.style.backgroundColor="#99D9EA";
+    }
+    else if (project_critical == "minor"){
+        critical_div.style.backgroundColor="#3F48CC";
+    }
+
+    //critical 값이 변경됐을 때 생상 변경
+    var critical = document.getElementById("critical");
+    critical.onchange = function() {
+        if (critical.value == "critical"){
+            critical_div.style.backgroundColor="red";
+        }
+        else if (critical.value == "major"){
+
+            critical_div.style.backgroundColor="#FF7F27";
+        }
+        else if (critical.value == "normal"){
+            critical_div.style.backgroundColor="#99D9EA";
+        }
+        else if (critical.value == "minor"){
+            critical_div.style.backgroundColor="#3F48CC";
+        }
+
+    }
+
 
     
 
