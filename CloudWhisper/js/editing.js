@@ -6,8 +6,8 @@ var circle=false;
 var arrow=false;
 var comment=false;
 
-var file=false;
-var comment=true;
+var file_list=false;        //오른쪽에 file list를 보일지 comment _list를 보일지 알려주는 변수
+var comment_list=true;
 
 var sx, sy;                  // 드래그 시작점
 var ex, ey;                  // 드래그 끝점
@@ -35,6 +35,13 @@ window.onload = function(){
     windowHeight = window.innerHeight;
     var right_aside_content = document.getElementById("editing_content");
     right_aside_content.style.height = windowHeight -153;
+
+    //window load시 오른쪽에 위치한 comment가 클릭된 상태로 보이게 변경
+    //초기에 보이는 화면을 file이 아닌 comment로 설정한 것.
+    document.getElementById("editing_comment_list").style.height="57px";
+    document.getElementById("editing_comment_list").style.paddingBottom="18px"
+    //comment를 firebase에서 읽어오고 출력하는 코드 추가해야함
+
 
     var canvas =  document.getElementById("canvas");
     var context = canvas.getContext("2d");
@@ -157,7 +164,9 @@ window.onload = function(){
                     comment: comment_content,
                     date: new Date()
                 });
-                add_comment('line', count);
+                if(comment_list){
+                    add_comment(count);
+                }
                 count++; 
             }         
         }
@@ -183,7 +192,9 @@ window.onload = function(){
                     date: new Date()
                 });  
                 //square에서 end_x, end_y는 rec_width, height로 사용 
-                add_comment('square', count); 
+                if(comment_list){
+                    add_comment(count); 
+                }
                 count++; 
             }   
         }
@@ -207,7 +218,9 @@ window.onload = function(){
                     date: new Date()
                 });
                 //circle에서는 start_x,y가 원의 중심, end_x는 원의 반지름으로 사용
-                add_comment('circle', count);
+                if(comment_list){
+                    add_comment(count);
+                }
                 count++; 
             }
         }
@@ -231,7 +244,9 @@ window.onload = function(){
                     comment: comment_content,
                     date: new Date()
                 });
-                add_comment('arrow', count);
+                if(comment_list){
+                    add_comment(count);
+                }
                 count++;        
             }
         }
@@ -508,6 +523,7 @@ window.onload = function(){
     document.getElementById("editing_file_list").onclick = function() {
         file=true;
         comment=false;
+        $("#editing_content").empty();
         document.getElementById("editing_file_list").style.height="58px";
         document.getElementById("editing_file_list").style.paddingBottom="18px"
 
@@ -518,6 +534,11 @@ window.onload = function(){
     document.getElementById("editing_comment_list").onclick = function() {
         comment=true;
         file=false;
+        for (var i = 0; i < count; i++) {
+            if (annotation[i].remain) {
+                add_comment(i);
+            }
+        }
         document.getElementById("editing_comment_list").style.height="57px";
         document.getElementById("editing_comment_list").style.paddingBottom="18px"
 
@@ -624,12 +645,14 @@ function draw_annotation(img, context){
         }  
 }
 
-function add_comment(type) {
+//right_aside_content에 comment를 추가해주는 함수
+function add_comment(order) {
     var div = document.createElement('div');
-    div.innerHTML = "Num: " + annotation[count].num +"<br/>User name: " + annotation[count].user_name + "<br/>type: " + type + "<br/>Date: "+ annotation[count].date;
+    div.innerHTML = "Num: " + annotation[order].num +"<br/>User name: " + annotation[order].user_name + "<br/>type: " + annotation[order].type + "<br/>Date: "+ annotation[order].date;
     div.style.marginBottom="10px";
     div.style.background="#F1F1F1";
     div.style.borderRadius="10px";
     div.style.padding="13px";
     document.getElementById('editing_content').appendChild(div);
 }
+
