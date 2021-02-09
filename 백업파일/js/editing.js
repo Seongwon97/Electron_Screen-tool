@@ -34,7 +34,6 @@ var user_name = "user"; // firebase에서 값 받아와서 저장
 var windowHeight = 0;
 var img;
 var context;
-var isClicked = false; //click된 annotation이 있는지
 window.onload = function(){
     //전 페이지에서 선택된 projcet의 이름을 받아오기
     //저장은 project_name변수에
@@ -50,11 +49,11 @@ window.onload = function(){
     document.getElementById("editing_comment_list").style.paddingBottom="18px"
     //comment를 firebase에서 읽어오고 출력하는 코드 추가해야함
 
-
+    
 
     var canvas =  document.getElementById("canvas");
     context = canvas.getContext("2d");
-
+    
     img = new Image();
     img.src = "../image/temp2.jpg";
     img.onload = function(){
@@ -82,7 +81,7 @@ window.onload = function(){
 
     canvas.addEventListener("mousedown", function(e){
 		lastEvent = e;
-        isMouseDown = true;
+        isMouseDown = true;	
         sx = canvasX(lastEvent.clientX);
         sy = canvasY(lastEvent.clientY);
 	});
@@ -91,11 +90,11 @@ window.onload = function(){
         lastEvent = e;
         ex = canvasX(lastEvent.clientX);
         ey = canvasY(lastEvent.clientY);
-        if(isMouseDown) {
+        if(isMouseDown) {		
 			if (line) // line 버튼 클릭 시
-			{
+			{         
                 draw_annotation();
-
+                     
                 line_color = document.getElementById("edit_btn_color").value;
                 context.lineWidth = line_width;
 				context.strokeStyle = line_color // 색깔 지정
@@ -103,16 +102,16 @@ window.onload = function(){
                 context.moveTo(sx, sy);
                 context.lineTo(ex, ey);
                 context.stroke(); // 그리기 실행
-
+                
             }
             else if (square) // square 버튼 클릭 시
-			{
+			{    
                 draw_annotation();
 
                 line_color = document.getElementById("edit_btn_color").value;
                 context.lineWidth = line_width;
                 context.strokeStyle = line_color // 색깔 지정
-
+                
                 rec_width = ex-sx;
                 rec_height = ey-sy;
                 context.beginPath();
@@ -120,9 +119,9 @@ window.onload = function(){
                 context.stroke(); // 그리기 실행
             }
             else if (circle) // circle 버튼 클릭 시
-			{
+			{   
                 draw_annotation();
-
+                
                 line_color = document.getElementById("edit_btn_color").value;
                 context.lineWidth = line_width;
                 context.strokeStyle = line_color // 색깔 지정
@@ -135,9 +134,9 @@ window.onload = function(){
                 context.stroke(); // 그리기 실행
             }
             else if (arrow) // arrow 버튼 클릭 시
-			{
+			{   
                 draw_annotation();
-
+                
                 line_color = document.getElementById("edit_btn_color").value;
                 context.lineWidth = line_width;
                 context.strokeStyle = line_color // 색깔 지정
@@ -178,8 +177,8 @@ window.onload = function(){
                 if(comment_list){
                     add_comment(count);
                 }
-                count++;
-            }
+                count++; 
+            }         
         }
         else if(square) {
             if ((Math.abs(sx-ex)>10)&&(Math.abs(sy-ey)>10)) {
@@ -187,7 +186,7 @@ window.onload = function(){
                 sy=(sy-y)/(img.height * scale);
                 ex = rec_width /(img.width * scale);
                 ey = rec_height /(img.height * scale);
-
+                
                 annotation.push({
                     project: project_name,
                     num : count,
@@ -203,13 +202,13 @@ window.onload = function(){
                     comment: comment_content,
                     date: new Date().toLocaleString(),
                     clicked: false
-                });
-                //square에서 end_x, end_y는 rec_width, height로 사용
+                });  
+                //square에서 end_x, end_y는 rec_width, height로 사용 
                 if(comment_list){
-                    add_comment(count);
+                    add_comment(count); 
                 }
-                count++;
-            }
+                count++; 
+            }   
         }
         else if(circle) {
             if ((Math.abs(sx-ex)>10)&&(Math.abs(sy-ey)>10)) {
@@ -236,7 +235,7 @@ window.onload = function(){
                 if(comment_list){
                     add_comment(count);
                 }
-                count++;
+                count++; 
             }
         }
         else if(arrow) {
@@ -264,25 +263,25 @@ window.onload = function(){
                 if(comment_list){
                     add_comment(count);
                 }
-                count++;
+                count++;        
             }
         }
         console.log("Number of annotation: ", count-del_count);
-        draw_annotation();
+        draw_annotation();     
 	});
 
 
-    $(function() {
-        $("#capture_btn img").hover(function(){
-            $(this).attr({src: "../image/capture_hover.png"});
-        }, function(){
-            $(this).attr({src: "../image/capture.png"});
-        });
+    $(function() { 
+        $("#capture_btn img").hover(function(){ 
+            $(this).attr({src: "../image/capture_hover.png"}); 
+        }, function(){ 
+            $(this).attr({src: "../image/capture.png"}); 
+        }); 
     });
     document.getElementById("capture_btn").onclick = function() {
         document.getElementById("line_btn").style.backgroundColor='#393E46';
         document.getElementById("line_btn").style.color='#ACACAC';
-
+        
         document.getElementById("square_btn").style.backgroundColor='#393E46';
         document.getElementById("square_btn").style.color='#ACACAC';
 
@@ -314,7 +313,7 @@ window.onload = function(){
             comment=false;
             document.getElementById("line_btn").style.backgroundColor='white';
             document.getElementById("line_btn").style.color='#393E46';
-
+            
             document.getElementById("square_btn").style.backgroundColor='#393E46';
             document.getElementById("square_btn").style.color='#ACACAC';
 
@@ -359,7 +358,7 @@ window.onload = function(){
             document.getElementById("square_btn").style.color='#393E46';
 
             document.getElementById("line_btn").style.backgroundColor='#393E46';
-            document.getElementById("line_btn").style.color='#ACACAC';
+            document.getElementById("line_btn").style.color='#ACACAC';	
 
             document.getElementById("circle_btn").style.backgroundColor='#393E46';
             document.getElementById("circle_btn").style.color='#ACACAC';
@@ -402,7 +401,7 @@ window.onload = function(){
             document.getElementById("circle_btn").style.color='#393E46';
 
             document.getElementById("line_btn").style.backgroundColor='#393E46';
-            document.getElementById("line_btn").style.color='#ACACAC';
+            document.getElementById("line_btn").style.color='#ACACAC';	
 
             document.getElementById("square_btn").style.backgroundColor='#393E46';
             document.getElementById("square_btn").style.color='#ACACAC';
@@ -445,7 +444,7 @@ window.onload = function(){
             document.getElementById("arrow_btn").style.color='#393E46';
 
             document.getElementById("line_btn").style.backgroundColor='#393E46';
-            document.getElementById("line_btn").style.color='#ACACAC';
+            document.getElementById("line_btn").style.color='#ACACAC';	
 
             document.getElementById("square_btn").style.backgroundColor='#393E46';
             document.getElementById("square_btn").style.color='#ACACAC';
@@ -474,7 +473,7 @@ window.onload = function(){
         if (arrow == false) {
             document.getElementById("arrow_btn").style.backgroundColor='#393E46';
             document.getElementById("arrow_btn").style.color='#ACACAC';
-        }
+        }   
     }
 
     document.getElementById("comment_btn").onclick = function() {
@@ -488,7 +487,7 @@ window.onload = function(){
             document.getElementById("comment_btn").style.color='#393E46';
 
             document.getElementById("line_btn").style.backgroundColor='#393E46';
-            document.getElementById("line_btn").style.color='#ACACAC';
+            document.getElementById("line_btn").style.color='#ACACAC';	
 
             document.getElementById("square_btn").style.backgroundColor='#393E46';
             document.getElementById("square_btn").style.color='#ACACAC';
@@ -526,12 +525,12 @@ window.onload = function(){
             $('#line_thickness').hide();
           }
     }
-    $(function() {
-        $("#thickness_btn img").hover(function(){
-            $(this).attr({src: "../image/thickness2.png"});
-        }, function(){
-            $(this).attr({src: "../image/thickness.png"});
-        });
+    $(function() { 
+        $("#thickness_btn img").hover(function(){ 
+            $(this).attr({src: "../image/thickness2.png"}); 
+        }, function(){ 
+            $(this).attr({src: "../image/thickness.png"}); 
+        }); 
     });
     document.getElementById("thickness_range").onchange = function(event) {
         line_width = event.target.value;
@@ -549,10 +548,10 @@ window.onload = function(){
             document.getElementById("editing_comment_list").style.height="40px";
             document.getElementById("editing_comment_list").style.padding="0 18px"
         }
-
+        
 
     }
-    document.getElementById("editing_comment_list").onclick = function() {
+    document.getElementById("editing_comment_list").onclick = function() {   
         if (!comment_list) {
             comment_list=true;
             file_list=false;
@@ -563,11 +562,11 @@ window.onload = function(){
             }
             document.getElementById("editing_comment_list").style.height="57px";
             document.getElementById("editing_comment_list").style.paddingBottom="18px"
-
+    
             document.getElementById("editing_file_list").style.height="40px";
             document.getElementById("editing_file_list").style.padding="0 18px"
         }
-
+    
     }
 
 
@@ -595,7 +594,7 @@ window.onload = function(){
         downloadLink.click();
         //추후 수정
     }
-
+    
 
     //project의 critical 값에 따른 색상 설정
     var critical_div = document.getElementById("critical_div");
@@ -634,7 +633,7 @@ window.onload = function(){
     }
 
 
-
+    
 
 }
 window.onresize = function(){
@@ -676,110 +675,76 @@ function canvas_arrow(sx, sy, ex, ey) {
 function draw_annotation(){
         context.clearRect(0, 0, canvas.width, canvas.height);
         context.drawImage(img, x, y, img.width * scale, img.height * scale);
-        var clicked_annotation;
         for (var i = 0; i < count; i++) {
             if (annotation[i].remain) {
-                if(annotation[i].clicked) {
-                    clicked_annotation = annotation[i];
-                    console.log(clicked_annotation);
-                    console.log(isClicked);
-                    isClicked=true;
-                }
-                else {
-                    if (annotation[i].type=='line') {
-                        context.lineWidth = annotation[i].lineWidth;
-                        context.strokeStyle = annotation[i].color;
+                
+                if (annotation[i].type=='line') {
+                    if (annotation[i].clicked){
+                        context.lineWidth = annotation[i].lineWidth + 3;
+                        context.strokeStyle = "#FFFFFF";
                         context.beginPath();
                         context.moveTo(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y);
                         context.lineTo(annotation[i].end_x * img.width * scale + x, annotation[i].end_y * img.height * scale + y);
                         context.stroke();
-
                     }
-                    else if (annotation[i].type=='square') {
-                        context.lineWidth = annotation[i].lineWidth;
-                        context.strokeStyle = annotation[i].color;
+                    context.lineWidth = annotation[i].lineWidth;
+                    context.strokeStyle = annotation[i].color;
+                    context.beginPath();
+                    context.moveTo(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y);
+                    context.lineTo(annotation[i].end_x * img.width * scale + x, annotation[i].end_y * img.height * scale + y);
+                    context.stroke();
+                
+                }
+                else if (annotation[i].type=='square') {
+                    if (annotation[i].clicked){
+                        context.lineWidth = annotation[i].lineWidth + 2;
+                        context.strokeStyle = "#FFFFFF";
                         context.beginPath();
                         context.rect(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y,
-                             annotation[i].end_x * img.width * scale, annotation[i].end_y * img.height * scale);
+                            annotation[i].end_x * img.width * scale, annotation[i].end_y * img.height * scale);
                         context.stroke();
+
                     }
-                    else if (annotation[i].type=='circle') {
-                        context.lineWidth = annotation[i].lineWidth;
-                        context.strokeStyle = annotation[i].color;
+                    context.lineWidth = annotation[i].lineWidth;
+                    context.strokeStyle = annotation[i].color;
+                    context.beginPath();
+                    context.rect(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y,
+                         annotation[i].end_x * img.width * scale, annotation[i].end_y * img.height * scale);
+                    context.stroke();
+                }
+                else if (annotation[i].type=='circle') {
+                    if (annotation[i].clicked){
+                        context.lineWidth = annotation[i].lineWidth + 3;
+                        context.strokeStyle = "#FFFFFF";
                         context.beginPath();
                         context.arc(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y,
                             annotation[i].end_x * img.width * scale, 0, 2*Math.PI);
                         context.stroke();
+
                     }
-                    else if (annotation[i].type=='arrow') {
-                        context.lineWidth = annotation[i].lineWidth;
-                        context.strokeStyle = annotation[i].color;
-                        context.beginPath();
-                        canvas_arrow(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y,
-                            annotation[i].end_x * img.width * scale + x, annotation[i].end_y * img.height * scale + y);
-                    }
+                    context.lineWidth = annotation[i].lineWidth;
+                    context.strokeStyle = annotation[i].color;
+                    context.beginPath();
+                    context.arc(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y,
+                        annotation[i].end_x * img.width * scale, 0, 2*Math.PI);
+                    context.stroke();
                 }
+                else if (annotation[i].type=='arrow') {
+                    if (annotation[i].clicked){
+                        context.lineWidth = annotation[i].lineWidth + 3;
+                        context.strokeStyle = "#FFFFFF";
+                        canvas_arrow(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y, 
+                            annotation[i].end_x * img.width * scale + x, annotation[i].end_y * img.height * scale + y);
 
+                    }
+                    context.lineWidth = annotation[i].lineWidth;
+                    context.strokeStyle = annotation[i].color;
+                    context.beginPath();
+                    canvas_arrow(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y, 
+                        annotation[i].end_x * img.width * scale + x, annotation[i].end_y * img.height * scale + y);
+                }
             }
-        }
-        if(isClicked){
-            if (clicked_annotation.type=='line') {
-                context.lineWidth = clicked_annotation.lineWidth + 3;
-                context.strokeStyle = "#FFFFFF";
-                context.beginPath();
-                context.moveTo(clicked_annotation.start_x * img.width * scale + x, clicked_annotation.start_y * img.height * scale + y);
-                context.lineTo(clicked_annotation.end_x * img.width * scale + x, clicked_annotation.end_y * img.height * scale + y);
-                context.stroke();
-                context.lineWidth = clicked_annotation.lineWidth;
-                context.strokeStyle = clicked_annotation.color;
-                context.beginPath();
-                context.moveTo(clicked_annotation.start_x * img.width * scale + x, clicked_annotation.start_y * img.height * scale + y);
-                context.lineTo(clicked_annotation.end_x * img.width * scale + x, clicked_annotation.end_y * img.height * scale + y);
-                context.stroke();
-
-            }
-            else if (clicked_annotation.type=='square') {
-                context.lineWidth = clicked_annotation.lineWidth + 2;
-                context.strokeStyle = "#FFFFFF";
-                context.beginPath();
-                context.rect(clicked_annotation.start_x * img.width * scale + x, clicked_annotation.start_y * img.height * scale + y,
-                    clicked_annotation.end_x * img.width * scale, clicked_annotation.end_y * img.height * scale);
-                context.stroke();
-
-                context.lineWidth = clicked_annotation.lineWidth;
-                context.strokeStyle = clicked_annotation.color;
-                context.beginPath();
-                context.rect(clicked_annotation.start_x * img.width * scale + x, clicked_annotation.start_y * img.height * scale + y,
-                     clicked_annotation.end_x * img.width * scale, clicked_annotation.end_y * img.height * scale);
-                context.stroke();
-            }
-            else if (clicked_annotation.type=='circle') {
-                context.lineWidth = clicked_annotation.lineWidth + 3;
-                context.strokeStyle = "#FFFFFF";
-                context.beginPath();
-                context.arc(clicked_annotation.start_x * img.width * scale + x, clicked_annotation.start_y * img.height * scale + y,
-                    clicked_annotation.end_x * img.width * scale, 0, 2*Math.PI);
-                context.stroke();
-
-                context.lineWidth = clicked_annotation.lineWidth;
-                context.strokeStyle = clicked_annotation.color;
-                context.beginPath();
-                context.arc(clicked_annotation.start_x * img.width * scale + x, clicked_annotation.start_y * img.height * scale + y,
-                    clicked_annotation.end_x * img.width * scale, 0, 2*Math.PI);
-                context.stroke();
-            }
-            else if (clicked_annotation.type=='arrow') {
-                context.lineWidth = clicked_annotation.lineWidth + 3;
-                context.strokeStyle = "#FFFFFF";
-                canvas_arrow(clicked_annotation.start_x * img.width * scale + x, clicked_annotation.start_y * img.height * scale + y,
-                    clicked_annotation.end_x * img.width * scale + x, clicked_annotation.end_y * img.height * scale + y);
-                context.lineWidth = clicked_annotation.lineWidth;
-                context.strokeStyle = clicked_annotation.color;
-                context.beginPath();
-                canvas_arrow(clicked_annotation.start_x * img.width * scale + x, clicked_annotation.start_y * img.height * scale + y,
-                    clicked_annotation.end_x * img.width * scale + x, clicked_annotation.end_y * img.height * scale + y);
-            }
-        }
+        }  
 }
 
 //right_aside_content에 comment를 추가해주는 함수
@@ -820,18 +785,18 @@ function add_comment(order) {
     comment.innerHTML="Comment가 남을 공간입니다.";
     comment.classList.add("comment_list_comment_div");
     document.getElementById(div_id).appendChild(comment);
-
+    
 
     var delete_btn = document.createElement('button');
     delete_btn.innerHTML = "Delete";
-    //delete버튼을 클릭했을때 이벤트,
+    //delete버튼을 클릭했을때 이벤트, 
     delete_btn.onclick = function() {
         if (confirm("정말 삭제하시겠습니까?") == true){
-            var comment_div = document.getElementById(div_id);
+            var comment_div = document.getElementById(div_id); 
             var parent = comment_div.parentElement;
             parent.removeChild(comment_div);
             annotation[order].remain=false;
-
+            
             del_count++;
             console.log("Deleted the", annotation[order].num, "th annotation the ",annotation[order].type);
             console.log("Number of annotation: ", count-del_count);
@@ -840,8 +805,12 @@ function add_comment(order) {
         }else{
             return;
         }
-
+        
     };
     delete_btn.classList.add("comment_list_delete_btn");
     document.getElementById(div_id).appendChild(delete_btn);
 }
+
+
+    
+

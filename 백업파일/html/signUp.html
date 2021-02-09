@@ -1,0 +1,69 @@
+<html lang="en">
+
+<title>Coudike Feedback</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <title>Cloudike sign up</title>
+    <style>
+        @media screen and (max-width: 1323px) { #left_side { display:none; } }
+    </style>
+</head>
+<body>
+    <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase.js"></script>
+    <script type="text/javascript" src="../js/firebaseInit.js"></script>
+    <script type="text/javascript" src="../js/signUp.js"></script>
+
+    
+    <div class="align_center_container">
+        <div class="company_logo" id="left_side">
+            
+            <div class="company_logo_sub1">
+                <h1>환영합니다.</h1>
+                <h3 class="margin_top20_bottom30">쉽고 빠르게 클라우다이크를 이용해보세요</h3>
+                <img src="../image/join.gif" width="351.05" height="299.2">
+                
+            </div>
+            
+        </div>
+        <div class="signUp">
+            <div class="signUp_sub1">
+                <div class="signUp_sub2">
+                    <h2>기업 계정 생성</h2>
+                    <div class="mt30">
+                        <h4>기업명</h4>
+                        <input type="text" placeholder="기업명을 입력하세요" name="companyName" id="companyName"> 
+                    </div>
+                    <div class="mt35">
+                        <h4>이름</h4>
+                        <input type="text" placeholder="이름을 입력하세요" name="name" id="name">  
+                    </div>
+                    <div class="mt35">
+                        <h4>이메일 주소</h4>
+                        <input type="text" placeholder="이메일을 입력하세요" name="email" id="email">  
+                    </div>
+                    <div class="mt35">
+                        <h4>비밀번호</h4>
+                        <input type="password" placeholder="관리자 비밀번호를 입력하세요" name="password" id="pw">  
+                    </div>
+                    <div class="mt35">
+                        <h4>비밀번호 확인</h4>
+                        <input type="password" placeholder="비밀번호를 한번 더 입력하세요" name="rePassword" id="rePw">  
+                    </div>
+
+                    <div class="signUp_condition">
+                        <div><input type="checkbox" name="maintain" value="maintain"> 개인정보 취급 방침 및 이용약관에 동의 (필수)</div>
+                        <div><input type="checkbox" name="maintain" value="maintain"> 정보안내 및 활용에 동의 (필수)</div>
+                    </div>
+                    
+                    
+                    <button id = "signUp_btn" class="signUp_btn" onclick="signUp()">계정 생성</button>
+                </div>
+            </div>
+        </div>
+        <a href="javascript:history.back();"><img src="../image/back.png" class="floating-btn"></a>
+    </div>
+
+</body>
+</html>
