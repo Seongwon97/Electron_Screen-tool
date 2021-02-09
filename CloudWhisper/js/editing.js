@@ -10,9 +10,9 @@ var comment=false;
 var file_list=false;        //오른쪽에 file list를 보일지 comment _list를 보일지 알려주는 변수
 var comment_list=true;
 
-var sx, sy;                  // 드래그 시작점
-var ex, ey;                  // 드래그 끝점
-var screen_sx, screen_sy;
+var sx, sy;                  // 드래그 시작점, 드래그 끝점(캔버스 좌표)
+var ex, ey;                  
+var screen_sx, screen_sy;      // 드래그 시작점, 드래그 끝점(전체 화면의 좌표)
 var screen_ex, screen_ey;
 
 var rec_width;          //사각형을 그릴때 사용되는 width,height
@@ -37,6 +37,8 @@ var windowHeight = 0;
 var img;
 var context;
 var isClicked = false; //click된 annotation이 있는지
+var possible = true; //annotation을 그리고 코멘트 컨펌을 했는지 안했는지~
+                    //컨펌이 안됐다면 다음 그림 그리기 불가.
 window.onload = function(){
     //전 페이지에서 선택된 projcet의 이름을 받아오기
     //저장은 project_name변수에
@@ -83,203 +85,225 @@ window.onload = function(){
     }
 
     canvas.addEventListener("mousedown", function(e){
-		lastEvent = e;
-        isMouseDown = true;
-        sx = canvasX(lastEvent.clientX);
-        sy = canvasY(lastEvent.clientY);
-        screen_sx = lastEvent.clientX;
-        screen_sy = lastEvent.clientY;
+        //모든 annotation이 컨펌되어서 그릴수 있는 상태면 측정 시작
+        if (possible) {
+            lastEvent = e;
+            isMouseDown = true;
+            sx = canvasX(lastEvent.clientX);
+            sy = canvasY(lastEvent.clientY);
+            screen_sx = lastEvent.clientX;
+            screen_sy = lastEvent.clientY;
+        }
 	});
 
 	canvas.addEventListener("mousemove", function(e){
-        lastEvent = e;
-        ex = canvasX(lastEvent.clientX);
-        ey = canvasY(lastEvent.clientY);
-        screen_ex = lastEvent.clientX;
-        screen_ey = lastEvent.clientY;
-        //console.log(screen_ex, screen_ey);
-        if(isMouseDown) {
-			if (line) // line 버튼 클릭 시
-			{
-                draw_annotation();
-
-                line_color = document.getElementById("edit_btn_color").value;
-                context.lineWidth = line_width;
-				context.strokeStyle = line_color // 색깔 지정
-                context.beginPath();
-                context.moveTo(sx, sy);
-                context.lineTo(ex, ey);
-                context.stroke(); // 그리기 실행
+        if (possible) {
+            lastEvent = e;
+            ex = canvasX(lastEvent.clientX);
+            ey = canvasY(lastEvent.clientY);
+            screen_ex = lastEvent.clientX;
+            screen_ey = lastEvent.clientY;
+            //console.log(screen_ex, screen_ey);
+            if(isMouseDown) {
+                if (line) // line 버튼 클릭 시
+                {
+                    draw_annotation();
+    
+                    line_color = document.getElementById("edit_btn_color").value;
+                    context.lineWidth = line_width;
+                    context.strokeStyle = line_color // 색깔 지정
+                    context.beginPath();
+                    context.moveTo(sx, sy);
+                    context.lineTo(ex, ey);
+                    context.stroke(); // 그리기 실행
+                }
+                else if (square) // square 버튼 클릭 시
+                {
+                    draw_annotation();
+    
+                    line_color = document.getElementById("edit_btn_color").value;
+                    context.lineWidth = line_width;
+                    context.strokeStyle = line_color // 색깔 지정
+    
+                    rec_width = ex-sx;
+                    rec_height = ey-sy;
+                    context.beginPath();
+                    context.rect(sx, sy, rec_width, rec_height);
+                    context.stroke(); // 그리기 실행
+                }
+                else if (circle) // circle 버튼 클릭 시
+                {
+                    draw_annotation();
+    
+                    line_color = document.getElementById("edit_btn_color").value;
+                    context.lineWidth = line_width;
+                    context.strokeStyle = line_color // 색깔 지정
+    
+                    cir_center_x = (sx + ex)/2;
+                    cir_center_y = (sy + ey)/2;
+                    cir_radius = Math.sqrt(Math.pow((sx - ex),2) + Math.pow((sy - ey),2))/2;
+                    context.beginPath();
+                    context.arc(cir_center_x, cir_center_y, cir_radius, 0, 2*Math.PI);
+                    context.stroke(); // 그리기 실행
+                }
+                else if (arrow) // arrow 버튼 클릭 시
+                {
+                    draw_annotation();
+    
+                    line_color = document.getElementById("edit_btn_color").value;
+                    context.lineWidth = line_width;
+                    context.strokeStyle = line_color // 색깔 지정
+                    context.beginPath();
+                    canvas_arrow(sx, sy, ex, ey);
+                     // 그리기 실행
+                }
             }
-            else if (square) // square 버튼 클릭 시
-			{
-                draw_annotation();
+        }
 
-                line_color = document.getElementById("edit_btn_color").value;
-                context.lineWidth = line_width;
-                context.strokeStyle = line_color // 색깔 지정
-
-                rec_width = ex-sx;
-                rec_height = ey-sy;
-                context.beginPath();
-                context.rect(sx, sy, rec_width, rec_height);
-                context.stroke(); // 그리기 실행
-            }
-            else if (circle) // circle 버튼 클릭 시
-			{
-                draw_annotation();
-
-                line_color = document.getElementById("edit_btn_color").value;
-                context.lineWidth = line_width;
-                context.strokeStyle = line_color // 색깔 지정
-
-                cir_center_x = (sx + ex)/2;
-                cir_center_y = (sy + ey)/2;
-                cir_radius = Math.sqrt(Math.pow((sx - ex),2) + Math.pow((sy - ey),2))/2;
-                context.beginPath();
-                context.arc(cir_center_x, cir_center_y, cir_radius, 0, 2*Math.PI);
-                context.stroke(); // 그리기 실행
-            }
-            else if (arrow) // arrow 버튼 클릭 시
-			{
-                draw_annotation();
-
-                line_color = document.getElementById("edit_btn_color").value;
-                context.lineWidth = line_width;
-                context.strokeStyle = line_color // 색깔 지정
-                context.beginPath();
-                canvas_arrow(sx, sy, ex, ey);
-                 // 그리기 실행
-            }
-		}
 	});
 
 
     //마우스를 놓으면 해당하는 도형에 맞게 annotation array에 데이터가 저장되고
     //그 후 캔버스를 초기화하고 이전의 annotation을 다시 출력
 	canvas.addEventListener("mouseup", function(){
-        isMouseDown = false;
-        if (line) {
-            if (!((Math.abs(sx-ex)<10)&&(Math.abs(sy-ey)<10))) {
-                sx=(sx-x)/(img.width * scale);
-                sy=(sy-y)/(img.height * scale);
-                ex=(ex-x)/(img.width * scale);
-                ey=(ey-y)/(img.height * scale);
-                annotation.push({
-                    project: project_name,
-                    num : count,
-                    start_x: sx,
-                    start_y: sy,
-                    end_x: ex,
-                    end_y: ey,
-                    type: 'line',
-                    color: line_color,
-                    lineWidth: line_width,
-                    remain: true,
-                    user: user_name,
-                    comment: comment_content,
-                    date: new Date().toLocaleString(),
-                    clicked: false,
-                    screen_sx: screen_sx,
-                    screen_sy: screen_sy,
-                    screen_ex: screen_ex,
-                    screen_ey: screen_ey
-                });
-                if(comment_list){
-                    add_comment_list(count);
+        if (possible) {
+            isMouseDown = false;
+            screen_sx=(screen_sx-159-x)/(img.width * scale);
+            screen_sy=(screen_sy-168-y)/(img.height * scale);
+            screen_ex=(screen_ex-159-x)/(img.width * scale);
+            screen_ey=(screen_ey-168-y)/(img.height * scale);
+    
+            if (line) {
+                if (!((Math.abs(sx-ex)<10)&&(Math.abs(sy-ey)<10))) {
+                    sx=(sx-x)/(img.width * scale);
+                    sy=(sy-y)/(img.height * scale);
+                    ex=(ex-x)/(img.width * scale);
+                    ey=(ey-y)/(img.height * scale);
+    
+                    annotation.push({
+                        project: project_name,
+                        num : count,
+                        start_x: sx,
+                        start_y: sy,
+                        end_x: ex,
+                        end_y: ey,
+                        type: 'line',
+                        color: line_color,
+                        lineWidth: line_width,
+                        remain: true,
+                        user: user_name,
+                        comment: comment_content,
+                        date: new Date().toLocaleString(),
+                        clicked: false,
+                        screen_sx: screen_sx,
+                        screen_sy: screen_sy,
+                        screen_ex: screen_ex,
+                        screen_ey: screen_ey,
+                        new:true 
+                    });
+                    add_comment_canvas(count);
+                    count++;
                 }
-                add_comment_canvas(count);
-                count++;
             }
+            else if(square) {
+                if ((Math.abs(sx-ex)>10)&&(Math.abs(sy-ey)>10)) {
+                    sx=(sx-x)/(img.width * scale);
+                    sy=(sy-y)/(img.height * scale);
+                    ex = rec_width /(img.width * scale);
+                    ey = rec_height /(img.height * scale);
+    
+                    annotation.push({
+                        project: project_name,
+                        num : count,
+                        start_x: sx,
+                        start_y: sy,
+                        end_x: ex,
+                        end_y: ey,
+                        type: 'square',
+                        color: line_color,
+                        lineWidth: line_width,
+                        remain: true,
+                        user: user_name,
+                        comment: comment_content,
+                        date: new Date().toLocaleString(),
+                        clicked: false,
+                        screen_sx: screen_sx,
+                        screen_sy: screen_sy,
+                        screen_ex: screen_ex,
+                        screen_ey: screen_ey,
+                        new:true 
+                    });
+                    //square에서 end_x, end_y는 rec_width, height로 사용
+                    add_comment_canvas(count);
+                    count++;
+                }
+            }
+            else if(circle) {
+                if ((Math.abs(sx-ex)>10)&&(Math.abs(sy-ey)>10)) {
+                    sx=(cir_center_x-x)/(img.width * scale);
+                    sy=(cir_center_y-y)/(img.height * scale);
+                    ex = cir_radius /(img.width * scale);
+                    annotation.push({
+                        project: project_name,
+                        num : count,
+                        start_x: sx,
+                        start_y: sy,
+                        end_x: ex,
+                        end_y: null,
+                        type: 'circle',
+                        color: line_color,
+                        lineWidth: line_width,
+                        remain: true,
+                        user: user_name,
+                        comment: comment_content,
+                        date: new Date().toLocaleString(),
+                        clicked: false,
+                        screen_sx: screen_sx,
+                        screen_sy: screen_sy,
+                        screen_ex: screen_ex,
+                        screen_ey: screen_ey,
+                        new:true 
+                    });
+                    //circle에서는 start_x,y가 원의 중심, end_x는 원의 반지름으로 사용
+                    add_comment_canvas(count);
+                    count++;
+                }
+            }
+            else if(arrow) {
+                if (!((Math.abs(sx-ex)<10)&&(Math.abs(sy-ey)<10))) {
+                    sx=(sx-x)/(img.width * scale);
+                    sy=(sy-y)/(img.height * scale);
+                    ex=(ex-x)/(img.width * scale);
+                    ey=(ey-y)/(img.height * scale);
+                    annotation.push({
+                        project: project_name,
+                        num : count,
+                        start_x: sx,
+                        start_y: sy,
+                        end_x: ex,
+                        end_y: ey,
+                        type: 'arrow',
+                        color: line_color,
+                        lineWidth: line_width,
+                        remain: true,
+                        user: user_name,
+                        comment: comment_content,
+                        date: new Date().toLocaleString(),
+                        clicked: false,
+                        screen_sx: screen_sx,
+                        screen_sy: screen_sy,
+                        screen_ex: screen_ex,
+                        screen_ey: screen_ey,
+                        new:true 
+                    });
+                    add_comment_canvas(count);
+                    count++;
+                }
+            }
+            console.log("Number of annotation: ", count-del_count);
+            draw_annotation();
         }
-        else if(square) {
-            if ((Math.abs(sx-ex)>10)&&(Math.abs(sy-ey)>10)) {
-                sx=(sx-x)/(img.width * scale);
-                sy=(sy-y)/(img.height * scale);
-                ex = rec_width /(img.width * scale);
-                ey = rec_height /(img.height * scale);
 
-                annotation.push({
-                    project: project_name,
-                    num : count,
-                    start_x: sx,
-                    start_y: sy,
-                    end_x: ex,
-                    end_y: ey,
-                    type: 'square',
-                    color: line_color,
-                    lineWidth: line_width,
-                    remain: true,
-                    user: user_name,
-                    comment: comment_content,
-                    date: new Date().toLocaleString(),
-                    clicked: false
-                });
-                //square에서 end_x, end_y는 rec_width, height로 사용
-                if(comment_list){
-                    add_comment_list(count);
-                }
-                count++;
-            }
-        }
-        else if(circle) {
-            if ((Math.abs(sx-ex)>10)&&(Math.abs(sy-ey)>10)) {
-                sx=(cir_center_x-x)/(img.width * scale);
-                sy=(cir_center_y-y)/(img.height * scale);
-                ex = cir_radius /(img.width * scale);
-                annotation.push({
-                    project: project_name,
-                    num : count,
-                    start_x: sx,
-                    start_y: sy,
-                    end_x: ex,
-                    end_y: null,
-                    type: 'circle',
-                    color: line_color,
-                    lineWidth: line_width,
-                    remain: true,
-                    user: user_name,
-                    comment: comment_content,
-                    date: new Date().toLocaleString(),
-                    clicked: false
-                });
-                //circle에서는 start_x,y가 원의 중심, end_x는 원의 반지름으로 사용
-                if(comment_list){
-                    add_comment_list(count);
-                }
-                count++;
-            }
-        }
-        else if(arrow) {
-            if (!((Math.abs(sx-ex)<10)&&(Math.abs(sy-ey)<10))) {
-                sx=(sx-x)/(img.width * scale);
-                sy=(sy-y)/(img.height * scale);
-                ex=(ex-x)/(img.width * scale);
-                ey=(ey-y)/(img.height * scale);
-                annotation.push({
-                    project: project_name,
-                    num : count,
-                    start_x: sx,
-                    start_y: sy,
-                    end_x: ex,
-                    end_y: ey,
-                    type: 'arrow',
-                    color: line_color,
-                    lineWidth: line_width,
-                    remain: true,
-                    user: user_name,
-                    comment: comment_content,
-                    date: new Date().toLocaleString(),
-                    clicked: false
-                });
-                if(comment_list){
-                    add_comment_list(count);
-                }
-                count++;
-            }
-        }
-        console.log("Number of annotation: ", count-del_count);
-        draw_annotation();
 	});
 
 
@@ -670,6 +694,7 @@ window.onload = function(){
 
 }
 window.onresize = function(){
+
     //window resize시 오른쪽에 위치한 context 높이 조정
     windowHeight = window.innerHeight;
     var right_aside_content = document.getElementById("editing_content");
@@ -687,6 +712,16 @@ window.onresize = function(){
     x = (canvas.width / 2) - (img.width / 2) * scale;
     y = (canvas.height / 2) - (img.height / 2) * scale;
 
+    for (var i = 0; i < count; i++) {
+        var div_id = "annotation_canvas".concat(i);
+        if (annotation[i].remain){
+            var comment_div = document.getElementById(div_id);
+            var parent = comment_div.parentElement;
+            parent.removeChild(comment_div);
+        }
+        add_comment_canvas(i);
+    }
+    
     draw_annotation();
 }
 
@@ -713,8 +748,6 @@ function draw_annotation(){
             if (annotation[i].remain) {
                 if(annotation[i].clicked) {
                     clicked_annotation = annotation[i];
-                    console.log(clicked_annotation);
-                    console.log(isClicked);
                     isClicked=true;
                 }
                 else {
@@ -817,7 +850,7 @@ function draw_annotation(){
 //right_aside_content에 comment를 추가해주는 함수
 function add_comment_list(order) {
     var div = document.createElement('div');
-    var div_id = "annotation".concat(order);
+    var div_id = "annotation_list".concat(order);
     //div.innerHTML = "Num: " + annotation[order].num +"<br/>User name: " + annotation[order].user_name + "<br/>type: " + annotation[order].type + "<br/>Date: "+ annotation[order].date;
     div.id = div_id;
     div.classList.add("comment_list");
@@ -849,7 +882,7 @@ function add_comment_list(order) {
     document.getElementById(div_id).appendChild(date_info);
 
     var comment = document.createElement("div");
-    comment.innerHTML="Comment가 남을 공간입니다.";
+    comment.innerHTML=annotation[order].comment;
     comment.classList.add("comment_list_comment_div");
     document.getElementById(div_id).appendChild(comment);
 
@@ -862,6 +895,12 @@ function add_comment_list(order) {
             var comment_div = document.getElementById(div_id);
             var parent = comment_div.parentElement;
             parent.removeChild(comment_div);
+
+            var div_id_canvas = "annotation_canvas".concat(order);
+            var comment_canvas_div = document.getElementById(div_id_canvas);
+            var parent = comment_canvas_div.parentElement;
+            parent.removeChild(comment_canvas_div);
+
             annotation[order].remain=false;
 
             del_count++;
@@ -883,13 +922,18 @@ function add_comment_list(order) {
 function add_comment_canvas(order) {
     var div = document.createElement('div');
     var div_id = "annotation_canvas".concat(order);
+    var text_div_id = "annotation_canvas_textarea".concat(order);
     //div.innerHTML = "Num: " + annotation[order].num +"<br/>User name: " + annotation[order].user_name + "<br/>type: " + annotation[order].type + "<br/>Date: "+ annotation[order].date;
     div.id = div_id;
+
+    screen_ex = annotation[order].screen_ex * scale * img.width + x;
+    screen_ey = annotation[order].screen_ey * scale * img.height + y;
+
     div.classList.add("comment_input");
-    console.log("sx: ", annotation[order].screen_sx, "\nsy: ", annotation[order].screen_sy, "\nex: ", annotation[order].screen_ex, "\ney: ", annotation[order].screen_ey);
-    div.style.top = (annotation[order].screen_ey - 168).toString().concat("px");
-    div.style.left = (annotation[order].screen_ex - 159).toString().concat("px");
+    div.style.top = screen_ey.toString().concat("px");
+    div.style.left = screen_ex.toString().concat("px");
     document.getElementById('editing_canvas').appendChild(div);
+
 
     var user_info = document.createElement('div');
     user_info.innerHTML = annotation[order].user_name;
@@ -898,51 +942,99 @@ function add_comment_canvas(order) {
     user_info.style.fontWeight="bold";
     document.getElementById(div_id).appendChild(user_info);
 
+
     var date_info = document.createElement("div");
     var date = annotation[order].date;
     date_info.innerHTML = date;
     date_info.style.fontSize="13px";
     document.getElementById(div_id).appendChild(date_info);
 
-    var comment = document.createElement("div");
-    comment.innerHTML="Comment가 남을 공간입니다.";
-    comment.classList.add("comment_list_comment_div_canvas");
-    document.getElementById(div_id).appendChild(comment);
+
+
+    //새로 생성된 것이면 텍스트박스 생성, 기존에 있던 것이면 comment출력
+    if (annotation[order].new) {
+        possible = false;
+        var comment_textarea = document.createElement("textarea");
+        comment_textarea.id = text_div_id;
+        comment_textarea.classList.add("comment_list_comment_textarea_div_canvas");
+        document.getElementById(div_id).appendChild(comment_textarea);
+    }
+    else {
+        var comment = document.createElement("div");
+        comment.innerHTML="Comment가 남을 공간입니다.";
+        comment.classList.add("comment_list_comment_div_canvas");
+        document.getElementById(div_id).appendChild(comment);
+    }
+
 
 
     var delete_btn = document.createElement('button');
     delete_btn.innerHTML = "Delete";
     //delete버튼을 클릭했을때 이벤트,
     delete_btn.onclick = function() {
-        if (confirm("정말 삭제하시겠습니까?") == true){
-            var comment_div = document.getElementById(div_id);
-            var parent = comment_div.parentElement;
-            parent.removeChild(comment_div);
-            annotation[order].remain=false;
-
-            del_count++;
-            console.log("Deleted the", annotation[order].num, "th annotation the ",annotation[order].type);
-            console.log("Number of annotation: ", count-del_count);
-            //이곳에 firebase에서의 데이터 삭제 내용도 추가할 것.
+        if (annotation[order].new) {
+            console.log("Number of annotation: ", annotation.length);
+            var comment_canvas_div = document.getElementById(div_id);
+            var parent = comment_canvas_div.parentElement;
+            parent.removeChild(comment_canvas_div);
+            annotation.pop();
+            count--;
             draw_annotation();
-        }else{
-            return;
+            console.log("Number of annotation: ", annotation.length);
+            possible = true;
         }
-
+        else {
+            if (confirm("정말 삭제하시겠습니까?") == true){
+                var comment_canvas_div = document.getElementById(div_id);
+                var parent = comment_canvas_div.parentElement;
+                parent.removeChild(comment_canvas_div);
+    
+                var div_id_list = "annotation_list".concat(order);
+                var comment_list_div = document.getElementById(div_id_list);
+                var parent = comment_list_div.parentElement;
+                parent.removeChild(comment_list_div);
+    
+                annotation[order].remain=false;
+    
+                del_count++;
+                console.log("Deleted the", annotation[order].num, "th annotation the ",annotation[order].type);
+                console.log("Number of annotation: ", count-del_count);
+                //이곳에 firebase에서의 데이터 삭제 내용도 추가할 것.
+                draw_annotation();
+            }else{
+                return;
+            }
+        }
     };
     delete_btn.classList.add("comment_list_btn_canvas");
-    delete_btn.style.right = "85px";
+    delete_btn.style.right = "10px";
     document.getElementById(div_id).appendChild(delete_btn);
 
 
     var confirm_btn = document.createElement('button');
     confirm_btn.innerHTML = "Confirm";
-    //delete버튼을 클릭했을때 이벤트,
+    //confirm버튼을 클릭했을때 이벤트,
     confirm_btn.onclick = function() {
-        alert("complete");
+        var textarea_div = document.getElementById(text_div_id);
+        var parent = textarea_div.parentElement;
+        parent.removeChild(textarea_div);
+        annotation[order].comment = textarea_div.value;
+
+        var comment = document.createElement("div");
+        comment.innerHTML=textarea_div.value;
+        comment.classList.add("comment_list_comment_div_canvas");
+        document.getElementById(div_id).appendChild(comment);
+
+        annotation[order].new = false;
+        if(comment_list){
+            add_comment_list(order);
+        }
+
+        possible = true;
 
     };
     confirm_btn.classList.add("comment_list_btn_canvas");
-    confirm_btn.style.right = "10px";
+    confirm_btn.style.right = "75px";
     document.getElementById(div_id).appendChild(confirm_btn);
 }
+
