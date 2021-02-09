@@ -12,6 +12,8 @@ var comment_list=true;
 
 var sx, sy;                  // 드래그 시작점
 var ex, ey;                  // 드래그 끝점
+var screen_sx, screen_sy;
+var screen_ex, screen_ey;
 
 var rec_width;          //사각형을 그릴때 사용되는 width,height
 var rec_height;
@@ -85,12 +87,17 @@ window.onload = function(){
         isMouseDown = true;
         sx = canvasX(lastEvent.clientX);
         sy = canvasY(lastEvent.clientY);
+        screen_sx = lastEvent.clientX;
+        screen_sy = lastEvent.clientY;
 	});
 
 	canvas.addEventListener("mousemove", function(e){
         lastEvent = e;
         ex = canvasX(lastEvent.clientX);
         ey = canvasY(lastEvent.clientY);
+        screen_ex = lastEvent.clientX;
+        screen_ey = lastEvent.clientY;
+        //console.log(screen_ex, screen_ey);
         if(isMouseDown) {
 			if (line) // line 버튼 클릭 시
 			{
@@ -103,7 +110,6 @@ window.onload = function(){
                 context.moveTo(sx, sy);
                 context.lineTo(ex, ey);
                 context.stroke(); // 그리기 실행
-
             }
             else if (square) // square 버튼 클릭 시
 			{
@@ -173,11 +179,16 @@ window.onload = function(){
                     user: user_name,
                     comment: comment_content,
                     date: new Date().toLocaleString(),
-                    clicked: false
+                    clicked: false,
+                    screen_sx: screen_sx,
+                    screen_sy: screen_sy,
+                    screen_ex: screen_ex,
+                    screen_ey: screen_ey
                 });
                 if(comment_list){
-                    add_comment(count);
+                    add_comment_list(count);
                 }
+                add_comment_canvas(count);
                 count++;
             }
         }
@@ -206,7 +217,7 @@ window.onload = function(){
                 });
                 //square에서 end_x, end_y는 rec_width, height로 사용
                 if(comment_list){
-                    add_comment(count);
+                    add_comment_list(count);
                 }
                 count++;
             }
@@ -234,7 +245,7 @@ window.onload = function(){
                 });
                 //circle에서는 start_x,y가 원의 중심, end_x는 원의 반지름으로 사용
                 if(comment_list){
-                    add_comment(count);
+                    add_comment_list(count);
                 }
                 count++;
             }
@@ -262,7 +273,7 @@ window.onload = function(){
                     clicked: false
                 });
                 if(comment_list){
-                    add_comment(count);
+                    add_comment_list(count);
                 }
                 count++;
             }
@@ -477,6 +488,7 @@ window.onload = function(){
         }
     }
 
+
     document.getElementById("comment_btn").onclick = function() {
         if (comment==false){
             line=false;
@@ -488,7 +500,7 @@ window.onload = function(){
             document.getElementById("comment_btn").style.color='#393E46';
 
             document.getElementById("line_btn").style.backgroundColor='#393E46';
-            document.getElementById("line_btn").style.color='#ACACAC';
+            document.getElementById("line_btn").style.color='#ACACAC';	
 
             document.getElementById("square_btn").style.backgroundColor='#393E46';
             document.getElementById("square_btn").style.color='#ACACAC';
@@ -512,13 +524,33 @@ window.onload = function(){
     document.getElementById("comment_btn").onmouseover = function() {
         document.getElementById("comment_btn").style.backgroundColor='white';
         document.getElementById("comment_btn").style.color='#393E46';
+		
     }
+	
     document.getElementById("comment_btn").onmouseout = function() {
         if (comment == false) {
             document.getElementById("comment_btn").style.backgroundColor='#393E46';
             document.getElementById("comment_btn").style.color='#ACACAC';
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     document.getElementById("thickness_btn").onclick = function() {
         if($('#line_thickness').css('display') == 'none'){
             $('#line_thickness').show();
@@ -558,7 +590,7 @@ window.onload = function(){
             file_list=false;
             for (var i = 0; i < count; i++) {
                 if (annotation[i].remain) {
-                    add_comment(i);
+                    add_comment_list(i);
                 }
             }
             document.getElementById("editing_comment_list").style.height="57px";
@@ -783,7 +815,7 @@ function draw_annotation(){
 }
 
 //right_aside_content에 comment를 추가해주는 함수
-function add_comment(order) {
+function add_comment_list(order) {
     var div = document.createElement('div');
     var div_id = "annotation".concat(order);
     //div.innerHTML = "Num: " + annotation[order].num +"<br/>User name: " + annotation[order].user_name + "<br/>type: " + annotation[order].type + "<br/>Date: "+ annotation[order].date;
@@ -844,4 +876,73 @@ function add_comment(order) {
     };
     delete_btn.classList.add("comment_list_delete_btn");
     document.getElementById(div_id).appendChild(delete_btn);
+}
+
+
+
+function add_comment_canvas(order) {
+    var div = document.createElement('div');
+    var div_id = "annotation_canvas".concat(order);
+    //div.innerHTML = "Num: " + annotation[order].num +"<br/>User name: " + annotation[order].user_name + "<br/>type: " + annotation[order].type + "<br/>Date: "+ annotation[order].date;
+    div.id = div_id;
+    div.classList.add("comment_input");
+    console.log("sx: ", annotation[order].screen_sx, "\nsy: ", annotation[order].screen_sy, "\nex: ", annotation[order].screen_ex, "\ney: ", annotation[order].screen_ey);
+    div.style.top = (annotation[order].screen_ey - 168).toString().concat("px");
+    div.style.left = (annotation[order].screen_ex - 159).toString().concat("px");
+    document.getElementById('editing_canvas').appendChild(div);
+
+    var user_info = document.createElement('div');
+    user_info.innerHTML = annotation[order].user_name;
+    user_info.style.fontSize="17px";
+    user_info.style.marginBottom="7px";
+    user_info.style.fontWeight="bold";
+    document.getElementById(div_id).appendChild(user_info);
+
+    var date_info = document.createElement("div");
+    var date = annotation[order].date;
+    date_info.innerHTML = date;
+    date_info.style.fontSize="13px";
+    document.getElementById(div_id).appendChild(date_info);
+
+    var comment = document.createElement("div");
+    comment.innerHTML="Comment가 남을 공간입니다.";
+    comment.classList.add("comment_list_comment_div_canvas");
+    document.getElementById(div_id).appendChild(comment);
+
+
+    var delete_btn = document.createElement('button');
+    delete_btn.innerHTML = "Delete";
+    //delete버튼을 클릭했을때 이벤트,
+    delete_btn.onclick = function() {
+        if (confirm("정말 삭제하시겠습니까?") == true){
+            var comment_div = document.getElementById(div_id);
+            var parent = comment_div.parentElement;
+            parent.removeChild(comment_div);
+            annotation[order].remain=false;
+
+            del_count++;
+            console.log("Deleted the", annotation[order].num, "th annotation the ",annotation[order].type);
+            console.log("Number of annotation: ", count-del_count);
+            //이곳에 firebase에서의 데이터 삭제 내용도 추가할 것.
+            draw_annotation();
+        }else{
+            return;
+        }
+
+    };
+    delete_btn.classList.add("comment_list_btn_canvas");
+    delete_btn.style.right = "85px";
+    document.getElementById(div_id).appendChild(delete_btn);
+
+
+    var confirm_btn = document.createElement('button');
+    confirm_btn.innerHTML = "Confirm";
+    //delete버튼을 클릭했을때 이벤트,
+    confirm_btn.onclick = function() {
+        alert("complete");
+
+    };
+    confirm_btn.classList.add("comment_list_btn_canvas");
+    confirm_btn.style.right = "10px";
+    document.getElementById(div_id).appendChild(confirm_btn);
 }
