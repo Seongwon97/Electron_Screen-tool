@@ -876,6 +876,7 @@ label > span {
    font-size: 15px;
    word-break: normal;
    text-overflow: ellipsis;
+   display: inline-block;
 }
 .comment_list_comment_textarea_div_canvas{
    width: 100%;
