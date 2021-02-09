@@ -5,12 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/style.css">
-    <title>Document</title>
+    <title>Cloudike sign up</title>
     <style>
         @media screen and (max-width: 1323px) { #left_side { display:none; } }
     </style>
 </head>
 <body>
+    <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase.js"></script>
+    <script type="text/javascript" src="../js/firebaseInit.js"></script>
+    <script type="text/javascript" src="../js/signUp.js"></script>
+
+    <a href="javascript:history.back();"><img src="../image/back.png" class="floating-btn"></a>
     <div class="align_center_container">
         <div class="company_logo" id="left_side">
             
@@ -31,12 +36,12 @@
                         <input type="text" placeholder="기업명을 입력하세요" name="companyName" id="companyName"> 
                     </div>
                     <div class="mt35">
-                        <h4>기업도메인</h4>
-                        <input type="text" placeholder="도메인을 입력하세요" name="domain" id="domain">  
+                        <h4>이름</h4>
+                        <input type="text" placeholder="이름을 입력하세요" name="name" id="name">  
                     </div>
                     <div class="mt35">
                         <h4>이메일 주소</h4>
-                        <input type="text" placeholder="관리자 이메일을 입력하세요" name="email" id="email">  
+                        <input type="text" placeholder="이메일을 입력하세요" name="email" id="email">  
                     </div>
                     <div class="mt35">
                         <h4>비밀번호</h4>
@@ -57,7 +62,6 @@
                 </div>
             </div>
         </div>
-        <a href="javascript:history.back();"><img src="../image/back.png" class="floating-btn"></a>
     </div>
 
 </body>
