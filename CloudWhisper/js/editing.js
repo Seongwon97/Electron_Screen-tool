@@ -719,8 +719,9 @@ window.onresize = function(){
             var comment_div = document.getElementById(div_id);
             var parent = comment_div.parentElement;
             parent.removeChild(comment_div);
+            add_comment_canvas(i);
         }
-        add_comment_canvas(i);
+        
     }
     
     draw_annotation();
@@ -964,8 +965,8 @@ function add_comment_canvas(order) {
         }
         else {
             var comment = document.createElement("div");
-            comment.innerHTML="Comment가 남을 공간입니다.";
-            comment.classList.add("comment_list_comment_div_canvas1");
+            comment.innerHTML=annotation[order].comment;
+            comment.classList.add("comment_list_comment_div_canvas");
             document.getElementById(div_id).appendChild(comment);
         }
 
