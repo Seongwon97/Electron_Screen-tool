@@ -560,22 +560,6 @@ window.onload = function(){
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     document.getElementById("thickness_btn").onclick = function() {
         if($('#line_thickness').css('display') == 'none'){
             $('#line_thickness').show();
@@ -852,6 +836,8 @@ function draw_annotation(){
 //right_aside_content에 comment를 추가해주는 함수
 function add_comment_list(order) {
     var div = document.createElement('div');
+    var list_date_id = "annotation_list_date".concat(order);
+    var list_comment_id = "annotation_list_comment".concat(order);
     var div_id = "annotation_list".concat(order);
     //div.innerHTML = "Num: " + annotation[order].num +"<br/>User name: " + annotation[order].user_name + "<br/>type: " + annotation[order].type + "<br/>Date: "+ annotation[order].date;
     div.id = div_id;
@@ -878,12 +864,13 @@ function add_comment_list(order) {
     document.getElementById(div_id).appendChild(user_info);
 
     var date_info = document.createElement("div");
-    var date = annotation[order].date;
-    date_info.innerHTML = date;
+    date_info.id = list_date_id;
+    date_info.innerHTML = annotation[order].date;
     date_info.style.fontSize="13px";
     document.getElementById(div_id).appendChild(date_info);
 
     var comment = document.createElement("div");
+    comment.id = list_comment_id;
     comment.innerHTML=annotation[order].comment;
     comment.classList.add("comment_list_comment_div");
     document.getElementById(div_id).appendChild(comment);
@@ -922,19 +909,23 @@ function add_comment_list(order) {
 
 
 function add_comment_canvas(order) {
-    var div = document.createElement('div');
-    var div_id = "annotation_canvas".concat(order);
-    var text_div_id = "annotation_canvas_textarea".concat(order);
+    var comment_div = document.createElement('div');
+    var comment_div_id = "annotation_canvas".concat(order);
+    var canvas_text_id = "annotation_canvas_textarea".concat(order);
+    var canvas_date_id = "annotation_canvas_date".concat(order);
+    var canvas_comment_id = "annotation_canvas_comment".concat(order);
+    var canvas_confirm_id = "annotation_canvas_confirm".concat(order);
+    var canvas_revise_id = "annotation_canvas_revise".concat(order);
     //div.innerHTML = "Num: " + annotation[order].num +"<br/>User name: " + annotation[order].user_name + "<br/>type: " + annotation[order].type + "<br/>Date: "+ annotation[order].date;
-    div.id = div_id;
+    comment_div.id = comment_div_id;
 
     screen_ex = annotation[order].screen_ex * scale * img.width + x;
     screen_ey = annotation[order].screen_ey * scale * img.height + y;
 
-    div.classList.add("comment_input");
-    div.style.top = screen_ey.toString().concat("px");
-    div.style.left = screen_ex.toString().concat("px");
-    document.getElementById('editing_canvas').appendChild(div);
+    comment_div.classList.add("comment_input");
+    comment_div.style.top = screen_ey.toString().concat("px");
+    comment_div.style.left = screen_ex.toString().concat("px");
+    document.getElementById('editing_canvas').appendChild(comment_div);
 
 
     var user_info = document.createElement('div');
@@ -942,15 +933,126 @@ function add_comment_canvas(order) {
     user_info.style.fontSize="17px";
     user_info.style.marginBottom="7px";
     user_info.style.fontWeight="bold";
-    document.getElementById(div_id).appendChild(user_info);
+    comment_div.appendChild(user_info);
 
 
     var date_info = document.createElement("div");
-    var date = annotation[order].date;
-    date_info.innerHTML = date;
+    date_info.id = canvas_date_id;
     date_info.style.fontSize="13px";
-    document.getElementById(div_id).appendChild(date_info);
+    
 
+    var comment_textarea = document.createElement("textarea");
+    comment_textarea.id = canvas_text_id;
+    comment_textarea.classList.add("comment_list_comment_textarea_div_canvas");
+
+
+    var delete_btn = document.createElement('button');
+    delete_btn.innerHTML = "Delete";
+    //delete버튼을 클릭했을때 이벤트
+    delete_btn.onclick = function() {
+        if (annotation[order].new) {
+            console.log("Number of annotation: ", annotation.length);
+            var parent = comment_div.parentElement;
+            parent.removeChild(comment_div);
+            annotation.pop();
+            count--;
+            draw_annotation();
+            console.log("Number of annotation: ", annotation.length);
+            possible = true;
+        }
+        else {
+            if (confirm("정말 삭제하시겠습니까?") == true){
+                var parent = comment_div.parentElement;
+                parent.removeChild(comment_div);
+    
+                var div_id_list = "annotation_list".concat(order);
+                var comment_list_div = document.getElementById(div_id_list);
+                var parent = comment_list_div.parentElement;
+                parent.removeChild(comment_list_div);
+    
+                annotation[order].remain=false;
+    
+                del_count++;
+                console.log("Deleted the", annotation[order].num, "th annotation the ",annotation[order].type);
+                console.log("Number of annotation: ", count-del_count);
+                //이곳에 firebase에서의 데이터 삭제 내용도 추가할 것.
+                draw_annotation();
+            }else{
+                return;
+            }
+        }
+    };
+    delete_btn.classList.add("comment_list_btn_canvas");
+    delete_btn.style.right = "10px";
+
+
+
+    var confirm_btn = document.createElement('button');
+    confirm_btn.id = canvas_confirm_id;
+    confirm_btn.innerHTML = "Confirm";
+    confirm_btn.classList.add("comment_list_btn_canvas");
+    confirm_btn.style.right = "75px";
+
+    var revise_btn = document.createElement('button');
+    revise_btn.id = canvas_revise_id;
+    revise_btn.innerHTML = "Revise";
+    revise_btn.classList.add("comment_list_btn_canvas");
+    revise_btn.style.right = "75px";
+
+    var comment = document.createElement("div");
+    comment.id = canvas_comment_id;
+    comment.classList.add("comment_list_comment_div_canvas");
+
+
+    //confirm버튼을 클릭했을때 이벤트, textarea를 삭제하고 comment출력
+    confirm_btn.onclick = function() {
+        annotation[order].date = new Date().toLocaleString()
+        date_info.innerHTML = annotation[order].date;
+        comment_div.appendChild(date_info);
+
+        var textarea_div = document.getElementById(canvas_text_id);
+        comment_div.removeChild(textarea_div);
+        annotation[order].comment = textarea_div.value;
+        comment.innerHTML=textarea_div.value;
+        comment_div.appendChild(comment);
+        if(annotation[order].new) {
+            if(comment_list){
+                add_comment_list(order);
+            }
+            annotation[order].new = false;
+        }
+        else {
+            var list_date_id = "annotation_list_date".concat(order);
+            var list_comment_id = "annotation_list_comment".concat(order);
+            document.getElementById(list_date_id).innerHTML = annotation[order].date;
+            document.getElementById(list_comment_id).innerHTML = annotation[order].comment;
+        }
+        
+
+        possible = true;
+        
+        comment_div.removeChild(confirm_btn);
+        comment_div.appendChild(revise_btn);
+    };
+
+    revise_btn.onclick = function() {
+        if (confirm("수정하시겠습니까?") == true){
+            comment_div.removeChild(comment);
+
+            comment_textarea.innerHTML = annotation[order].comment;
+            comment_div.appendChild(comment_textarea);
+
+            comment_div.removeChild(revise_btn);
+            comment_div.appendChild(confirm_btn);
+
+            possible = false;
+
+        }else{
+            return;
+        }
+    }
+
+    
 
     //annotation을 생성한 유저의 이름과 접속한 유저의 이름이 같을 경우
     //confirm과 delete버튼 및 아래의 작업을 실행
@@ -958,88 +1060,18 @@ function add_comment_canvas(order) {
         //새로 생성된 것이면 텍스트박스 생성, 기존에 있던 것이면 comment출력
         if (annotation[order].new) {
             possible = false;
-            var comment_textarea = document.createElement("textarea");
-            comment_textarea.id = text_div_id;
-            comment_textarea.classList.add("comment_list_comment_textarea_div_canvas");
-            document.getElementById(div_id).appendChild(comment_textarea);
+            comment_div.appendChild(comment_textarea);
+            comment_div.appendChild(confirm_btn);
         }
         else {
             var comment = document.createElement("div");
             comment.innerHTML=annotation[order].comment;
             comment.classList.add("comment_list_comment_div_canvas");
-            document.getElementById(div_id).appendChild(comment);
+            comment_div.appendChild(comment);
         }
 
+        comment_div.appendChild(delete_btn);
 
-
-        var delete_btn = document.createElement('button');
-        delete_btn.innerHTML = "Delete";
-        //delete버튼을 클릭했을때 이벤트,
-        delete_btn.onclick = function() {
-            if (annotation[order].new) {
-                console.log("Number of annotation: ", annotation.length);
-                var comment_canvas_div = document.getElementById(div_id);
-                var parent = comment_canvas_div.parentElement;
-                parent.removeChild(comment_canvas_div);
-                annotation.pop();
-                count--;
-                draw_annotation();
-                console.log("Number of annotation: ", annotation.length);
-                possible = true;
-            }
-            else {
-                if (confirm("정말 삭제하시겠습니까?") == true){
-                    var comment_canvas_div = document.getElementById(div_id);
-                    var parent = comment_canvas_div.parentElement;
-                    parent.removeChild(comment_canvas_div);
-        
-                    var div_id_list = "annotation_list".concat(order);
-                    var comment_list_div = document.getElementById(div_id_list);
-                    var parent = comment_list_div.parentElement;
-                    parent.removeChild(comment_list_div);
-        
-                    annotation[order].remain=false;
-        
-                    del_count++;
-                    console.log("Deleted the", annotation[order].num, "th annotation the ",annotation[order].type);
-                    console.log("Number of annotation: ", count-del_count);
-                    //이곳에 firebase에서의 데이터 삭제 내용도 추가할 것.
-                    draw_annotation();
-                }else{
-                    return;
-                }
-            }
-        };
-        delete_btn.classList.add("comment_list_btn_canvas");
-        delete_btn.style.right = "10px";
-        document.getElementById(div_id).appendChild(delete_btn);
-
-
-        var confirm_btn = document.createElement('button');
-        confirm_btn.innerHTML = "Confirm";
-        confirm_btn.classList.add("comment_list_btn_canvas");
-        confirm_btn.style.right = "75px";
-        //confirm버튼을 클릭했을때 이벤트, textarea를 삭제하고 comment출력
-        confirm_btn.onclick = function() {
-            var textarea_div = document.getElementById(text_div_id);
-            var parent = textarea_div.parentElement;
-            parent.removeChild(textarea_div);
-            annotation[order].comment = textarea_div.value;
-
-            var comment = document.createElement("div");
-            comment.innerHTML=textarea_div.value;
-            comment.classList.add("comment_list_comment_div_canvas");
-            document.getElementById(div_id).appendChild(comment);
-
-            annotation[order].new = false;
-            if(comment_list){
-                add_comment_list(order);
-            }
-
-            possible = true;
-
-        };
-        document.getElementById(div_id).appendChild(confirm_btn);
     }
     
     //annoataion을 생성한 유저가 아닌 경우 comment내용만 출력해서 보여준다.
@@ -1047,8 +1079,11 @@ function add_comment_canvas(order) {
         var comment = document.createElement("div");
         comment.innerHTML=annotation[order].comment;
         comment.classList.add("comment_list_comment_div");
-        document.getElementById(div_id).appendChild(comment);
+        comment_div.appendChild(comment);
     }
     
 }
 
+// var textarea_div = document.getElementById(canvas_text_id);
+//         var parent = textarea_div.parentElement;
+//         parent.removeChild(textarea_div);
