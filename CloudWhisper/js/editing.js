@@ -835,14 +835,14 @@ function draw_annotation(){
 
 //right_aside_content에 comment를 추가해주는 함수
 function add_comment_list(order) {
-    var div = document.createElement('div');
+    var comment_list_div = document.createElement('div');
     var list_date_id = "annotation_list_date".concat(order);
     var list_comment_id = "annotation_list_comment".concat(order);
-    var div_id = "annotation_list".concat(order);
+    var comment_list_div_id = "annotation_list".concat(order);
     //div.innerHTML = "Num: " + annotation[order].num +"<br/>User name: " + annotation[order].user_name + "<br/>type: " + annotation[order].type + "<br/>Date: "+ annotation[order].date;
-    div.id = div_id;
-    div.classList.add("comment_list");
-    div.onclick= function() {
+    comment_list_div.id = comment_list_div_id;
+    comment_list_div.classList.add("comment_list");
+    comment_list_div.onclick= function() {
         annotation[order].clicked=true;
         for (var i = 0; i < count; i++) {
             if (annotation[i].remain) {
@@ -854,26 +854,26 @@ function add_comment_list(order) {
 
         draw_annotation();
     }
-    document.getElementById('editing_content').appendChild(div);
+    document.getElementById('editing_content').appendChild(comment_list_div);
 
     var user_info = document.createElement('div');
     user_info.innerHTML = annotation[order].user_name;
     user_info.style.fontSize="17px";
     user_info.style.marginBottom="7px";
     user_info.style.fontWeight="bold";
-    document.getElementById(div_id).appendChild(user_info);
+    comment_list_div.appendChild(user_info);
 
     var date_info = document.createElement("div");
     date_info.id = list_date_id;
     date_info.innerHTML = annotation[order].date;
     date_info.style.fontSize="13px";
-    document.getElementById(div_id).appendChild(date_info);
+    comment_list_div.appendChild(date_info);
 
     var comment = document.createElement("div");
     comment.id = list_comment_id;
     comment.innerHTML=annotation[order].comment;
     comment.classList.add("comment_list_comment_div");
-    document.getElementById(div_id).appendChild(comment);
+    comment_list_div.appendChild(comment);
 
 
     var delete_btn = document.createElement('button');
@@ -881,9 +881,9 @@ function add_comment_list(order) {
     //delete버튼을 클릭했을때 이벤트,
     delete_btn.onclick = function() {
         if (confirm("정말 삭제하시겠습니까?") == true){
-            var comment_div = document.getElementById(div_id);
-            var parent = comment_div.parentElement;
-            parent.removeChild(comment_div);
+            //var comment_div = document.getElementById(div_id);
+            var parent = comment_list_div.parentElement;
+            parent.removeChild(comment_list_div);
 
             var div_id_canvas = "annotation_canvas".concat(order);
             var comment_canvas_div = document.getElementById(div_id_canvas);
@@ -903,7 +903,7 @@ function add_comment_list(order) {
 
     };
     delete_btn.classList.add("comment_list_delete_btn");
-    document.getElementById(div_id).appendChild(delete_btn);
+    comment_list_div.appendChild(delete_btn);
 }
 
 
@@ -1053,7 +1053,6 @@ function add_comment_canvas(order) {
     }
 
     
-
     //annotation을 생성한 유저의 이름과 접속한 유저의 이름이 같을 경우
     //confirm과 delete버튼 및 아래의 작업을 실행
     if (user_name == annotation[order].user) {
