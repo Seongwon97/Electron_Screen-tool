@@ -36,14 +36,13 @@ var user_name = "user"; // firebase에서 값 받아와서 저장
 var windowHeight = 0;
 var img;
 var context;
-var isClicked = false; //click된 annotation이 있는지
+var isClicked = -1; //click된 annotation이 있는지, 없으면 -1, 있으면 해당 annotaion의 번호
 var possible = true; //annotation을 그리고 코멘트 컨펌을 했는지 안했는지~
                     //컨펌이 안됐다면 다음 그림 그리기 불가.
 window.onload = function(){
     //전 페이지에서 선택된 projcet의 이름을 받아오기
     //저장은 project_name변수에
 
-    console.log("123123");
     //window load시 오른쪽에 위치한 context 높이 조정
     windowHeight = window.innerHeight;
     var right_aside_content = document.getElementById("editing_content");
@@ -301,7 +300,6 @@ window.onload = function(){
                     count++;
                 }
             }
-            console.log("Number of annotation: ", count-del_count);
             draw_annotation();
         }
 
@@ -734,7 +732,6 @@ function draw_annotation(){
             if (annotation[i].remain) {
                 if(annotation[i].clicked) {
                     clicked_annotation = annotation[i];
-                    isClicked=true;
                 }
                 else {
                     if (annotation[i].type=='line') {
@@ -773,7 +770,7 @@ function draw_annotation(){
 
             }
         }
-        if(isClicked){
+        if(isClicked != (-1)){
             if (clicked_annotation.type=='line') {
                 context.lineWidth = clicked_annotation.lineWidth + 3;
                 context.strokeStyle = "#FFFFFF";
@@ -843,13 +840,32 @@ function add_comment_list(order) {
     comment_list_div.id = comment_list_div_id;
     comment_list_div.classList.add("comment_list");
     comment_list_div.onclick= function() {
-        annotation[order].clicked=true;
-        for (var i = 0; i < count; i++) {
-            if (annotation[i].remain) {
-                if((annotation[i].num != order) && annotation[i].clicked) {
-                    annotation[i].clicked=false;
-                }
-            }
+        var canvas_comment_id = "annotation_canvas".concat(order);
+        if (annotation[order].clicked) {
+            annotation[order].clicked = false;
+            isClicked = -1;
+            comment_list_div.style.border = "none";
+            document.getElementById(canvas_comment_id).style.border = "none";
+
+        }
+        else if ((!annotation[order].clicked) && (isClicked == -1)) {
+            annotation[order].clicked = true;
+            isClicked = order;
+            comment_list_div.style.border = "2px solid red";
+            document.getElementById(canvas_comment_id).style.border = "2px solid red";
+        }
+        else if ((!annotation[order].clicked) && (isClicked != (-1))) {
+            annotation[isClicked].clicked=false;
+            var canvas_comment_id_temp = "annotation_canvas".concat(isClicked);
+            document.getElementById(canvas_comment_id_temp).style.border = "none";
+
+            var list_comment_id_temp = "annotation_list".concat(isClicked);
+            document.getElementById(list_comment_id_temp).style.border = "none";
+
+            annotation[order].clicked = true;
+            isClicked = order;
+            comment_list_div.style.border = "2px solid red";
+            document.getElementById(canvas_comment_id).style.border = "2px solid red";
         }
 
         draw_annotation();
@@ -962,6 +978,8 @@ function add_comment_canvas(order) {
         }
         else {
             if (confirm("정말 삭제하시겠습니까?") == true){
+
+
                 var parent = comment_div.parentElement;
                 parent.removeChild(comment_div);
     
@@ -969,8 +987,10 @@ function add_comment_canvas(order) {
                 var comment_list_div = document.getElementById(div_id_list);
                 var parent = comment_list_div.parentElement;
                 parent.removeChild(comment_list_div);
-    
+                
+                
                 annotation[order].remain=false;
+
     
                 del_count++;
                 console.log("Deleted the", annotation[order].num, "th annotation the ",annotation[order].type);
@@ -1020,6 +1040,7 @@ function add_comment_canvas(order) {
                 add_comment_list(order);
             }
             annotation[order].new = false;
+            console.log("Number of annotation: ", count-del_count);
         }
         else {
             var list_date_id = "annotation_list_date".concat(order);
