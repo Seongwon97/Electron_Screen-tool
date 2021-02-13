@@ -39,6 +39,7 @@ var context;
 var isClicked = -1; //click된 annotation이 있는지, 없으면 -1, 있으면 해당 annotaion의 번호
 var possible = true; //annotation을 그리고 코멘트 컨펌을 했는지 안했는지~
                     //컨펌이 안됐다면 다음 그림 그리기 불가.
+var toDelete = false; //화면 위에 comment들을 클릭후 클릭을 없애고 삭제할때 오류를 방지
 window.onload = function(){
     //전 페이지에서 선택된 projcet의 이름을 받아오기
     //저장은 project_name변수에
@@ -841,31 +842,45 @@ function add_comment_list(order) {
     comment_list_div.classList.add("comment_list");
     comment_list_div.onclick= function() {
         var canvas_comment_id = "annotation_canvas".concat(order);
-        if (annotation[order].clicked) {
-            annotation[order].clicked = false;
-            isClicked = -1;
-            comment_list_div.style.border = "none";
-            document.getElementById(canvas_comment_id).style.border = "none";
-
+        if (isClicked == (-1)) {
+            //클릭되지 않은 상태에서 annotation 클릭된 상태
+            if (toDelete) {
+                toDelete = false;
+            }
+            else {
+                isClicked = order;
+                annotation[order].clicked = true;
+                comment_list_div.style.border = "2px solid red";
+                document.getElementById(canvas_comment_id).style.border = "2px solid red";
+            }    
         }
-        else if ((!annotation[order].clicked) && (isClicked == -1)) {
-            annotation[order].clicked = true;
-            isClicked = order;
-            comment_list_div.style.border = "2px solid red";
-            document.getElementById(canvas_comment_id).style.border = "2px solid red";
-        }
-        else if ((!annotation[order].clicked) && (isClicked != (-1))) {
-            annotation[isClicked].clicked=false;
-            var canvas_comment_id_temp = "annotation_canvas".concat(isClicked);
-            document.getElementById(canvas_comment_id_temp).style.border = "none";
+        else {
+            //클릭한 버튼을 다시 클릭한 상태
+            if (isClicked == order) {
+                if (toDelete) {
+                    toDelete = false;
+                }
+                else {
+                    isClicked = -1;
+                    annotation[order].clicked = false;
+                    comment_list_div.style.border = "none";
+                    document.getElementById(canvas_comment_id).style.border = "none";
+                }
+            }
+            else {
+                //다른게 클릭되어 있던 상태
+                var clicked_canvas_id = "annotation_canvas".concat(isClicked);
+                var clicked_list_id = "annotation_list".concat(isClicked);
+                document.getElementById(clicked_canvas_id).style.border = "none";
+                document.getElementById(clicked_list_id).style.border = "none";
+                annotation[isClicked].clicked = false;
 
-            var list_comment_id_temp = "annotation_list".concat(isClicked);
-            document.getElementById(list_comment_id_temp).style.border = "none";
-
-            annotation[order].clicked = true;
-            isClicked = order;
-            comment_list_div.style.border = "2px solid red";
-            document.getElementById(canvas_comment_id).style.border = "2px solid red";
+                isClicked = order;
+                annotation[order].clicked = true;
+                comment_list_div.style.border = "2px solid red";
+                document.getElementById(canvas_comment_id).style.border = "2px solid red";
+            }
+            
         }
 
         draw_annotation();
@@ -897,6 +912,7 @@ function add_comment_list(order) {
     //delete버튼을 클릭했을때 이벤트,
     delete_btn.onclick = function() {
         if (confirm("정말 삭제하시겠습니까?") == true){
+            isClicked = -1;
             //var comment_div = document.getElementById(div_id);
             var parent = comment_list_div.parentElement;
             parent.removeChild(comment_list_div);
@@ -908,12 +924,14 @@ function add_comment_list(order) {
 
             annotation[order].remain=false;
 
+            toDelete = true;
             del_count++;
             console.log("Deleted the", annotation[order].num, "th annotation the ",annotation[order].type);
             console.log("Number of annotation: ", count-del_count);
             //이곳에 firebase에서의 데이터 삭제 내용도 추가할 것.
             draw_annotation();
         }else{
+            toDelete = true;
             return;
         }
 
@@ -967,19 +985,17 @@ function add_comment_canvas(order) {
     //delete버튼을 클릭했을때 이벤트
     delete_btn.onclick = function() {
         if (annotation[order].new) {
-            console.log("Number of annotation: ", annotation.length);
             var parent = comment_div.parentElement;
             parent.removeChild(comment_div);
             annotation.pop();
             count--;
             draw_annotation();
-            console.log("Number of annotation: ", annotation.length);
+            console.log("Cancel adding annotation");
             possible = true;
         }
         else {
             if (confirm("정말 삭제하시겠습니까?") == true){
-
-
+                isClicked = -1;
                 var parent = comment_div.parentElement;
                 parent.removeChild(comment_div);
     
@@ -987,17 +1003,17 @@ function add_comment_canvas(order) {
                 var comment_list_div = document.getElementById(div_id_list);
                 var parent = comment_list_div.parentElement;
                 parent.removeChild(comment_list_div);
-                
-                
+                                
                 annotation[order].remain=false;
-
-    
+ 
+                toDelete = true;
                 del_count++;
                 console.log("Deleted the", annotation[order].num, "th annotation the ",annotation[order].type);
                 console.log("Number of annotation: ", count-del_count);
                 //이곳에 firebase에서의 데이터 삭제 내용도 추가할 것.
                 draw_annotation();
             }else{
+                toDelete = true;
                 return;
             }
         }
