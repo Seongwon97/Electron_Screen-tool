@@ -31,7 +31,7 @@ var annotation =[]; //firebase에서 annotation의 값을 받아와서 저장할
 var count = 0; //annotation의 개수를 카운트
 var del_count = 0; //삭제된 annotation의 개수
 var comment_content = ""; //comment의 내용을 담을 변수
-var user_name = "user"; // firebase에서 값 받아와서 저장
+var user_name = "유저"; // firebase에서 값 받아와서 저장
 
 var windowHeight = 0;
 var img;
@@ -888,8 +888,8 @@ function add_comment_list(order) {
     document.getElementById('editing_content').appendChild(comment_list_div);
 
     var user_info = document.createElement('div');
-    user_info.innerHTML = annotation[order].user_name;
-    user_info.style.fontSize="17px";
+    user_info.innerHTML = annotation[order].user;
+    user_info.style.fontSize="16px";
     user_info.style.marginBottom="7px";
     user_info.style.fontWeight="bold";
     comment_list_div.appendChild(user_info);
@@ -934,6 +934,7 @@ function add_comment_list(order) {
             toDelete = true;
             return;
         }
+        possible = true;
 
     };
     delete_btn.classList.add("comment_list_delete_btn");
@@ -963,8 +964,8 @@ function add_comment_canvas(order) {
 
 
     var user_info = document.createElement('div');
-    user_info.innerHTML = annotation[order].user_name;
-    user_info.style.fontSize="17px";
+    user_info.innerHTML = annotation[order].user;
+    user_info.style.fontSize="16px";
     user_info.style.marginBottom="7px";
     user_info.style.fontWeight="bold";
     comment_div.appendChild(user_info);
@@ -991,7 +992,6 @@ function add_comment_canvas(order) {
             count--;
             draw_annotation();
             console.log("Cancel adding annotation");
-            possible = true;
         }
         else {
             if (confirm("정말 삭제하시겠습니까?") == true){
@@ -1011,12 +1011,13 @@ function add_comment_canvas(order) {
                 console.log("Deleted the", annotation[order].num, "th annotation the ",annotation[order].type);
                 console.log("Number of annotation: ", count-del_count);
                 //이곳에 firebase에서의 데이터 삭제 내용도 추가할 것.
-                draw_annotation();
+                draw_annotation(order);
             }else{
                 toDelete = true;
                 return;
             }
         }
+        possible = true;
     };
     delete_btn.classList.add("comment_list_btn_canvas");
     delete_btn.style.right = "10px";
@@ -1067,7 +1068,7 @@ function add_comment_canvas(order) {
         
 
         possible = true;
-        
+        add_annotation_info(order);
         comment_div.removeChild(confirm_btn);
         comment_div.appendChild(revise_btn);
     };
@@ -1120,6 +1121,22 @@ function add_comment_canvas(order) {
     
 }
 
+function add_annotation_info (order) {
+    screen_sx = annotation[order].screen_sx * scale * img.width + x;
+    screen_sy = annotation[order].screen_sy * scale * img.height + y;
+    screen_ex = annotation[order].screen_ex * scale * img.width + x;
+    screen_ey = annotation[order].screen_ey * scale * img.height + y;
+
+    var annotation_info = document.createElement('div');
+    annotation_info.id = "annotation_info".concat(order);
+
+    annotation_info.classList.add("annotation_info");
+    annotation_info.style.top = screen_sy.toString().concat("px");
+    annotation_info.style.left = screen_sx.toString().concat("px");
+    annotation_info.style.backgroundColor = annotation[order].color;
+    annotation_info.innerHTML = annotation[order].user;
+    document.getElementById('editing_canvas').appendChild(annotation_info);
+}
 // var textarea_div = document.getElementById(canvas_text_id);
 //         var parent = textarea_div.parentElement;
 //         parent.removeChild(textarea_div);

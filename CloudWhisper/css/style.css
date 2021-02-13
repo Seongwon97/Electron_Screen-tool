@@ -902,3 +902,16 @@ label > span {
    background-color: #393e4677;
    box-shadow: inset 0px 0px 5px #959BA5;
 }
+
+.annotation_info {
+   width: 32px;
+   height: 32px;
+   position: absolute;
+   border-radius: 16px;
+   text-align: center;
+   line-height: 32px;
+   font-size: 12px;
+   cursor: pointer;
+   transform: translate(-50%, -50%);
+}
+
