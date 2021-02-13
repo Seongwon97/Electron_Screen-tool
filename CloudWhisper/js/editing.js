@@ -929,6 +929,7 @@ function add_comment_list(order) {
             console.log("Deleted the", annotation[order].num, "th annotation the ",annotation[order].type);
             console.log("Number of annotation: ", count-del_count);
             //이곳에 firebase에서의 데이터 삭제 내용도 추가할 것.
+            delete_annotation_info (order)
             draw_annotation();
         }else{
             toDelete = true;
@@ -1011,6 +1012,7 @@ function add_comment_canvas(order) {
                 console.log("Deleted the", annotation[order].num, "th annotation the ",annotation[order].type);
                 console.log("Number of annotation: ", count-del_count);
                 //이곳에 firebase에서의 데이터 삭제 내용도 추가할 것.
+                delete_annotation_info (order);
                 draw_annotation(order);
             }else{
                 toDelete = true;
@@ -1136,6 +1138,12 @@ function add_annotation_info (order) {
     annotation_info.style.backgroundColor = annotation[order].color;
     annotation_info.innerHTML = annotation[order].user;
     document.getElementById('editing_canvas').appendChild(annotation_info);
+}
+
+function delete_annotation_info (order) {
+    var annotation_info_id = "annotation_info".concat(order);
+    var annotation_info_div = document.getElementById(annotation_info_id);
+    document.getElementById('editing_canvas').removeChild(annotation_info_div);
 }
 // var textarea_div = document.getElementById(canvas_text_id);
 //         var parent = textarea_div.parentElement;

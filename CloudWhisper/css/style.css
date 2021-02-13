@@ -913,5 +913,6 @@ label > span {
    font-size: 12px;
    cursor: pointer;
    transform: translate(-50%, -50%);
+   box-shadow : 2px 2px 5px #707070;
 }
 
