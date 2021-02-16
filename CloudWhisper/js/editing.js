@@ -94,6 +94,7 @@ window.onload = function(){
             sy = canvasY(lastEvent.clientY);
             screen_sx = lastEvent.clientX;
             screen_sy = lastEvent.clientY;
+            line_color = document.getElementById("edit_btn_color").value;
         }
 
         //클릭된 annotation이 있으면 선택 풀어주기
@@ -121,8 +122,6 @@ window.onload = function(){
                 if (line) // line 버튼 클릭 시
                 {
                     draw_annotation();
-    
-                    line_color = document.getElementById("edit_btn_color").value;
                     context.lineWidth = line_width;
                     context.strokeStyle = line_color // 색깔 지정
                     context.beginPath();
@@ -134,7 +133,6 @@ window.onload = function(){
                 {
                     draw_annotation();
     
-                    line_color = document.getElementById("edit_btn_color").value;
                     context.lineWidth = line_width;
                     context.strokeStyle = line_color // 색깔 지정
     
@@ -148,7 +146,6 @@ window.onload = function(){
                 {
                     draw_annotation();
     
-                    line_color = document.getElementById("edit_btn_color").value;
                     context.lineWidth = line_width;
                     context.strokeStyle = line_color // 색깔 지정
     
@@ -162,8 +159,6 @@ window.onload = function(){
                 else if (arrow) // arrow 버튼 클릭 시
                 {
                     draw_annotation();
-    
-                    line_color = document.getElementById("edit_btn_color").value;
                     context.lineWidth = line_width;
                     context.strokeStyle = line_color // 색깔 지정
                     context.beginPath();
@@ -312,6 +307,34 @@ window.onload = function(){
                     add_comment_canvas(count);
                     count++;
                 }
+            }
+            else if(comment) {
+                sx=(sx-x)/(img.width * scale);
+                sy=(sy-y)/(img.height * scale);
+                annotation.push({
+                    project: project_name,
+                    num : count,
+                    start_x: sx,
+                    start_y: sy,
+                    end_x: null,
+                    end_y: null,
+                    type: 'comment',
+                    color: line_color,
+                    lineWidth: line_width,
+                    remain: true,
+                    user: user_name,
+                    comment: comment_content,
+                    date: new Date().toLocaleString(),
+                    clicked: false,
+                    screen_sx: screen_sx,
+                    screen_sy: screen_sy,
+                    screen_ex: screen_sx,
+                    screen_ey: screen_sy,
+                    new:true 
+                    //screen_ex,ey 변경할것++
+                });
+                add_comment_canvas(count);
+                count++;
             }
             draw_annotation();
         }
