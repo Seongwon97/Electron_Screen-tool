@@ -741,12 +741,17 @@ window.onresize = function(){
     y = (canvas.height / 2) - (img.height / 2) * scale;
 
     for (var i = 0; i < count; i++) {
-        var div_id = "annotation_canvas".concat(i);
+        var annotation_canvas_id = "annotation_canvas".concat(i);
+        var annotation_info_id = "annotation_info".concat(i);
         if (annotation[i].remain){
-            var comment_div = document.getElementById(div_id);
+            var comment_div = document.getElementById(annotation_canvas_id);
             var parent = comment_div.parentElement;
             parent.removeChild(comment_div);
             add_comment_canvas(i);
+
+            var info_div = document.getElementById(annotation_info_id);
+            parent.removeChild(info_div);
+            add_annotation_info(i);
         }
         
     }
@@ -883,6 +888,9 @@ function add_comment_list(order) {
     var comment_list_div_id = "annotation_list".concat(order);
     //div.innerHTML = "Num: " + annotation[order].num +"<br/>User name: " + annotation[order].user_name + "<br/>type: " + annotation[order].type + "<br/>Date: "+ annotation[order].date;
     comment_list_div.id = comment_list_div_id;
+    if (annotation[order].clicked) {
+        comment_list_div.style.border = "2px solid red";
+    }
     comment_list_div.classList.add("comment_list");
     comment_list_div.onclick= function() {
         annotation_click_event(order);
@@ -895,6 +903,7 @@ function add_comment_list(order) {
     user_info.style.marginBottom="7px";
     user_info.style.fontWeight="bold";
     comment_list_div.appendChild(user_info);
+
 
     var date_info = document.createElement("div");
     date_info.id = list_date_id;
@@ -1071,7 +1080,9 @@ function add_comment_canvas(order) {
         comment_div.appendChild(comment);
         if(annotation[order].new) {
             if(comment_list){
+                annotation[order].clicked = true;
                 add_comment_list(order);
+                add_annotation_info(order);
             }
             annotation[order].new = false;
             console.log("Number of annotation: ", count-del_count);
@@ -1084,11 +1095,9 @@ function add_comment_canvas(order) {
         }
         
         possible = true;
-        add_annotation_info(order);
         comment_div.removeChild(confirm_btn);
         comment_div.appendChild(revise_btn);
         
-        annotation[order].clicked = true;
         draw_annotation();
     };
 
@@ -1109,6 +1118,12 @@ function add_comment_canvas(order) {
         }
     }
 
+
+    if (!annotation[order].new) {
+        if (annotation[order].num != isClicked) {
+            $("#".concat(comment_div_id)).hide();
+        }
+    }
     
 
     
@@ -1126,6 +1141,7 @@ function add_comment_canvas(order) {
             comment.innerHTML=annotation[order].comment;
             comment.classList.add("comment_list_comment_div_canvas");
             comment_div.appendChild(comment);
+            comment_div.appendChild(revise_btn);
         }
 
         comment_div.appendChild(delete_btn);
