@@ -95,6 +95,18 @@ window.onload = function(){
             screen_sx = lastEvent.clientX;
             screen_sy = lastEvent.clientY;
         }
+
+        //클릭된 annotation이 있으면 선택 풀어주기
+        if(isClicked != -1) {
+            if (isClicked != count) {
+                var clicked_canvas_id = "#annotation_canvas".concat(isClicked);
+                var clicked_list_id = "annotation_list".concat(isClicked);
+                $(clicked_canvas_id).hide();
+                document.getElementById(clicked_list_id).style.border = "none";
+                annotation[isClicked].clicked = false;
+                isClicked=-1;
+            }
+        }
 	});
 
 	canvas.addEventListener("mousemove", function(e){
@@ -202,7 +214,6 @@ window.onload = function(){
                         screen_ey: screen_ey,
                         new:true 
                     });
-                    console.log("1: ", isClicked, count);
                     add_comment_canvas(count);
                     count++;
                 }
@@ -315,6 +326,8 @@ window.onload = function(){
             $(this).attr({src: "../image/capture.png"});
         });
     });
+
+
     document.getElementById("capture_btn").onclick = function() {
         document.getElementById("line_btn").style.backgroundColor='#393E46';
         document.getElementById("line_btn").style.color='#ACACAC';
@@ -332,14 +345,19 @@ window.onload = function(){
         document.getElementById("comment_btn").style.color='#ACACAC';
         alert("capture");
     }
+
+
     document.getElementById("capture_btn").onmouseover = function() {
         document.getElementById("capture_btn").style.backgroundColor='white';
         document.getElementById("capture_btn").style.color='#393E46';
     }
+
+
     document.getElementById("capture_btn").onmouseout = function() {
             document.getElementById("capture_btn").style.backgroundColor='#393E46';
             document.getElementById("capture_btn").style.color='#ACACAC';
     }
+
 
     document.getElementById("line_btn").onclick = function() {
         if (line==false){
@@ -373,16 +391,21 @@ window.onload = function(){
             document.getElementById("line_btn").style.color='#ACACAC';
         }
     }
+
+
     document.getElementById("line_btn").onmouseover = function() {
         document.getElementById("line_btn").style.backgroundColor='white';
         document.getElementById("line_btn").style.color='#393E46';
     }
+
+
     document.getElementById("line_btn").onmouseout = function() {
         if (line == false) {
             document.getElementById("line_btn").style.backgroundColor='#393E46';
             document.getElementById("line_btn").style.color='#ACACAC';
         }
     }
+
 
     document.getElementById("square_btn").onclick = function() {
         if (square==false){
@@ -416,16 +439,21 @@ window.onload = function(){
             document.getElementById("square_btn").style.color='#ACACAC';
         }
     }
+
+
     document.getElementById("square_btn").onmouseover = function() {
         document.getElementById("square_btn").style.backgroundColor='white';
         document.getElementById("square_btn").style.color='#393E46';
     }
+
+
     document.getElementById("square_btn").onmouseout = function() {
         if (square == false) {
             document.getElementById("square_btn").style.backgroundColor='#393E46';
             document.getElementById("square_btn").style.color='#ACACAC';
         }
     }
+
 
     document.getElementById("circle_btn").onclick = function() {
         if (circle==false){
@@ -459,16 +487,21 @@ window.onload = function(){
             document.getElementById("circle_btn").style.color='#ACACAC';
         }
     }
+
+    
     document.getElementById("circle_btn").onmouseover = function() {
         document.getElementById("circle_btn").style.backgroundColor='white';
         document.getElementById("circle_btn").style.color='#393E46';
     }
+
+
     document.getElementById("circle_btn").onmouseout = function() {
         if (circle == false) {
             document.getElementById("circle_btn").style.backgroundColor='#393E46';
             document.getElementById("circle_btn").style.color='#ACACAC';
         }
     }
+
 
     document.getElementById("arrow_btn").onclick = function() {
         if (arrow==false){
@@ -502,10 +535,14 @@ window.onload = function(){
             document.getElementById("arrow_btn").style.color='#ACACAC';
         }
     }
+
+
     document.getElementById("arrow_btn").onmouseover = function() {
         document.getElementById("arrow_btn").style.backgroundColor='white';
         document.getElementById("arrow_btn").style.color='#393E46';
     }
+
+
     document.getElementById("arrow_btn").onmouseout = function() {
         if (arrow == false) {
             document.getElementById("arrow_btn").style.backgroundColor='#393E46';
@@ -546,6 +583,8 @@ window.onload = function(){
             document.getElementById("comment_btn").style.color='#ACACAC';
         }
     }
+
+
     document.getElementById("comment_btn").onmouseover = function() {
         document.getElementById("comment_btn").style.backgroundColor='white';
         document.getElementById("comment_btn").style.color='#393E46';
@@ -567,6 +606,7 @@ window.onload = function(){
             $('#line_thickness').hide();
           }
     }
+
     $(function() {
         $("#thickness_btn img").hover(function(){
             $(this).attr({src: "../image/thickness2.png"});
@@ -574,10 +614,13 @@ window.onload = function(){
             $(this).attr({src: "../image/thickness.png"});
         });
     });
+
+
     document.getElementById("thickness_range").onchange = function(event) {
         line_width = event.target.value;
         line_width = Number(line_width);
     }
+
 
     document.getElementById("editing_file_list").onclick = function() {
         if (!file_list) {
@@ -590,9 +633,9 @@ window.onload = function(){
             document.getElementById("editing_comment_list").style.height="40px";
             document.getElementById("editing_comment_list").style.padding="0 18px"
         }
-
-
     }
+
+
     document.getElementById("editing_comment_list").onclick = function() {
         if (!comment_list) {
             comment_list=true;
@@ -1004,7 +1047,19 @@ function add_comment_canvas(order) {
 
     //confirm버튼을 클릭했을때 이벤트, textarea를 삭제하고 comment출력
     confirm_btn.onclick = function() {
-        console.log("1: ", isClicked, count);
+        if (count > 0) {
+            if(isClicked != -1) {
+                if (isClicked != order) {
+                    var clicked_canvas_id = "#annotation_canvas".concat(isClicked);
+                    var clicked_list_id = "annotation_list".concat(isClicked);
+                    $(clicked_canvas_id).hide();
+                    document.getElementById(clicked_list_id).style.border = "none";
+                    annotation[isClicked].clicked = false;
+                }
+            }
+        }
+        isClicked = order;
+
         annotation[order].date = new Date().toLocaleString()
         date_info.innerHTML = annotation[order].date;
         comment_div.appendChild(date_info);
@@ -1028,11 +1083,13 @@ function add_comment_canvas(order) {
             document.getElementById(list_comment_id).innerHTML = annotation[order].comment;
         }
         
-
         possible = true;
         add_annotation_info(order);
         comment_div.removeChild(confirm_btn);
         comment_div.appendChild(revise_btn);
+        
+        annotation[order].clicked = true;
+        draw_annotation();
     };
 
     revise_btn.onclick = function() {
@@ -1051,6 +1108,8 @@ function add_comment_canvas(order) {
             return;
         }
     }
+
+    
 
     
     //annotation을 생성한 유저의 이름과 접속한 유저의 이름이 같을 경우
