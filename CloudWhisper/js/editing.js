@@ -1047,17 +1047,17 @@ function add_comment_canvas(order) {
 
     //confirm버튼을 클릭했을때 이벤트, textarea를 삭제하고 comment출력
     confirm_btn.onclick = function() {
-        //현재 클릭된 상태의 object를 풀어주기
-        if(isClicked != -1) {
-            if (isClicked != order) {
-                var clicked_canvas_id = "#annotation_canvas".concat(isClicked);
-                var clicked_list_id = "annotation_list".concat(isClicked);
-                $(clicked_canvas_id).hide();
-                document.getElementById(clicked_list_id).style.border = "none";
-                annotation[isClicked].clicked = false;
+        if (count > 0) {
+            if(isClicked != -1) {
+                if (isClicked != order) {
+                    var clicked_canvas_id = "#annotation_canvas".concat(isClicked);
+                    var clicked_list_id = "annotation_list".concat(isClicked);
+                    $(clicked_canvas_id).hide();
+                    document.getElementById(clicked_list_id).style.border = "none";
+                    annotation[isClicked].clicked = false;
+                }
             }
         }
-
         isClicked = order;
 
         annotation[order].date = new Date().toLocaleString()
@@ -1157,10 +1157,6 @@ function add_annotation_info (order) {
     annotation_info.style.backgroundColor = annotation[order].color;
     annotation_info.innerHTML = annotation[order].user;
     document.getElementById('editing_canvas').appendChild(annotation_info);
-
-    annotation_info.onclick = function() {
-        annotation_click_event(order);
-    }
 }
 
 function delete_annotation_info (order) {
@@ -1214,5 +1210,6 @@ function annotation_click_event(order) {
         }
         
     }
+    console.log(annotation);
     draw_annotation();
 }
