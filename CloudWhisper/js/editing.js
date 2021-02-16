@@ -202,6 +202,7 @@ window.onload = function(){
                         screen_ey: screen_ey,
                         new:true 
                     });
+                    console.log("1: ", isClicked, count);
                     add_comment_canvas(count);
                     count++;
                 }
@@ -841,49 +842,7 @@ function add_comment_list(order) {
     comment_list_div.id = comment_list_div_id;
     comment_list_div.classList.add("comment_list");
     comment_list_div.onclick= function() {
-        var canvas_comment_id = "annotation_canvas".concat(order);
-        if (isClicked == (-1)) {
-            //클릭되지 않은 상태에서 annotation 클릭된 상태
-            if (toDelete) {
-                toDelete = false;
-            }
-            else {
-                isClicked = order;
-                annotation[order].clicked = true;
-                comment_list_div.style.border = "2px solid red";
-                document.getElementById(canvas_comment_id).style.border = "2px solid red";
-            }    
-        }
-        else {
-            //클릭한 버튼을 다시 클릭한 상태
-            if (isClicked == order) {
-                if (toDelete) {
-                    toDelete = false;
-                }
-                else {
-                    isClicked = -1;
-                    annotation[order].clicked = false;
-                    comment_list_div.style.border = "none";
-                    document.getElementById(canvas_comment_id).style.border = "none";
-                }
-            }
-            else {
-                //다른게 클릭되어 있던 상태
-                var clicked_canvas_id = "annotation_canvas".concat(isClicked);
-                var clicked_list_id = "annotation_list".concat(isClicked);
-                document.getElementById(clicked_canvas_id).style.border = "none";
-                document.getElementById(clicked_list_id).style.border = "none";
-                annotation[isClicked].clicked = false;
-
-                isClicked = order;
-                annotation[order].clicked = true;
-                comment_list_div.style.border = "2px solid red";
-                document.getElementById(canvas_comment_id).style.border = "2px solid red";
-            }
-            
-        }
-
-        draw_annotation();
+        annotation_click_event(order);
     }
     document.getElementById('editing_content').appendChild(comment_list_div);
 
@@ -1045,6 +1004,7 @@ function add_comment_canvas(order) {
 
     //confirm버튼을 클릭했을때 이벤트, textarea를 삭제하고 comment출력
     confirm_btn.onclick = function() {
+        console.log("1: ", isClicked, count);
         annotation[order].date = new Date().toLocaleString()
         date_info.innerHTML = annotation[order].date;
         comment_div.appendChild(date_info);
@@ -1148,3 +1108,49 @@ function delete_annotation_info (order) {
 // var textarea_div = document.getElementById(canvas_text_id);
 //         var parent = textarea_div.parentElement;
 //         parent.removeChild(textarea_div);
+
+function annotation_click_event(order) {
+    var canvas_comment_id = "#annotation_canvas".concat(order);
+    var comment_list_div_id = "annotation_list".concat(order);
+    if (isClicked == (-1)) {
+        //클릭되지 않은 상태에서 annotation 클릭된 상태
+        if (toDelete) {
+            toDelete = false;
+        }
+        else {
+            isClicked = order;
+            annotation[order].clicked = true;
+            document.getElementById(comment_list_div_id).style.border = "2px solid red";
+            $(canvas_comment_id).show();
+        }    
+    }
+    else {
+        //클릭한 버튼을 다시 클릭한 상태
+        if (isClicked == order) {
+            if (toDelete) {
+                toDelete = false;
+            }
+            else {
+                isClicked = -1;
+                annotation[order].clicked = false;
+                document.getElementById(comment_list_div_id).style.border = "none";
+                $(canvas_comment_id).hide();
+            }
+        }
+        else {
+            //다른게 클릭되어 있던 상태
+            var clicked_canvas_id = "#annotation_canvas".concat(isClicked);
+            var clicked_list_id = "annotation_list".concat(isClicked);
+            document.getElementById(clicked_list_id).style.border = "none";
+            annotation[isClicked].clicked = false;
+            $(clicked_canvas_id).hide();
+            $(canvas_comment_id).show();
+            isClicked = order;
+            annotation[order].clicked = true;
+            document.getElementById(comment_list_div_id).style.border = "2px solid red";
+        }
+        
+    }
+    console.log(annotation);
+    draw_annotation();
+}
