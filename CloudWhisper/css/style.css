@@ -278,7 +278,7 @@ input[type=text] {
 .header_alarm {
    position: absolute;
    top: 50%;
-   left: 50%;
+   right: 28%;
    transform: translate(-50%, -50%);
    cursor: pointer;
    background: none;
@@ -287,13 +287,18 @@ input[type=text] {
 }
 .header_user_icon {
    position: absolute;
+   width: 38px;
+   height: 38px;
+   border-radius: 19px;
+   background-color: #393E46;
    top: 50%;
-   right: 0%;
+   right: 2%;
    transform: translate(-50%, -50%);
    cursor: pointer;
-   background: none;
    outline: none;
    border: none;
+   font-size: 13px;
+   color: white;
 }
 .editing_tool_box {
    height: 100%;
@@ -916,3 +921,46 @@ label > span {
    box-shadow : 2px 2px 5px #707070;
 }
 
+.setting {
+   width: 200px;
+   height: 140px;
+   position: absolute;
+   right: 20px;
+   top: 50px;
+   cursor: pointer;
+   border-radius: 7px;
+   background-color: white;
+   box-shadow : 2px 2px 5px #707070;
+   display: none;
+   z-index: 0;
+   padding: 10px;
+}
+.user_name {
+   width: 100px;
+   height: 30px;
+   font-weight: bold;
+}
+.logout_btn {
+   margin-top: 10px;
+   width: 180px; 
+   height: 30px;
+   border-radius: 7px;
+   background-color: #FFC700;
+   box-shadow : 2px 2px 5px #707070;
+   cursor: pointer;
+   border: 0px;
+   outline: 0px;
+}
+.logout_btn:hover {background-color:#FFC305}
+
+.setting_text {
+   margin-top: 6px;
+   font-size: 15px;
+}
+
+.project_name {
+   cursor: pointer;
+}
+.project_name h1:hover {
+   color: #8a96ac;
+}

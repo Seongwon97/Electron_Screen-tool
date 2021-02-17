@@ -56,6 +56,13 @@ window.onload = function(){
     //comment를 firebase에서 읽어오고 출력하는 코드 추가해야함
 
 
+    document.getElementById("setting_user_name").innerHTML = user_name;
+    //firebase에서 email정보 불러와서 저장
+    document.getElementById("email").innerHTML = "qweqwe@naver.com";
+    document.getElementById("company_name").innerHTML = "클라우다이크";
+    document.getElementById("user_icon").innerHTML = user_name;
+
+
 
     var canvas =  document.getElementById("canvas");
     context = canvas.getContext("2d");
@@ -210,6 +217,7 @@ window.onload = function(){
                         new:true 
                     });
                     add_comment_canvas(count);
+                    add_annotation_info(count);
                     count++;
                 }
             }
@@ -243,6 +251,7 @@ window.onload = function(){
                     });
                     //square에서 end_x, end_y는 rec_width, height로 사용
                     add_comment_canvas(count);
+                    add_annotation_info(count);
                     count++;
                 }
             }
@@ -274,6 +283,7 @@ window.onload = function(){
                     });
                     //circle에서는 start_x,y가 원의 중심, end_x는 원의 반지름으로 사용
                     add_comment_canvas(count);
+                    add_annotation_info(count);
                     count++;
                 }
             }
@@ -305,6 +315,7 @@ window.onload = function(){
                         new:true 
                     });
                     add_comment_canvas(count);
+                    add_annotation_info(count);
                     count++;
                 }
             }
@@ -334,6 +345,7 @@ window.onload = function(){
                     //screen_ex,ey 변경할것++
                 });
                 add_comment_canvas(count);
+                add_annotation_info(count);
                 count++;
             }
             draw_annotation();
@@ -350,7 +362,9 @@ window.onload = function(){
         });
     });
 
-
+    document.getElementById("project_name").onclick = function() {
+        location.href="../html/main.html";
+    }
     document.getElementById("capture_btn").onclick = function() {
         document.getElementById("line_btn").style.backgroundColor='#393E46';
         document.getElementById("line_btn").style.color='#ACACAC';
@@ -627,6 +641,14 @@ window.onload = function(){
             $('#line_thickness').show();
           }else{
             $('#line_thickness').hide();
+          }
+    }
+
+    document.getElementById("user_icon").onclick = function() {
+        if($('#setting').css('display') == 'none'){
+            $('#setting').show();
+          }else{
+            $('#setting').hide();
           }
     }
 
@@ -1021,6 +1043,7 @@ function add_comment_canvas(order) {
     //delete버튼을 클릭했을때 이벤트
     delete_btn.onclick = function() {
         if (annotation[order].new) {
+            delete_annotation_info(order);
             var parent = comment_div.parentElement;
             parent.removeChild(comment_div);
             annotation.pop();
@@ -1105,7 +1128,6 @@ function add_comment_canvas(order) {
             if(comment_list){
                 annotation[order].clicked = true;
                 add_comment_list(order);
-                add_annotation_info(order);
             }
             annotation[order].new = false;
             console.log("Number of annotation: ", count-del_count);
@@ -1168,7 +1190,6 @@ function add_comment_canvas(order) {
         }
 
         comment_div.appendChild(delete_btn);
-
     }
     
     //annoataion을 생성한 유저가 아닌 경우 comment내용만 출력해서 보여준다.
