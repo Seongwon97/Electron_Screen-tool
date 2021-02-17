@@ -54,3 +54,25 @@ function signUp() {
       }
     
 }
+
+
+function login(){
+    var userEmail=document.getElementById("userEmail").value;
+    var userPass=document.getElementById("userPW").value;
+    firebase.auth().signInWithEmailAndPassword(userEmail, userPass).then(function(){
+        alert("Log in complete! Thank you.");
+        setTimeout(function(){window.location.href = 'main.html';},500);
+    }).catch(function(error){
+        alert("Log-in fail! ");
+    });
+}
+
+function logout(){
+    firebase.auth().signOut().then(function(){
+        alertify.alert("log out success!");
+        setTimeout(function(){    
+        window.location.href = 'login.html';},500);
+    }, function(error){
+        alert("log out fail!");
+    });
+}

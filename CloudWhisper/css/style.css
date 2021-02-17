@@ -375,19 +375,19 @@ body {
    outline: none;
 }
 .project_info {
-   height: 90px;
+   height: 105px;
    margin-top: 10px;
    margin-left: 20px;
    text-align: left;
 }
 .project_info h1 {
    line-height: 0px;
-   font-size: 35px;
+   font-size: 38px;
    color: #393E46;
 }
 .revise_time {
    color: #393E46;
-   margin-top: 5px;
+   margin-bottom: 5px;
    margin-left: 10px;
 }
 .editing_canvas {
