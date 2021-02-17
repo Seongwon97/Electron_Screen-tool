@@ -278,7 +278,7 @@ input[type=text] {
 .header_alarm {
    position: absolute;
    top: 50%;
-   right: 28%;
+   left: 50%;
    transform: translate(-50%, -50%);
    cursor: pointer;
    background: none;
@@ -287,18 +287,13 @@ input[type=text] {
 }
 .header_user_icon {
    position: absolute;
-   width: 38px;
-   height: 38px;
-   border-radius: 19px;
-   background-color: #393E46;
    top: 50%;
-   right: 2%;
+   right: 0%;
    transform: translate(-50%, -50%);
    cursor: pointer;
+   background: none;
    outline: none;
    border: none;
-   font-size: 13px;
-   color: white;
 }
 .editing_tool_box {
    height: 100%;
@@ -654,6 +649,14 @@ label > span {
    background-color: rgb(247, 214, 107);
 } 
 
+.comment_list_comment_div {
+   width: 100%;
+   padding: 8px 2px;
+   font-size: 15px;
+   word-break: normal;
+   text-overflow: ellipsis;
+}
+
 
 .browse-btn {
 	background: url( "buttonImage/uploadButton.png" ) no-repeat;
@@ -861,124 +864,6 @@ label > span {
   word-break: normal;
   text-overflow: ellipsis;
 }
-<<<<<<< Updated upstream
-.comment_input {
-   text-align: left;
-   min-height: 100px;
-   width: 250px;
-   position: absolute;
-   left: 10px;
-   top: 10px;
-   background: rgba(240, 240, 240, 0.747);
-   box-shadow : 2px 2px 5px #707070;
-   border-radius: 10px;
-   padding: 7px 13px;
-   cursor: pointer;
-}
-.comment_list_btn_canvas {
-   position: absolute;
-   height: 25px;
-   right: 15px;
-   bottom: 8px;
-   background-color: #FFC700;
-   border-radius: 10px;
-   padding: 2px 8px;
-   border: none;
-   outline: none;
-   cursor: pointer;
-   font-size: 15px;
-}
-.comment_list_comment_div_canvas{
-   width: 100%;
-   padding: 8px 2px;
-   margin-bottom: 30px;
-   font-size: 15px;
-   word-break: normal;
-   text-overflow: ellipsis;
-   display: inline-block;
-}
-.comment_list_comment_textarea_div_canvas{
-   width: 100%;
-   height: 60px;
-   padding: 8px 2px;
-   margin-top: 5px;
-   margin-bottom: 30px;
-   border-radius: 5px;
-   border: none;
-   font-size: 14px;
-   word-break: normal;
-   text-overflow: ellipsis;
-   resize: none;
-
-}
-.comment_list_comment_textarea_div_canvas:focus {outline:none;}
-
-.comment_list_comment_textarea_div_canvas::-webkit-scrollbar {
-   width: 8px;
-}
-.comment_list_comment_textarea_div_canvas::-webkit-scrollbar-thumb {
-   border-radius: 10px;
-   background-color: #393e4677;
-   box-shadow: inset 0px 0px 5px #959BA5;
-}
-
-.annotation_info {
-   width: 32px;
-   height: 32px;
-   position: absolute;
-   border-radius: 16px;
-   text-align: center;
-   line-height: 32px;
-   font-size: 12px;
-   cursor: pointer;
-   transform: translate(-50%, -50%);
-   box-shadow : 2px 2px 5px #707070;
-}
-
-.setting {
-   width: 200px;
-   height: 140px;
-   position: absolute;
-   right: 20px;
-   top: 50px;
-   cursor: pointer;
-   border-radius: 7px;
-   background-color: white;
-   box-shadow : 2px 2px 5px #707070;
-   display: none;
-   z-index: 0;
-   padding: 10px;
-}
-.user_name {
-   width: 100px;
-   height: 30px;
-   font-weight: bold;
-}
-.logout_btn {
-   margin-top: 10px;
-   width: 180px; 
-   height: 30px;
-   border-radius: 7px;
-   background-color: #FFC700;
-   box-shadow : 2px 2px 5px #707070;
-   cursor: pointer;
-   border: 0px;
-   outline: 0px;
-}
-.logout_btn:hover {background-color:#FFC305}
-
-.setting_text {
-   margin-top: 6px;
-   font-size: 15px;
-}
-
-.project_name {
-   cursor: pointer;
-}
-.project_name h1:hover {
-   color: #8a96ac;
-}
-=======
 
 #modal_content_rv{
 
@@ -1005,4 +890,3 @@ label > span {
 .input_group_link > img, p {
    float:left;
 }
->>>>>>> Stashed changes

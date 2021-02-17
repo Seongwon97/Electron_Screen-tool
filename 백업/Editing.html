@@ -37,14 +37,6 @@
 </head>
 <body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
     <div class="container flex_column">
-        <div class="setting" id="setting">
-            <div class="user_name" id="setting_user_name"></div>
-            <div id="email" class="setting_text"></div>
-            <div id="company_name" class="setting_text"></div>
-            <button class="logout_btn">logout</button>
-            
-            
-        </div>
         <div class="header">
             <nav>
                 <div class="header_left">
@@ -53,7 +45,7 @@
                 <div class="header_right_box">   
                     <button class="header_alarm" id="header_alarm"><img src="../image/alarm.png" width="20" ></button>
 
-                    <button class="header_user_icon" id="user_icon"></button>
+                    <button class="header_user_icon"><img src="../image/icon_temp.png" width="40" ></button>
                 </div>
             </nav>
         </div>
@@ -111,7 +103,7 @@
                     <div class="revise_time"><p id="revise_time">최근 수정일: 2020.01.22</p></div>
                 </div>
 
-                <div class="editing_canvas" id="editing_canvas">
+                <div class="editing_canvas">
                     <canvas id="canvas" class="canvas"></canvas>
                     
                     <div class="progress_critical">
