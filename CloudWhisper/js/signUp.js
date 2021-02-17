@@ -1,66 +1,56 @@
-const { powerSaveBlocker } = require("electron");
-
-//declare databse 
-const database = firebase.database();
-const rootRef = database.ref("users");
-
-// //delcare user's info
-// var companyName, name, email, password, uid;
-
-
 function signUp() {    
     var email = document.getElementById("email").value;
-    var password = document
-        .getElementById("pw")
-        .value;
-    var verifyPw = document
-        .getElementById("rePw")
-        .value;
-
+    var password = document.getElementById("pw").value;
+    var verifyPw = document.getElementById("rePw").value;
     var companyName = document.getElementById("companyName").value;
     var name = document.getElementById("name").value;
-
-    if (password == verifyPw) {
-        firebase
-            .auth()
-            .createUserWithEmailAndPassword(email, password)
-            .then((user) => {
-                // Signed in ...
-                window.alert(
-                    "파이어베이스 연동 성공Email: " + userEmail + "Password: " + password + "정보로 회원가입에 성공하였습니" +
-                    "다."
-                );
-                location.href = "../html/login.html"
-            })
-            .catch((error) => {
-                var errorCode = error.code;
-                var errorMessage = error.message;
-                if (errorMessage == "userEmail is not defined") {
-                    user = firebase.auth().currentUser;
-                    uid = user.uid;
-                    window.alert("회원가입 성공 E-mail: " + email + " Assigned UID is " + uid +"companyName = " + companyName + "name = " + name);
-                    rootRef.child(uid).set({
-                            UID: uid,
-                            companyName: companyName,
-                            name: name,
-                            email: email
-                        });
-                    location.href = "../html/login.html";
-                    } else 
-                    window.alert("파베 연동 실패Error: " + errorMessage + "E-mail: " + email);
-                }
-            );
-    } else {
-        window.alert("비밀번호가 일치하지 않습니다.");
+    
+    var check = document.getElementsByName('agree');
+    var isChecked = false;
+    for(var i = 0; i < check.length; i++) {
+        if(check[i].checked) {
+            isChecked = true;
+        }
+        else {
+            isChecked = false;
+        }
     }
+
+
+    if ((email.length > 1) && (password.length > 1) && (verifyPw.length > 1) && (companyName.length > 1) && 
+        (name.length > 1) && (password == verifyPw) && isChecked) {
+        firebase.auth().createUserWithEmailAndPassword(email, password).then(function() {
+                // Signed in ...
+            var rootRef = firebase.database().ref('User/');
+            rootRef.push({
+                name: name,
+                email: email,
+                password: password,
+                companyName: companyName     
+            });
+            alert("회원가입에 성공하였습니다.");
+            setTimeout(function(){
+                firebase.auth().signOut();
+                window.location.href = '../html/login.html';},500);
+        }).catch(function(error){
+            if(password.toString().length <=5){
+                alert("비밀번호를 6자리 이상 입력해주세요.");
+            }
+            else {
+                alert("이미 가입된 이메일입니다.");
+            }
+            });
+    } 
+    else{
+        if(password!=verifyPw){
+            alert("비밀번호를 다시 입력해주세요.");
+        }
+        else if (!isChecked) {
+            alert("모든 약관에 동의해 주세요.");
+        }
+        else{
+            alert("정보를 정확하게 입력해주세요.");
+        }
+      }
+    
 }
-
-// firebase
-//     .auth()
-//     .onAuthstateChanged(function (user) {
-//         if (user) {
-//             location.href = "../html/login.html"
-//         }
-//     });
-
-// function test1(){     window.alert("function test1"); }

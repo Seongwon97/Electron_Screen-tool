@@ -76,29 +76,24 @@ body {
    margin-top: 35px;
 }
 
-input[type=text] {
+.signup_input {
    width: 100%;
    padding: 12px 10px;
    border-radius: 10px;
-   border-color: #666!important;
+   border: 1px #666 solid;
    border-width: thin;
-   
- }
-
- input[type=password] {
-   width: 100%;
-   padding: 12px 10px;
-   border-radius: 10px;
-   border-color:#666!important;
-   border-width: thin;
- }
+}
+.signup_input:focus {
+   outline:none;
+   border-color: #FFC700;
+}
 
 .sign_btn {
    font-size: 13px;
    margin-left: 220px;
    margin-top: 20px;
    padding: 15px 45px;
-   background-color: #FFD659;
+   background-color: #FFC700;
    border-radius: 30px;
    border: 0px;
    outline: 0px;
@@ -106,7 +101,7 @@ input[type=text] {
    box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.25);
    cursor: pointer;
 }
-.sign_btn:hover {background-color:#FFC305}
+.sign_btn:hover {background-color:#FFD659}
 
 .sign_btn:active {
   background-color:#FFC305;
@@ -129,7 +124,7 @@ input[type=text] {
 }
 .create_account {
    margin-top: 15px;
-   
+
 }
 .signUp {
    float: left;
@@ -138,7 +133,7 @@ input[type=text] {
    position: relative;
    font-family: KoPubWorldDotumMedium,"Helvetica Neue",Helvetica,Arial,sans-serif;
    color:#666!important;
-   
+
 }
 .signUp_sub1 {
    position: absolute;
@@ -159,7 +154,7 @@ input[type=text] {
 .signUp_condition {
    margin-top: 20px;
    text-decoration: none;
-   font-size: 12px; 
+   font-size: 12px;
    color: #12B5EE;
 }
 .signUp_btn {
@@ -167,7 +162,7 @@ input[type=text] {
    margin-left: 220px;
    margin-top: 20px;
    padding: 15px 30px;
-   background-color: #FFD659;
+   background-color: #FFC700;
    border-radius: 30px;
    border: 0px;
    outline: 0px;
@@ -266,7 +261,7 @@ input[type=text] {
 }
 .header_left {
    float: left;
-   margin-left: 16px;  
+   margin-left: 16px;
    margin-top: 6px;
 }
 .header_right_box {
@@ -369,12 +364,12 @@ input[type=text] {
    margin-left: 7%;
 }
 
-.capture_btn:focus, 
-.pencil_btn:focus, 
-.square_btn:focus, 
-.circle_btn:focus, 
-.arrow_btn:focus, 
-.comment_btn:focus, 
+.capture_btn:focus,
+.pencil_btn:focus,
+.square_btn:focus,
+.circle_btn:focus,
+.arrow_btn:focus,
+.comment_btn:focus,
 .edit_btn_div2:focus {
    border: none;
    outline: none;
@@ -652,7 +647,7 @@ label > span {
 }
 .comment_list_delete_btn:hover {
    background-color: rgb(247, 214, 107);
-} 
+}
 
 
 .browse-btn {
@@ -672,7 +667,7 @@ label > span {
    height:20%;
    border: none;
 }
-.bar{ 
+.bar{
    widows: 300px;
    height:1px;
    background:#ACACAC;
@@ -792,7 +787,7 @@ label > span {
    border-radius: 4px;
    cursor: pointer;
    position:absolute;
-   right:80px;   
+   right:80px;
 }
 
 .modal_content > button {
@@ -806,7 +801,7 @@ label > span {
    border-radius: 4px;
    cursor: pointer;
    position:absolute;
-   right:50px;   
+   right:50px;
 }
 
 .hidden {
@@ -861,7 +856,7 @@ label > span {
   word-break: normal;
   text-overflow: ellipsis;
 }
-<<<<<<< Updated upstream
+
 .comment_input {
    text-align: left;
    min-height: 100px;
@@ -956,7 +951,7 @@ label > span {
 }
 .logout_btn {
    margin-top: 10px;
-   width: 180px; 
+   width: 180px;
    height: 30px;
    border-radius: 7px;
    background-color: #FFC700;
@@ -978,7 +973,6 @@ label > span {
 .project_name h1:hover {
    color: #8a96ac;
 }
-=======
 
 #modal_content_rv{
 
@@ -993,7 +987,7 @@ label > span {
 .help_block{
   display: block;
   margin-top: 5px;
-  color: #737373; 
+  color: #737373;
   font-size: 5px;
   text-align: left;
 }
@@ -1005,4 +999,3 @@ label > span {
 .input_group_link > img, p {
    float:left;
 }
->>>>>>> Stashed changes

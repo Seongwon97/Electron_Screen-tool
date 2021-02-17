@@ -11,6 +11,8 @@
     </style>
 </head>
 <body>
+    <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-analytics.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase.js"></script>
     <script type="text/javascript" src="../js/firebaseInit.js"></script>
     <script type="text/javascript" src="../js/signUp.js"></script>
@@ -33,28 +35,28 @@
                     <h2>기업 계정 생성</h2>
                     <div class="mt30">
                         <h4>기업명</h4>
-                        <input type="text" placeholder="기업명을 입력하세요" name="companyName" id="companyName"> 
+                        <input type="text" class="signup_input" placeholder="기업명을 입력하세요" name="companyName" id="companyName"> 
                     </div>
                     <div class="mt35">
                         <h4>이름</h4>
-                        <input type="text" placeholder="이름을 입력하세요" name="name" id="name">  
+                        <input type="text" class="signup_input" placeholder="이름을 입력하세요" name="name" id="name">  
                     </div>
                     <div class="mt35">
                         <h4>이메일 주소</h4>
-                        <input type="text" placeholder="이메일을 입력하세요" name="email" id="email">  
+                        <input type="text" class="signup_input" placeholder="이메일을 입력하세요" name="email" id="email">  
                     </div>
                     <div class="mt35">
                         <h4>비밀번호</h4>
-                        <input type="password" placeholder="관리자 비밀번호를 입력하세요" name="password" id="pw">  
+                        <input type="password" class="signup_input" placeholder="관리자 비밀번호를 입력하세요" name="password" id="pw">  
                     </div>
                     <div class="mt35">
                         <h4>비밀번호 확인</h4>
-                        <input type="password" placeholder="비밀번호를 한번 더 입력하세요" name="rePassword" id="rePw">  
+                        <input type="password" class="signup_input" placeholder="비밀번호를 한번 더 입력하세요" name="rePassword" id="rePw">  
                     </div>
 
                     <div class="signUp_condition">
-                        <div><input type="checkbox" name="maintain" value="maintain"> 개인정보 취급 방침 및 이용약관에 동의 (필수)</div>
-                        <div><input type="checkbox" name="maintain" value="maintain"> 정보안내 및 활용에 동의 (필수)</div>
+                        <div><input type="checkbox" name="agree" id="check1"> 개인정보 취급 방침 및 이용약관에 동의 (필수)</div>
+                        <div><input type="checkbox" name="agree" id="check2"> 정보안내 및 활용에 동의 (필수)</div>
                     </div>
                     
                     
