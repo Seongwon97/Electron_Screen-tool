@@ -19,54 +19,20 @@
                 }
             }
         </style>
-
-<<<<<<< Updated upstream
-                    <button class="header_user_icon"></button>
-                </div>
-            </nav>
-        </div>
-    
-        <div class="main_container">
-            <aside class="left_aside" id="left_aside">
-                <nav class="nav" role="navigation">
-                    <ul class="nav__list">
-                      <li>
-                        <input id="group-1" type="checkbox" hidden />
-                        <label for="group-1"><span class="fa fa-angle-right"></span>Team/Group</label>
-                        <ul class="group-list">
-                          <li><a href="#">Team1</a></li>
-                          <li><a href="#">Team2</a></li>
-                          <li><a href="#">Team3</a></li>
-                          <li><a href="#">Team4</a></li>
-                        </ul>
-                      </li>
-                      <li>
-                        <input id="group-2" type="checkbox" hidden />
-                        <label for="group-2"><span class="fa fa-angle-right"></span>Project</label>
-                        <ul class="group-list">
-                            <li><a href="#">Project1</a></li>
-                            <li><a href="#">Project2</a></li>
-                            <li><a href="#">Project3</a></li>
-                            <li><a href="#">Project4</a></li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </nav>
-                
-            </aside> 
-            <section class="content flex_column"> 
-                <div class="file_setting"></div>
-                <div class="file_list"></div>
-            </section> 
-            <aside class="right_aside flex_column" id="right_aside">
-                <div class="right_aside_content"></div>
-=======
         <title>Coudike Feedback</title>
     </head>
     <body>
         <script type="text/javascript" src="../js/main.js"></script>
+        <script src="../js/jquery-3.5.1.js"></script>
         <!-- change-->
         <div class="container flex_column">
+            <div class="setting" id="setting">
+                <div class="user_name" id="setting_user_name"></div>
+                <div id="email" class="setting_text"></div>
+                <div id="company_name" class="setting_text"></div>
+                <button class="logout_btn">logout</button>
+            </div>
+
             <div class="header">
                 <nav>
                     <div class="header_left">
@@ -75,9 +41,7 @@
 
                     <div class="header_right_box">
                         <button class="header_alarm" id="header_alarm"><img src="../image/alarm.png" width="20"></button>
->>>>>>> Stashed changes
-
-                        <button class="header_user_icon"><img src="../image/icon_temp.png" width="40"></button>
+                        <button class="header_user_icon" id="user_icon"></button>
                     </div>
                 </nav>
             </div>
@@ -146,6 +110,10 @@
         <div class="modal hidden" id="modal_project">
             <div class="modal_overlay"></div>
             <div class="modal_content">
+                <div class="modal_head">
+                    <div class="text">Create a new project</div>
+                    <button class="X" onclick="closeModal()">X</button>
+                </div>
                 <div class="modal_input_group">
                     <input
                         type="text"

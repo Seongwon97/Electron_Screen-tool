@@ -16,7 +16,6 @@ function signUp() {
         }
     }
 
-
     if ((email.length > 1) && (password.length > 1) && (verifyPw.length > 1) && (companyName.length > 1) && 
         (name.length > 1) && (password == verifyPw) && isChecked) {
         firebase.auth().createUserWithEmailAndPassword(email, password).then(function() {
@@ -75,4 +74,8 @@ function logout(){
     }, function(error){
         alert("log out fail!");
     });
+}
+
+function find_pwd() {
+
 }

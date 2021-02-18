@@ -999,3 +999,17 @@ label > span {
 .input_group_link > img, p {
    float:left;
 }
+.modal_head{
+   width:98%;
+   position:absolute;
+   left:5;
+   top: -30;
+   color:#fff;
+   display: flex;
+   justify-content: space-between;
+}
+
+.x{
+   all:unset;
+   cursor:pointer;
+}

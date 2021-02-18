@@ -1,4 +1,20 @@
+var user_name = "유저"; // firebase에서 값 받아와서 저장
 window.onload = function () {
+
+    document.getElementById("setting_user_name").innerHTML = user_name;
+    //firebase에서 email정보 불러와서 저장
+    document.getElementById("email").innerHTML = "qweqwe@naver.com";
+    document.getElementById("company_name").innerHTML = "클라우다이크";
+    document.getElementById("user_icon").innerHTML = user_name;
+
+    document.getElementById("user_icon").onclick = function() {
+        if($('#setting').css('display') == 'none'){
+            $('#setting').show();
+          } else{
+            $('#setting').hide();
+          }
+    }
+
 
     //add project & reviewer
 
@@ -6,6 +22,7 @@ window.onload = function () {
     var btn_add_pj = document.getElementById("btn_add_pj");
     var ico_add_reviewer = document.getElementById("ico_add_reviewer");
     var btn_add_rv = document.getElementById("btn_add_rv");
+
 
     // button hovering effect
     btn_add_pj.onmouseover = function () {
@@ -42,7 +59,7 @@ window.onload = function () {
     btn_add_pj.addEventListener("click", openNewProject);
     
     //close modal
-    const closeModal =() =>{
+    function closeModal() {
         modal_pj.classList.add("hidden");
         modal_rv.classList.add("hidden");
     }
@@ -68,6 +85,7 @@ window.onload = function () {
         closeModal();
     }
     overlay_pj.addEventListener("click", closeModal);
+
     submitBtn.addEventListener("click", createProject);
 
     
