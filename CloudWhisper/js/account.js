@@ -1,3 +1,15 @@
+firebase.auth().onAuthStateChanged((user) => {
+    //로그인하고 로그아웃할때 시행됨.
+    //로그인된다면 main page로, 로그아웃된다면 login page로
+    if (user) {
+        window.location.href = 'main.html';
+    }
+    else {
+        window.location.href = "login.html";
+    }
+});
+
+
 function signUp() {    
     var email = document.getElementById("email").value;
     var password = document.getElementById("pw").value;
@@ -60,7 +72,7 @@ function login(){
     var userPass=document.getElementById("userPW").value;
     firebase.auth().signInWithEmailAndPassword(userEmail, userPass).then(function(){
         alert("Log in complete! Thank you.");
-        setTimeout(function(){window.location.href = 'main.html';},500);
+        
     }).catch(function(error){
         alert("Log-in fail! ");
     });
