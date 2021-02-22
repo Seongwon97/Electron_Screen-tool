@@ -950,7 +950,7 @@ label > span {
    background-color: white;
    box-shadow : 2px 2px 5px #707070;
    display: none;
-   z-index: 0;
+   z-index: 2;
    padding: 10px;
 }
 .user_name {
@@ -1021,4 +1021,28 @@ label > span {
 .x{
    all:unset;
    cursor:pointer;
+}
+
+.member_name {
+   float: left;
+   font-size: 17px;
+   margin: 10px 0px 0px 15px;
+   font-weight: bold;
+
+}
+
+.member_email_phone_div {
+   display: inline-block;
+   margin: 7px 0px 0px 20px;
+}
+
+.member_email_phone_icon {
+   height: 18px;
+   width: 18px;
+   float: left;
+}
+.member_email_phone_text {
+   float: left;
+   font-size: 15px;
+   margin-left: 10px;
 }

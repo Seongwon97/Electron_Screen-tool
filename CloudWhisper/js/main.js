@@ -5,7 +5,7 @@ window.onload = function () {
         var ref = firebase.database().ref("User/");
         ref.on("value", function (snapshot) {
             snapshot.forEach(function (data) {
-                if(data.val().email == firebase.auth().currentUser.email){
+                if(data.val().email == firebase.auth().currentUser.email) {
                     document.getElementById("setting_user_name").innerHTML = data.val().name;
                     document.getElementById("email").innerHTML = data.val().email;
                     document.getElementById("company_name").innerHTML = data.val().companyName;
@@ -16,6 +16,58 @@ window.onload = function () {
                     else {
                         document.getElementById("user_icon").innerHTML = data.val().name
                     }
+                }
+                else {
+                    var member_list_div = document.createElement('div');
+                    member_list_div.classList.add("comment_list");
+                    document.getElementById('member_content').appendChild(member_list_div);
+                    
+                    var member_icon_name = document.createElement('div');
+                    member_icon_name.style.display = 'inline-block';
+                    member_list_div.appendChild(member_icon_name);
+
+                    var member_icon = document.createElement('img');
+                    member_icon.style.width = '50px';
+                    member_icon.style.height = '50px';
+                    member_icon.style.float = "left";
+                    member_icon.setAttribute('src', '../image/icon_temp.png');
+                    member_icon_name.appendChild(member_icon);
+
+                    var member_name = document.createElement('div');
+                    member_name.innerHTML = data.val().name;
+                    member_name.classList.add("member_name");
+                    member_icon_name.appendChild(member_name);
+
+                    
+                    var member_email_div = document.createElement('div');
+                    member_email_div.classList.add("member_email_phone_div");
+                    member_list_div.appendChild(member_email_div);
+
+                    var member_email_icon = document.createElement('img');
+                    member_email_icon.classList.add("member_email_phone_icon");
+                    member_email_icon.setAttribute('src', '../image/email.png');
+                    member_email_div.appendChild(member_email_icon);
+
+                    var member_email = document.createElement('div');
+                    member_email.classList.add("member_email_phone_text");
+                    member_email.innerHTML = data.val().email;
+                    member_email_div.appendChild(member_email);
+                    
+
+
+                    var member_tel_div = document.createElement('div');
+                    member_tel_div.classList.add("member_email_phone_div");
+                    member_list_div.appendChild(member_tel_div);
+
+                    var member_tel_icon = document.createElement('img');
+                    member_tel_icon.classList.add("member_email_phone_icon");
+                    member_tel_icon.setAttribute('src', '../image/phone.png');
+                    member_tel_div.appendChild(member_tel_icon);
+
+                    var member_tel = document.createElement('div');
+                    member_tel.classList.add("member_email_phone_text");
+                    member_tel.innerHTML = "010-0000-0000";
+                    member_tel_div.appendChild(member_tel);
                 }
             });
         });
@@ -32,7 +84,7 @@ window.onload = function () {
           }
     }
 
-    
+
 
 
     //add project & reviewer
