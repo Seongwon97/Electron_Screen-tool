@@ -1,5 +1,11 @@
 var user_name = "유저"; // firebase에서 값 받아와서 저장
 window.onload = function () {
+
+    windowHeight = window.innerHeight;
+    var right_aside_content = document.getElementById("member_content");
+    right_aside_content.style.height = windowHeight -158;
+
+
     firebase.auth().onAuthStateChanged(function(user){
         if(user){
         var ref = firebase.database().ref("User/");
