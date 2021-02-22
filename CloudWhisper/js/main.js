@@ -33,8 +33,8 @@ window.onload = function () {
                     member_list_div.appendChild(member_icon_name);
 
                     var member_icon = document.createElement('img');
-                    member_icon.style.width = '50px';
-                    member_icon.style.height = '50px';
+                    member_icon.style.width = '45px';
+                    member_icon.style.height = '45px';
                     member_icon.style.float = "left";
                     member_icon.setAttribute('src', '../image/icon_temp.png');
                     member_icon_name.appendChild(member_icon);
