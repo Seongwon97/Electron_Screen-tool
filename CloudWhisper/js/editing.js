@@ -41,6 +41,34 @@ var possible = true; //annotation을 그리고 코멘트 컨펌을 했는지 안
                     //컨펌이 안됐다면 다음 그림 그리기 불가.
 var toDelete = false; //화면 위에 comment들을 클릭후 클릭을 없애고 삭제할때 오류를 방지
 window.onload = function(){
+
+    //유저 데이터 정보 받아오는 부분
+    firebase.auth().onAuthStateChanged(function(user){
+        if(user){
+        var ref = firebase.database().ref("User/");
+        ref.on("value", function (snapshot) {
+            snapshot.forEach(function (data) {
+                if(data.val().email == firebase.auth().currentUser.email) {
+                    user_name = data.val().name;
+                    document.getElementById("setting_user_name").innerHTML = data.val().name;
+                    document.getElementById("email").innerHTML = data.val().email;
+                    document.getElementById("company_name").innerHTML = data.val().companyName;
+                    if (data.val().name.length >= 2) {
+                        document.getElementById("user_icon").innerHTML = data.val().name.substring(1, 3);
+                        //이름이 3글자일 경우만 생각했다. 영어 이름이나 4글자부터는 다시 지정해야함.
+                    }
+                    else {
+                        document.getElementById("user_icon").innerHTML = data.val().name
+                    }
+                }
+            });
+        });
+        }
+    });
+    document.getElementById("logout_btn").onclick = function() {
+        logout();
+    }
+
     //전 페이지에서 선택된 projcet의 이름을 받아오기
     //저장은 project_name변수에
 
@@ -54,14 +82,6 @@ window.onload = function(){
     document.getElementById("editing_comment_list").style.height="57px";
     document.getElementById("editing_comment_list").style.paddingBottom="18px"
     //comment를 firebase에서 읽어오고 출력하는 코드 추가해야함
-
-
-    document.getElementById("setting_user_name").innerHTML = user_name;
-    //firebase에서 email정보 불러와서 저장
-    document.getElementById("email").innerHTML = "qweqwe@naver.com";
-    document.getElementById("company_name").innerHTML = "클라우다이크";
-    document.getElementById("user_icon").innerHTML = user_name;
-
 
 
     var canvas =  document.getElementById("canvas");

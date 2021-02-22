@@ -35,12 +35,38 @@
     
 </head>
 <body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
+    <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase.js"></script>
+    <script type="text/javascript" src="../js/firebaseInit.js"></script>
+    <script type="text/javascript" src="../js/account.js"></script>
+    
+    <script type="text/javascript" src="../js/editing.js"></script>
+    <script src="../js/jquery-3.5.1.js"></script>
+    
     <div class="container flex_column">
         <div class="setting" id="setting">
-            <div class="user_name" id="setting_user_name"></div>
-            <div id="email" class="setting_text"></div>
-            <div id="company_name" class="setting_text"></div>
-            <button class="logout_btn">logout</button>
+            <div class="inline_block">
+                <img src="../image/icon_temp.png" class="member_icon2">
+                <div class="user_name" id="setting_user_name"></div>
+            </div>
+
+            <div class="member_email_phone_div">
+                <img src="../image/company.png" class="member_email_phone_icon">
+                <div id="company_name" class="member_email_phone_text"></div>
+            </div>
+
+            <div class="member_email_phone_div">
+                <img src="../image/email.png" class="member_email_phone_icon">
+                <div id="email" class="member_email_phone_text"></div>
+            </div>
+
+            <div class="member_email_phone_div">
+                <img src="../image/phone.png" class="member_email_phone_icon">
+                <div class="member_email_phone_text">010-0000-0000</div>
+            </div>
+
+            <button class="logout_btn" id="logout_btn">logout</button>
         </div>
 
         <div class="header">
@@ -154,9 +180,5 @@
             </aside>
         </div>
     </div>
-
-
-    <script type="text/javascript" src="../js/editing.js"></script>
-    <script src="../js/jquery-3.5.1.js"></script>
 </body>
 </html>
