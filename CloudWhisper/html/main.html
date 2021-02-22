@@ -22,15 +22,21 @@
         <title>Coudike Feedback</title>
     </head>
     <body>
-        <script type="text/javascript" src="../js/main.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-analytics.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase.js"></script>
+        <script type="text/javascript" src="../js/firebaseInit.js"></script>
+        <script type="text/javascript" src="../js/account.js"></script>
         <script src="../js/jquery-3.5.1.js"></script>
+
+        <script type="text/javascript" src="../js/main.js"></script>
         <!-- change-->
         <div class="container flex_column">
             <div class="setting" id="setting">
                 <div class="user_name" id="setting_user_name"></div>
                 <div id="email" class="setting_text"></div>
                 <div id="company_name" class="setting_text"></div>
-                <button class="logout_btn">logout</button>
+                <button class="logout_btn" id="logout_btn">logout</button>
             </div>
 
             <div class="header">
@@ -95,7 +101,9 @@
                     <div class="file_list"></div>
                 </section>
                 <aside class="right_aside flex_column" id="right_aside">
-                    <div class="right_aside_content"></div>
+                    <div class="right_aside_content3">
+                        <div class="right_aside_content2" id="member_content"></div>
+                    </div>
                     <div id="add_new_reviewer" class="btn_hover">
                         <button class="btn_add_new" id="btn_add_rv">
                             <img class="ico_add" id="ico_add_reviewer" src="../image/add.png"></img>

@@ -518,7 +518,7 @@ body {
    margin: 0 auto;
    margin-bottom: 10px;
    border-radius: 10px;
-   flex: 1
+   flex: 1;
 }
 .right_aside_content2 {
    overflow: auto;
@@ -527,7 +527,16 @@ body {
    margin: 0 auto;
    margin-top: 10px;
    border-radius: 10px;
-   flex: 1
+   flex: 1;
+}
+.right_aside_content3 {
+   background: #959BA5;
+   width: 95%;
+   margin: 0 auto;
+   margin-top: 10px;
+   margin-bottom: 10px;
+   border-radius: 10px;
+   flex: 1;
 }
 .right_aside_content2::-webkit-scrollbar {
    width: 8px;

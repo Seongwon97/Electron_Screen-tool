@@ -1,11 +1,13 @@
+
 firebase.auth().onAuthStateChanged((user) => {
     //로그인하고 로그아웃할때 시행됨.
     //로그인된다면 main page로, 로그아웃된다면 login page로
     if (user) {
-        window.location.href = 'main.html';
+        var user = firebase.auth().currentUser;
+        console.log("User login ");
     }
     else {
-        window.location.href = "login.html";
+        console.log("User logout ");
     }
 });
 
@@ -72,7 +74,7 @@ function login(){
     var userPass=document.getElementById("userPW").value;
     firebase.auth().signInWithEmailAndPassword(userEmail, userPass).then(function(){
         alert("Log in complete! Thank you.");
-        
+        window.location.href = 'main.html';
     }).catch(function(error){
         alert("Log-in fail! ");
     });
@@ -80,9 +82,10 @@ function login(){
 
 function logout(){
     firebase.auth().signOut().then(function(){
-        alertify.alert("log out success!");
-        setTimeout(function(){    
-        window.location.href = 'login.html';},500);
+        alert("log out success!");
+        window.location.href = 'login.html';
+        // setTimeout(function(){    
+        // window.location.href = 'login.html';},500);
     }, function(error){
         alert("log out fail!");
     });
@@ -90,4 +93,10 @@ function logout(){
 
 function find_pwd() {
 
+}
+
+function enterkey() {
+    if (window.event.keyCode == 13) {
+         login();
+    }
 }

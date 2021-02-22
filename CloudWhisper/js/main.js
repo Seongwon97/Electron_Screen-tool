@@ -1,12 +1,29 @@
 var user_name = "유저"; // firebase에서 값 받아와서 저장
 window.onload = function () {
-
-    document.getElementById("setting_user_name").innerHTML = user_name;
-    //firebase에서 email정보 불러와서 저장
-    document.getElementById("email").innerHTML = "qweqwe@naver.com";
-    document.getElementById("company_name").innerHTML = "클라우다이크";
-    document.getElementById("user_icon").innerHTML = user_name;
-
+    firebase.auth().onAuthStateChanged(function(user){
+        if(user){
+        var ref = firebase.database().ref("User/");
+        ref.on("value", function (snapshot) {
+            snapshot.forEach(function (data) {
+                if(data.val().email == firebase.auth().currentUser.email){
+                    document.getElementById("setting_user_name").innerHTML = data.val().name;
+                    document.getElementById("email").innerHTML = data.val().email;
+                    document.getElementById("company_name").innerHTML = data.val().companyName;
+                    if (data.val().name.length >= 2) {
+                        document.getElementById("user_icon").innerHTML = data.val().name.substring(1, 3);
+                        //이름이 3글자일 경우만 생각했다. 영어 이름이나 4글자부터는 다시 지정해야함.
+                    }
+                    else {
+                        document.getElementById("user_icon").innerHTML = data.val().name
+                    }
+                }
+            });
+        });
+        }
+    });
+    document.getElementById("logout_btn").onclick = function() {
+        logout();
+    }
     document.getElementById("user_icon").onclick = function() {
         if($('#setting').css('display') == 'none'){
             $('#setting').show();
@@ -14,6 +31,8 @@ window.onload = function () {
             $('#setting').hide();
           }
     }
+
+    
 
 
     //add project & reviewer
@@ -108,3 +127,4 @@ window.onload = function () {
     overlay_rv.addEventListener("click", closeModal);
     sendBtn.addEventListener("click", closeModal);
 }
+
