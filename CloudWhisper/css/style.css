@@ -940,27 +940,32 @@ label > span {
 }
 
 .setting {
-   width: 200px;
-   height: 140px;
+   width: 280px;
    position: absolute;
    right: 20px;
    top: 50px;
    cursor: pointer;
    border-radius: 7px;
-   background-color: white;
+   background-color: #F1F1F1;
    box-shadow : 2px 2px 5px #707070;
    display: none;
    z-index: 2;
-   padding: 10px;
+   padding: 7px 15px;
+}
+
+.inline_block {
+   display: inline-block;
 }
 .user_name {
    width: 100px;
-   height: 30px;
+   float: left;
+   font-size: 17px;
+   margin: 12px 0px 0px 15px;
    font-weight: bold;
 }
 .logout_btn {
-   margin-top: 10px;
-   width: 180px;
+   margin: 10px 0px 4px 10px;
+   width: 230px;
    height: 30px;
    border-radius: 7px;
    background-color: #FFC700;
@@ -970,11 +975,6 @@ label > span {
    outline: 0px;
 }
 .logout_btn:hover {background-color:#FFC305}
-
-.setting_text {
-   margin-top: 6px;
-   font-size: 15px;
-}
 
 .project_name {
    cursor: pointer;
@@ -1030,9 +1030,20 @@ label > span {
    font-weight: bold;
 }
 
+.member_icon {
+   width: 45px;
+   height: 45px;
+   float: left;
+}
+.member_icon2 {
+   width: 60px;
+   height: 60px;
+   float: left;
+}
+
 .member_email_phone_div {
    display: inline-block;
-   margin: 7px 0px 0px 20px;
+   margin: 7px 0px 0px 18px;
 }
 
 .member_email_phone_icon {

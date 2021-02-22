@@ -27,15 +27,14 @@ window.onload = function () {
                     var member_list_div = document.createElement('div');
                     member_list_div.classList.add("comment_list");
                     document.getElementById('member_content').appendChild(member_list_div);
-                    
+
+                    //member name
                     var member_icon_name = document.createElement('div');
                     member_icon_name.style.display = 'inline-block';
                     member_list_div.appendChild(member_icon_name);
 
                     var member_icon = document.createElement('img');
-                    member_icon.style.width = '45px';
-                    member_icon.style.height = '45px';
-                    member_icon.style.float = "left";
+                    member_icon.classList.add("member_icon");
                     member_icon.setAttribute('src', '../image/icon_temp.png');
                     member_icon_name.appendChild(member_icon);
 
@@ -44,7 +43,7 @@ window.onload = function () {
                     member_name.classList.add("member_name");
                     member_icon_name.appendChild(member_name);
 
-                    
+                    //email
                     var member_email_div = document.createElement('div');
                     member_email_div.classList.add("member_email_phone_div");
                     member_list_div.appendChild(member_email_div);
@@ -59,8 +58,7 @@ window.onload = function () {
                     member_email.innerHTML = data.val().email;
                     member_email_div.appendChild(member_email);
                     
-
-
+                    //phone
                     var member_tel_div = document.createElement('div');
                     member_tel_div.classList.add("member_email_phone_div");
                     member_list_div.appendChild(member_tel_div);
