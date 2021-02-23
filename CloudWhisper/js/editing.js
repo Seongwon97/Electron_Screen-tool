@@ -233,7 +233,6 @@ window.onload = function(){
                         end_y: ey,
                         color: line_color,
                         lineWidth: line_width,
-                        remain: true,
                         clicked: false,
                         screen_sx: screen_sx,
                         screen_sy: screen_sy,
@@ -267,7 +266,6 @@ window.onload = function(){
                         end_y: ey,
                         color: line_color,
                         lineWidth: line_width,
-                        remain: true,
                         clicked: false,
                         screen_sx: screen_sx,
                         screen_sy: screen_sy,
@@ -299,7 +297,6 @@ window.onload = function(){
                         end_y: null,
                         color: line_color,
                         lineWidth: line_width,
-                        remain: true,
                         clicked: false,
                         screen_sx: screen_sx,
                         screen_sy: screen_sy,
@@ -332,7 +329,6 @@ window.onload = function(){
                         end_y: ey,
                         color: line_color,
                         lineWidth: line_width,
-                        remain: true,
                         clicked: false,
                         screen_sx: screen_sx,
                         screen_sy: screen_sy,
@@ -361,7 +357,6 @@ window.onload = function(){
                     end_y: null,
                     color: line_color,
                     lineWidth: line_width,
-                    remain: true,
                     clicked: false,
                     screen_sx: screen_sx,
                     screen_sy: screen_sy,
@@ -712,9 +707,7 @@ window.onload = function(){
             comment_list=true;
             file_list=false;
             for (var i = 0; i < count; i++) {
-                if (annotation[i].remain) {
-                    add_comment_list(i);
-                }
+                add_comment_list(i);
             }
             document.getElementById("editing_comment_list").style.height="57px";
             document.getElementById("editing_comment_list").style.paddingBottom="18px"
@@ -814,16 +807,14 @@ window.onresize = function(){
     for (var i = 0; i < count; i++) {
         var annotation_canvas_id = "annotation_canvas".concat(i);
         var annotation_info_id = "annotation_info".concat(i);
-        if (annotation[i].remain){
-            var comment_div = document.getElementById(annotation_canvas_id);
-            var parent = comment_div.parentElement;
-            parent.removeChild(comment_div);
-            add_comment_canvas(i);
+        var comment_div = document.getElementById(annotation_canvas_id);
+        var parent = comment_div.parentElement;
+        parent.removeChild(comment_div);
+        add_comment_canvas(i);
 
-            var info_div = document.getElementById(annotation_info_id);
-            parent.removeChild(info_div);
-            add_annotation_info(i);
-        }
+        var info_div = document.getElementById(annotation_info_id);
+        parent.removeChild(info_div);
+        add_annotation_info(i);
         
     }
     
@@ -850,46 +841,44 @@ function draw_annotation(){
         context.drawImage(img, x, y, img.width * scale, img.height * scale);
         var clicked_annotation;
         for (var i = 0; i < count; i++) {
-            if (annotation[i].remain) {
-                if(annotation[i].clicked) {
-                    clicked_annotation = annotation[i];
-                }
-                else {
-                    if (annotation[i].type=='line') {
-                        context.lineWidth = annotation[i].lineWidth;
-                        context.strokeStyle = annotation[i].color;
-                        context.beginPath();
-                        context.moveTo(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y);
-                        context.lineTo(annotation[i].end_x * img.width * scale + x, annotation[i].end_y * img.height * scale + y);
-                        context.stroke();
-
-                    }
-                    else if (annotation[i].type=='square') {
-                        context.lineWidth = annotation[i].lineWidth;
-                        context.strokeStyle = annotation[i].color;
-                        context.beginPath();
-                        context.rect(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y,
-                             annotation[i].end_x * img.width * scale, annotation[i].end_y * img.height * scale);
-                        context.stroke();
-                    }
-                    else if (annotation[i].type=='circle') {
-                        context.lineWidth = annotation[i].lineWidth;
-                        context.strokeStyle = annotation[i].color;
-                        context.beginPath();
-                        context.arc(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y,
-                            annotation[i].end_x * img.width * scale, 0, 2*Math.PI);
-                        context.stroke();
-                    }
-                    else if (annotation[i].type=='arrow') {
-                        context.lineWidth = annotation[i].lineWidth;
-                        context.strokeStyle = annotation[i].color;
-                        context.beginPath();
-                        canvas_arrow(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y,
-                            annotation[i].end_x * img.width * scale + x, annotation[i].end_y * img.height * scale + y);
-                    }
-                }
-
+            if(annotation[i].clicked) {
+                clicked_annotation = annotation[i];
             }
+            else {
+                if (annotation[i].type=='line') {
+                    context.lineWidth = annotation[i].lineWidth;
+                    context.strokeStyle = annotation[i].color;
+                    context.beginPath();
+                    context.moveTo(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y);
+                    context.lineTo(annotation[i].end_x * img.width * scale + x, annotation[i].end_y * img.height * scale + y);
+                    context.stroke();
+
+                }
+                else if (annotation[i].type=='square') {
+                    context.lineWidth = annotation[i].lineWidth;
+                    context.strokeStyle = annotation[i].color;
+                    context.beginPath();
+                    context.rect(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y,
+                            annotation[i].end_x * img.width * scale, annotation[i].end_y * img.height * scale);
+                    context.stroke();
+                }
+                else if (annotation[i].type=='circle') {
+                    context.lineWidth = annotation[i].lineWidth;
+                    context.strokeStyle = annotation[i].color;
+                    context.beginPath();
+                    context.arc(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y,
+                        annotation[i].end_x * img.width * scale, 0, 2*Math.PI);
+                    context.stroke();
+                }
+                else if (annotation[i].type=='arrow') {
+                    context.lineWidth = annotation[i].lineWidth;
+                    context.strokeStyle = annotation[i].color;
+                    context.beginPath();
+                    canvas_arrow(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y,
+                        annotation[i].end_x * img.width * scale + x, annotation[i].end_y * img.height * scale + y);
+                }
+            }
+
         }
         if(isClicked != (-1)){
             if (clicked_annotation.type=='line') {
@@ -1003,14 +992,17 @@ function add_comment_list(order) {
             var parent = comment_canvas_div.parentElement;
             parent.removeChild(comment_canvas_div);
 
-            annotation[order].remain=false;
+            count--;
+            console.log("Deleted the", order+1, "th annotation (",annotation[order].type,")");
+            console.log("Number of annotation: ", count);
+
+            annotation.splice(order,1);
+            console.log(annotation.length);
 
             toDelete = true;
-            del_count++;
-            console.log("Deleted the", order, "th annotation (",annotation[order].type,")");
-            console.log("Number of annotation: ", count-del_count);
+            
             //이곳에 firebase에서의 데이터 삭제 내용도 추가할 것.
-            delete_annotation_info (order)
+            delete_annotation_info (order-1);
             draw_annotation();
             
         }else{
@@ -1087,14 +1079,17 @@ function add_comment_canvas(order) {
                 var parent = comment_list_div.parentElement;
                 parent.removeChild(comment_list_div);
                                 
-                annotation[order].remain=false;
- 
+                count--;
+                console.log("Deleted the", order+1, "th annotation (",annotation[order].type,")");
+                console.log("Number of annotation: ", count);
+
+                annotation.splice(order,1);
+                console.log(annotation.length);
+
                 toDelete = true;
-                del_count++;
-                console.log("Deleted the", order, "th annotation (",annotation[order].type,")");
-                console.log("Number of annotation: ", count-del_count);
+                
                 //이곳에 firebase에서의 데이터 삭제 내용도 추가할 것.
-                delete_annotation_info (order);
+                delete_annotation_info (order-1);
                 draw_annotation(order);
             }else{
                 toDelete = true;
@@ -1259,7 +1254,7 @@ function add_annotation_info (order) {
 }
 
 function delete_annotation_info (order) {
-    var annotation_info_id = "annotation_info".concat(order);
+    var annotation_info_id = "annotation_info".concat(order+1);
     var annotation_info_div = document.getElementById(annotation_info_id);
     document.getElementById('editing_canvas').removeChild(annotation_info_div);
 }
@@ -1314,6 +1309,8 @@ function annotation_click_event(order) {
 
 
 function revise_firebase(order) {
+    var key;
+    annoRef.on("")
     annoRef.child(key).update({
         date: annotation[order].date,
         comment: annotation[order].comment
