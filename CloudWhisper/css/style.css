@@ -681,6 +681,7 @@ label > span {
    line-height: 20px;
    border-bottom: 1px solid rgba(66, 78, 70, 0.199);
    margin:3px;
+   font-size:13px;
 }
 
 .ul_dropdown li.dropdown_subMenu a {
@@ -1149,7 +1150,7 @@ label > span {
   display: block;
   margin-top: 5px;
   color: #737373;
-  font-size: 5px;
+  font-size: 10px;
   text-align: left;
 }
 
@@ -1157,14 +1158,11 @@ label > span {
    font-size: 4px;
    display: block;
 }
-/* 
-.input_group_link > img, p {
-   float:left;
-} */
+
 
 .input_group_link{
    float:left;
-   display: inline-block;
+   font-size:9px;
 }
 
 #form_shareLink {
