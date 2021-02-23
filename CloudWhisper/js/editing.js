@@ -26,7 +26,8 @@ var x, y, scale; //canvas에서 사진의 위치 및 크기 조정을 위한 변
 var line_color; //line의 색과 넓이를 담을 변수
 var line_width = 5;
 
-var first_read = true;
+var page_load = true; //데이터를 읽어올때 페이지를 처음 로드했는지 아닌지 구분
+var first_read = true;  //데이터를 처음 읽어오는지
 var annotation =[]; //firebase에서 annotation의 값을 받아와서 저장할 array
 var count = 0; //annotation의 개수를 카운트
 var del_count = 0; //삭제된 annotation의 개수
@@ -82,13 +83,24 @@ window.onload = function(){
 
     annoRef.on('child_added', function(data) {
         key.push(data.key);
-        if(first_read) {
-            annotation.push(data.val());
-            add_comment_canvas(count);
-            add_comment_list(count);
-            add_annotation_info(count);
-            count++;
-            draw_annotation();
+        if(page_load) {
+            if(first_read) {
+                setTimeout(() => { 
+                    annotation.push(data.val());
+                    add_comment_canvas(count);
+                    add_comment_list(count);
+                    add_annotation_info(count);
+                    count++;
+                    draw_annotation(); }, 500);
+            }
+            else {
+                annotation.push(data.val());
+                add_comment_canvas(count);
+                add_comment_list(count);
+                add_annotation_info(count);
+                count++;
+                draw_annotation();
+            } 
         }
     })
 
@@ -102,7 +114,6 @@ window.onload = function(){
     //초기에 보이는 화면을 file이 아닌 comment로 설정한 것.
     document.getElementById("editing_comment_list").style.height="57px";
     document.getElementById("editing_comment_list").style.paddingBottom="18px"
-    //comment를 firebase에서 읽어오고 출력하는 코드 추가해야함
 
 
     var canvas =  document.getElementById("canvas");
@@ -135,7 +146,7 @@ window.onload = function(){
 
     canvas.addEventListener("mousedown", function(e){
         //모든 annotation이 컨펌되어서 그릴수 있는 상태면 측정 시작
-        first_read = false;
+        page_load = false;
         if (possible) {
             lastEvent = e;
             isMouseDown = true;
