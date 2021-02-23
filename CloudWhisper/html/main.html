@@ -76,7 +76,7 @@
                             <li>
                                 <input id="group-1" type="checkbox" hidden="hidden"/>
                                 <label for="group-1">
-                                    <span class="fa fa-angle-right"></span>Team/Group</label>   
+                                    <span class="fa fa-angle-right"></span>Team/Group</label>
                                 <ul class="group-list">
                                     <li>
                                         <a href="#">Team1</a>
@@ -113,31 +113,83 @@
                     </div>
                 </aside>
                 <!-- end of left-aside-->
+
+                <!-- middle of page-->
                 <section class="content flex_column">
-                    <div class="file_setting"></div>
+                    <div class="file_setting">
+                        <div class="file_setting_filter">
+                            <div class="file_div file_div1">
+                                <a class="btn_dropdown option">project 1
+                                    <img class="dropdown" src="../image/drop-down-arrow.png" width="10" height="10">
+                                </a>
+                                <ul class="ul_dropdown">
+                                    <li class="dropdown_subMenu">
+                                        <a href="#">Setting</a>
+                                    </li>
+                                    <li class="dropdown_subMenu">
+                                        <a href="#">Delete</a>
+                                    </li>
+                                    <li class="dropdown_subMenu">
+                                        <a href="#">Add to slack</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="file_div file_div2">
+                                <a class="btn_dropdown filter">
+                                    <img class="filter_img" src="../image/filter.png">filter
+                                    <img
+                                        class="img_dropdown"
+                                        src="../image/drop-down-arrow.png"
+                                        width="10"
+                                        height="10">
+                                </a>
+                                <ul class="ul_dropdown" id="filter">
+                                    <li class="dropdown_subMenu">
+                                        <a href="#">Created</a>
+                                    </li>
+                                    <li class="dropdown_subMenu">
+                                        <a href="#">Updated</a>
+                                    </li>
+                                    <li class="dropdown_subMenu">
+                                        <a href="#">Name</a>
+                                    </li>
+                                    <li class="dropdown_subMenu">
+                                        <a href="#">Due Date</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="file_setting_navbar">
+                            <span class="status_progress">All design<span id="all">0</span></span>
+                            <span class="status_progress">Needs Reivew<span id="review">0</span></span>
+                            <span class="status_progress">Needs Changes<span id="changes">0</span></span>
+                            <span class="status_progress">Approved<span id="approved">0</span></span>
+                            <span class="status_progress">Finalized<span id="finish">0</span></span>
+                        </div>
+                    </div>
                     <div class="file_list"></div>
                 </section>
                 <aside class="right_aside flex_column" id="right_aside">
                     <div class="right_aside_content3">
                         <div class="right_aside_content2" id="member_content"></div>
                     </div>
-                    <div id="add_new_reviewer" class="btn_hover">
+                    <div id="add_new_member" class="btn_hover">
                         <button class="btn_add_new" id="btn_add_rv">
-                            <img class="ico_add" id="ico_add_reviewer" src="../image/add.png"></img>
-                            <sapn>Invite new reviewer</sapn>
+                            <img class="ico_add" id="ico_add_member" src="../image/add.png"></img>
+                            <sapn>Invite new member</sapn>
                         </button>
                     </div>
                 </aside>
             </div>
         </div>
-         <!-- modal -->
+        <!-- modal -->
         <!-- New project-->
         <div class="modal hidden" id="modal_project">
             <div class="modal_overlay"></div>
             <div class="modal_content">
                 <div class="modal_head">
                     <div class="text">Create a new project</div>
-                    <button class="X" onclick="closeModal()">X</button>
+                    <button class="X">X</button>
                 </div>
                 <div class="modal_input_group">
                     <input
@@ -150,29 +202,28 @@
                 <button id="btn_create_project">Create Project</button>
             </div>
         </div>
-        <!-- New reviewer-->
+        <!-- New member-->
         <div class="modal hidden" id="modal_invite">
             <div class="modal_overlay"></div>
             <div class="modal_content" id="modal_content_rv">
                 <div class="section_link">
                     <div class="input_group_link">
-                        <img src="../image/link.png" width="16" height="16">
-                    <p>Share this link for feedback by other collaborators</p>
-                        <form id="form_shareLink">
-                            <input
-                                id="shareLink"
-                                class="form_control"
-                                type="text"
-                                value=""
-                                placeholder="Loading . . ."
-                                readonly="readonly">
-                        </form>
+                        <img src="../image/link.png" width="16" height="16"> Share this link for feedback by other collaborators</img>
                     </div>
                 </div>
+                <form id="form_shareLink">
+                    <input
+                        id="shareLink"
+                        class="form_control"
+                        type="text"
+                        value=""
+                        placeholder="Loading . . ."
+                        readonly="readonly">
+                </form>
                 <div class="modal_input_group">
                     <input
                         type="text"
-                        id="reviewer_email"
+                        id="member_email"
                         class="input_modal"
                         placeholder="새로운 참여자의 이메일을 입력하세요">
                     <div class="bar"></div>

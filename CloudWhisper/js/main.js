@@ -12,7 +12,8 @@ window.onload = function () {
         ref.on("value", function (snapshot) {
             snapshot.forEach(function (data) {
                 if(data.val().email == firebase.auth().currentUser.email) {
-                    document.getElementById("setting_user_name").innerHTML = data.val().name;
+                    user_name = data.val().name;
+                    document.getElementById("setting_user_name").innerHTML = user_name;
                     document.getElementById("email").innerHTML = data.val().email;
                     document.getElementById("company_name").innerHTML = data.val().companyName;
                     if (data.val().name.length >= 2) {
@@ -91,11 +92,11 @@ window.onload = function () {
 
 
 
-    //add project & reviewer
+    //add project & member
 
     var ico_add_project = document.getElementById("ico_add_project");
     var btn_add_pj = document.getElementById("btn_add_pj");
-    var ico_add_reviewer = document.getElementById("ico_add_reviewer");
+    var ico_add_member = document.getElementById("ico_add_member");
     var btn_add_rv = document.getElementById("btn_add_rv");
 
 
@@ -110,20 +111,15 @@ window.onload = function () {
     }
     btn_add_rv.onmouseover = function(){
         console.log("mouseover detected");
-        ico_add_reviewer.setAttribute("src", "../image/add_2.png");
+        ico_add_member.setAttribute("src", "../image/add_2.png");
     }
     btn_add_rv.onmouseout = function () {
         console.log("mouseout detected");
-        ico_add_reviewer.setAttribute("src", "../image/add.png");
+        ico_add_member.setAttribute("src", "../image/add.png");
     }
 
-    /*
-      ###################################################################
-      ################ Modal_make new project & reviewer ################
-      ###################################################################
-    */
 
-    //modal 창 열기 _ make new project
+    //make new project
     const modal_pj = document.getElementById("modal_project");
     const overlay_pj = modal_pj.querySelector(".modal_overlay");
     const submitBtn = modal_pj.querySelector("#btn_create_project");
@@ -140,47 +136,75 @@ window.onload = function () {
     }
     
     const createProject = () =>{
-        // #TBU : firebase 프로젝트 객체 생성
         var project_name = document.getElementById("project_name");
         var projectName = project_name.value;
         window.alert("project가 생성 되었습니다." + projectName);
-
+        
         var li = document.createElement("li");
         var a = document.createElement("a");
         a.setAttribute("href","####");
         a.innerHTML = projectName;
-
+        
         document.getElementById("group-2").nextSibling.nextSibling.nextSibling.nextSibling.appendChild(li);
         li.appendChild(a);
-
-        // console.log(temp);
+        
+        //firebase 프로젝트 객체 생성
+        var projectRef = firebase.database().ref("Project/");
+        
+        projectRef.child(projectName).set({
+            HostName: user_name,
+            projectName: projectName,
+            Images: "images",
+            Members: "members"
+        });
 
 
         project_name.value=null;
         closeModal();
     }
     overlay_pj.addEventListener("click", closeModal);
-
     submitBtn.addEventListener("click", createProject);
+    $('.X').click(closeModal);
 
     
-    //modal 창 열기 _ make new reviewer
-
+    //make new member
     const modal_rv = document.getElementById("modal_invite");
     if(modal_rv != null){
         console.log("success: get Element of modal_rv");    
     }
     const overlay_rv = modal_rv.querySelector(".modal_overlay");
     const sendBtn = modal_rv.querySelector("#btn_send");
- 
+    const member_email = document.getElementById("member_email");
+    const invitation_comment=document.getElementById("invitation_comment");
+
     const openInvitation = () =>{    
         modal_rv.classList.remove("hidden");
     }
-
     btn_add_rv.addEventListener("click", openInvitation);
 
     //close modal 
     overlay_rv.addEventListener("click", closeModal);
-    sendBtn.addEventListener("click", closeModal);
+    sendBtn.addEventListener("click", function(){
+        member_email.value=null;
+        invitation_comment.value=null;
+        closeModal();
+    });
+
+    $('.btn_dropdown').click(function(event){
+        console.log("detected");
+        event.stopPropagation();
+        $(this).next().slideToggle();
+    });
+
+    $(document).click(function(){
+        $('.ul_dropdown').hide();
+    });
+
+    var filter_menu = new Array(4);
+    for(var i=0; i<filter_menu.length; i++){
+        filter_menu[i] = $('#filter').children().eq(i);
+        console.log(filter_menu[i]);
+    }
+
 }
 

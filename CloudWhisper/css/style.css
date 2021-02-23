@@ -600,6 +600,10 @@ body {
           transition: max-height .5s ease-in-out;
 }
 
+.group-list::-webkit-scrollbar {
+   display: none;
+}
+
 .nav__list input[type=checkbox]:checked + label + ul {
   /* reset the height when checkbox is checked */
   max-height: 30%;
@@ -620,6 +624,90 @@ label > span {
       -ms-transform: rotate(90deg);
           transform: rotate(90deg);
 }
+
+
+/* ############middle area of page ############ */
+
+
+/* file setting and filter */
+.file_setting {
+   text-align: left;
+   border-bottom: 1px solid #E6E6E6;
+}
+
+.file_setting .file_setting_filter {
+   width: 100%;
+   padding: 10px;
+}
+
+.file_setting .file_setting_filter .file_div1 {
+   float: left;
+   position: relative;
+}
+
+.file_setting .file_setting_filter .file_div2 {
+   float: right;
+   position: relative;
+   margin-right: 60px;
+}
+
+.btn_dropdown {
+   display: inline-block;
+   margin: 0;
+   font-size: 13px;
+   font-weight: 600;
+   color: #C2C2C2;
+}
+
+.ul_dropdown {
+   display: none;
+   padding: 0;
+   position: absolute;
+   top: 5px;
+   right: -55px;
+   width: 130px;
+   background-color: #FFF;
+   z-index: 99;
+   box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.1);
+}
+
+.file_setting .file_setting_filter .file_div2 .ul_dropdown {
+
+   right: -70px;
+}
+
+.ul_dropdown li.dropdown_subMenu {
+   padding:5px;
+   line-height: 20px;
+   border-bottom: 1px solid rgba(66, 78, 70, 0.199);
+   margin:3px;
+}
+
+.ul_dropdown li.dropdown_subMenu a {
+   text-decoration: none;
+   color: #666;
+   font-weight: 400;
+}
+
+.ul_dropdown li.dropdown_subMenu:hover{
+   background-color: rgb(231, 231, 231);
+}
+
+.file_setting .file_setting_filter .file_div2 .filter_img {
+   height: 13px;
+   width: 17px;
+   display: inline-block;
+   padding-right: 3px;
+}
+
+.img_dropdown {
+   width: 10px;
+   height: 10px;
+   position: relative;
+   top: 3px;
+}
+
+
 .file_list {
    margin-top: 10px;
    width: 100%;
@@ -627,12 +715,76 @@ label > span {
    flex: 1;
    border: 2px solid red;
 }
-.file_setting {
-   height: 50px;
-   margin: 10px 20px;
-   text-align: left;
-   border-bottom: 1px solid #E6E6E6;
+
+.file_setting .file_setting_filter::after {
+   content: '';
+   display: block;
+   clear: both;
 }
+
+/* file_setting_navbar */
+.file_setting .file_setting_navbar {
+   width: 100%;
+   height: 55%;
+   vertical-align: middle;
+   font-size:0px;
+}
+
+.status_progress{
+   position: relative;
+   display: inline-block;
+   padding:10px;
+   font-size: 14px;
+   line-height:14px;
+   font-weight:500;
+}
+.status_progress > span{
+   display: inline-block;
+   margin-left: 7px;
+   width:19px;
+   height:19px;
+   line-height: 19px;
+   border-radius: 4px;
+   text-align: center;
+   font-size:14px;
+   color:#fff;
+}
+
+.status_progress::after{
+   content:'';
+   display:block;
+   position:absolute;
+   bottom:0px;
+   left:50%;
+   width: 0px;
+   height: 3px;
+   background-color: #f00;
+   transform:translateX(-50%);
+   transition:all .3s ease-out;
+}
+
+.status_progress:hover::after{
+   width: 100%;
+}
+
+
+
+.status_progress:nth-of-type(1)::after, #all{
+   background-color: #151515;
+}
+.status_progress:nth-of-type(2)::after, #review{
+   background-color: #FFC305
+}
+.status_progress:nth-of-type(3)::after, #changes{
+   background-color: #c25237;
+}
+.status_progress:nth-of-type(4)::after, #approved{
+   background-color: #009922;
+}
+.status_progress:nth-of-type(5)::after, #finish{
+   background-color: #175ddf;
+}
+
 .comment_list {
    position: relative;
    margin-bottom: 10px;
@@ -710,7 +862,7 @@ label > span {
    padding: 0;
 }
 
-#add_new_reviewer {
+#add_new_member {
    display: flex;
    justify-content: center;
    align-items: center;
@@ -984,12 +1136,12 @@ label > span {
 }
 
 #modal_content_rv{
-
+   
    height:450px;
 }
 
 
-#reviewer_email{
+#member_email{
    height:30px;
 }
 
@@ -1003,11 +1155,28 @@ label > span {
 
 .section_link{
    font-size: 4px;
+   display: block;
 }
-
+/* 
 .input_group_link > img, p {
    float:left;
+} */
+
+.input_group_link{
+   float:left;
+   display: inline-block;
 }
+
+#form_shareLink {
+   margin-top:30px;  
+}
+
+#form_shareLink input{
+   
+   width:100%
+}
+
+
 .modal_head{
    width:98%;
    position:absolute;
