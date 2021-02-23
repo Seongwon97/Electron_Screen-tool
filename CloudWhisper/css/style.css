@@ -76,16 +76,18 @@ body {
    margin-top: 35px;
 }
 
-.signup_input {
+.login_box .signup_input {
    width: 100%;
    padding: 12px 10px;
    border-radius: 10px;
    border: 1px #666 solid;
    border-width: thin;
 }
-.signup_input:focus {
+.login_box .signup_input:focus {
    outline:none;
+   background-color: white;
    border-color: #FFC700;
+   border-width: thin;
 }
 
 .sign_btn {
