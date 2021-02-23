@@ -1,4 +1,18 @@
 var user_name = "유저"; // firebase에서 값 받아와서 저장
+
+var comment=false;
+var folder_list=true;
+
+var count = 0; //annotation의 개수를 카운트
+var folder_name;
+var comment_list_div;
+
+
+var count = 1;
+
+var add_folder_isClicked = false;
+var pressed = document.getElementById("OK_btn");
+
 window.onload = function () {
 
     windowHeight = window.innerHeight;
@@ -206,5 +220,73 @@ window.onload = function () {
         console.log(filter_menu[i]);
     }
 
+	// 새 파일 생성하는 팝업 창 열기
+	function onClick() {
+		console.log("clicked");
+        document.querySelector('.modal_wrap').style.display ='block';
+        document.querySelector('.black_bg').style.display ='block';
+
+    }   
+	// 새 파일 생성하는 팝업 창 닫기
+    function offClick() {
+        document.querySelector('.modal_wrap').style.display ='none';
+        document.querySelector('.black_bg').style.display ='none';
+
+    }
+	
+	// 새 파일 생성하기 버튼 클릭 -> 팝업 창 열림
+	document.getElementById("new_file_btn").addEventListener("click", function(){   
+		 console.log("1");
+		 onClick();
+		 console.log("2");
+	 });
+
+	// 새 파일 생성하는 팝업 창 내 창 닫기 버튼
+    document.querySelector('.modal_close').addEventListener('click', offClick);
+	
+	// 팝업 창 내 업로드 버튼 클릭 -> 새 파일 생성, 팝업 창 닫힘
+	document.getElementById("OK_btn").addEventListener("mousedown", function(){   
+		count++; // 생성되는 파일 갯수 카운트
+		add_folder(count); 
+		offClick(); 
+    });
+	
+	
+	var pressed = document.getElementById("OK_btn");
+	pressed.addEventListener(count, add_folder);
 }
+
+// 새 파일 생성
+var add_folder  = function (count) {
+	console.log("count is " + count);
+	folder_name = document.getElementById('folder_name').value; // 팝업에서 입력한 파일 명을 받아옴
+	console.log("folder_name is " + folder_name);
+	
+	var file = document.getElementById('new_project_filechoose_btn');
+	//파일 경로.
+	var filePath = file.value;
+	//전체경로를 \ 나눔.
+	var filePathSplit = filePath.split('\\'); 
+	//전체경로를 \로 나눈 길이.
+	var filePathLength = filePathSplit.length;
+	//마지막 경로를 .으로 나눔.
+	var fileNameSplit = filePathSplit[filePathLength-1].split('.');
+	//파일명 : .으로 나눈 앞부분
+	var fileName = fileNameSplit[0];
+	//파일 확장자 : .으로 나눈 뒷부분
+	var fileExt = fileNameSplit[1];
+	//파일 크기
+	var fileSize = file.files[0].size;
+
+	console.log('파일 경로 : ' + filePath);
+	console.log('파일명 : ' + fileName);
+	console.log('파일 확장자 : ' + fileExt);
+	console.log('파일 크기 : ' + fileSize);
+
+	document.getElementById("folder_column").innerHTML +=
+		'<td class="new_td" id="new_td"><div class="new_div" id="new_div"> <img src = "../image/folder.png" class="new_image"></div> <p class="new_p" id="new_p">' + folder_name + '</p></td>';
+	
+	console.log("new_file_list");
+}
+
 

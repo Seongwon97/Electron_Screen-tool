@@ -1,3 +1,4 @@
+var project_name;
 var lastEvent;
 var isMouseDown = false;
 var line=false;
@@ -31,9 +32,6 @@ var count = 0; //annotation의 개수를 카운트
 var del_count = 0; //삭제된 annotation의 개수
 var comment_content = ""; //comment의 내용을 담을 변수
 var user_name = "유저"; // firebase에서 값 받아와서 저장
-var project_name = "Project A";
-var image_name = "Image A";
-var annoRef; //파이어베이스에 저장될 주소가 저장되는 변수
 
 var windowHeight = 0;
 var img;
@@ -52,7 +50,6 @@ window.onload = function(){
             snapshot.forEach(function (data) {
                 if(data.val().email == firebase.auth().currentUser.email) {
                     user_name = data.val().name;
-                    console.log(user_name);
                     document.getElementById("setting_user_name").innerHTML = data.val().name;
                     document.getElementById("email").innerHTML = data.val().email;
                     document.getElementById("company_name").innerHTML = data.val().companyName;
@@ -61,7 +58,7 @@ window.onload = function(){
                         //이름이 3글자일 경우만 생각했다. 영어 이름이나 4글자부터는 다시 지정해야함.
                     }
                     else {
-                        document.getElementById("user_icon").innerHTML = data.val().name;
+                        document.getElementById("user_icon").innerHTML = data.val().name
                     }
                 }
             });
@@ -74,8 +71,6 @@ window.onload = function(){
 
     //전 페이지에서 선택된 projcet의 이름을 받아오기
     //저장은 project_name변수에
-    var project_data_address = "Project/".concat(project_name+"/"+image_name+"/annotation/");
-    annoRef = firebase.database().ref(project_data_address);
 
     //window load시 오른쪽에 위치한 context 높이 조정
     windowHeight = window.innerHeight;
@@ -212,7 +207,7 @@ window.onload = function(){
             screen_sy=(screen_sy-168-y)/(img.height * scale);
             screen_ex=(screen_ex-159-x)/(img.width * scale);
             screen_ey=(screen_ey-168-y)/(img.height * scale);
-
+    
             if (line) {
                 if (!((Math.abs(sx-ex)<10)&&(Math.abs(sy-ey)<10))) {
                     sx=(sx-x)/(img.width * scale);
@@ -222,17 +217,18 @@ window.onload = function(){
     
                     annotation.push({
                         project: project_name,
-                        image: image_name,
-                        user: user_name,
-                        type: 'line',
-                        comment: comment_content,
-                        date: new Date().toLocaleString(),
+                        num : count,
                         start_x: sx,
                         start_y: sy,
                         end_x: ex,
                         end_y: ey,
+                        type: 'line',
                         color: line_color,
                         lineWidth: line_width,
+                        remain: true,
+                        user: user_name,
+                        comment: comment_content,
+                        date: new Date().toLocaleString(),
                         clicked: false,
                         screen_sx: screen_sx,
                         screen_sy: screen_sy,
@@ -242,7 +238,6 @@ window.onload = function(){
                     });
                     add_comment_canvas(count);
                     add_annotation_info(count);
-
                     count++;
                 }
             }
@@ -255,17 +250,18 @@ window.onload = function(){
     
                     annotation.push({
                         project: project_name,
-                        image: image_name,
-                        user: user_name,
-                        type: 'square',
-                        comment: comment_content,
-                        date: new Date().toLocaleString(),
+                        num : count,
                         start_x: sx,
                         start_y: sy,
                         end_x: ex,
                         end_y: ey,
+                        type: 'square',
                         color: line_color,
                         lineWidth: line_width,
+                        remain: true,
+                        user: user_name,
+                        comment: comment_content,
+                        date: new Date().toLocaleString(),
                         clicked: false,
                         screen_sx: screen_sx,
                         screen_sy: screen_sy,
@@ -286,17 +282,18 @@ window.onload = function(){
                     ex = cir_radius /(img.width * scale);
                     annotation.push({
                         project: project_name,
-                        image: image_name,
-                        user: user_name,
-                        type: 'circle',
-                        comment: comment_content,
-                        date: new Date().toLocaleString(),
+                        num : count,
                         start_x: sx,
                         start_y: sy,
                         end_x: ex,
                         end_y: null,
+                        type: 'circle',
                         color: line_color,
                         lineWidth: line_width,
+                        remain: true,
+                        user: user_name,
+                        comment: comment_content,
+                        date: new Date().toLocaleString(),
                         clicked: false,
                         screen_sx: screen_sx,
                         screen_sy: screen_sy,
@@ -318,17 +315,18 @@ window.onload = function(){
                     ey=(ey-y)/(img.height * scale);
                     annotation.push({
                         project: project_name,
-                        image: image_name,
-                        user: user_name,
-                        type: 'arrow',
-                        comment: comment_content,
-                        date: new Date().toLocaleString(),
+                        num : count,
                         start_x: sx,
                         start_y: sy,
                         end_x: ex,
                         end_y: ey,
+                        type: 'arrow',
                         color: line_color,
                         lineWidth: line_width,
+                        remain: true,
+                        user: user_name,
+                        comment: comment_content,
+                        date: new Date().toLocaleString(),
                         clicked: false,
                         screen_sx: screen_sx,
                         screen_sy: screen_sy,
@@ -346,17 +344,18 @@ window.onload = function(){
                 sy=(sy-y)/(img.height * scale);
                 annotation.push({
                     project: project_name,
-                    image: image_name,
-                    user: user_name,
-                    type: 'comment',
-                    comment: comment_content,
-                    date: new Date().toLocaleString(),
+                    num : count,
                     start_x: sx,
                     start_y: sy,
                     end_x: null,
                     end_y: null,
+                    type: 'comment',
                     color: line_color,
                     lineWidth: line_width,
+                    remain: true,
+                    user: user_name,
+                    comment: comment_content,
+                    date: new Date().toLocaleString(),
                     clicked: false,
                     screen_sx: screen_sx,
                     screen_sy: screen_sy,
@@ -707,7 +706,9 @@ window.onload = function(){
             comment_list=true;
             file_list=false;
             for (var i = 0; i < count; i++) {
-                add_comment_list(i);
+                if (annotation[i].remain) {
+                    add_comment_list(i);
+                }
             }
             document.getElementById("editing_comment_list").style.height="57px";
             document.getElementById("editing_comment_list").style.paddingBottom="18px"
@@ -807,14 +808,16 @@ window.onresize = function(){
     for (var i = 0; i < count; i++) {
         var annotation_canvas_id = "annotation_canvas".concat(i);
         var annotation_info_id = "annotation_info".concat(i);
-        var comment_div = document.getElementById(annotation_canvas_id);
-        var parent = comment_div.parentElement;
-        parent.removeChild(comment_div);
-        add_comment_canvas(i);
+        if (annotation[i].remain){
+            var comment_div = document.getElementById(annotation_canvas_id);
+            var parent = comment_div.parentElement;
+            parent.removeChild(comment_div);
+            add_comment_canvas(i);
 
-        var info_div = document.getElementById(annotation_info_id);
-        parent.removeChild(info_div);
-        add_annotation_info(i);
+            var info_div = document.getElementById(annotation_info_id);
+            parent.removeChild(info_div);
+            add_annotation_info(i);
+        }
         
     }
     
@@ -841,44 +844,46 @@ function draw_annotation(){
         context.drawImage(img, x, y, img.width * scale, img.height * scale);
         var clicked_annotation;
         for (var i = 0; i < count; i++) {
-            if(annotation[i].clicked) {
-                clicked_annotation = annotation[i];
-            }
-            else {
-                if (annotation[i].type=='line') {
-                    context.lineWidth = annotation[i].lineWidth;
-                    context.strokeStyle = annotation[i].color;
-                    context.beginPath();
-                    context.moveTo(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y);
-                    context.lineTo(annotation[i].end_x * img.width * scale + x, annotation[i].end_y * img.height * scale + y);
-                    context.stroke();
+            if (annotation[i].remain) {
+                if(annotation[i].clicked) {
+                    clicked_annotation = annotation[i];
+                }
+                else {
+                    if (annotation[i].type=='line') {
+                        context.lineWidth = annotation[i].lineWidth;
+                        context.strokeStyle = annotation[i].color;
+                        context.beginPath();
+                        context.moveTo(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y);
+                        context.lineTo(annotation[i].end_x * img.width * scale + x, annotation[i].end_y * img.height * scale + y);
+                        context.stroke();
 
+                    }
+                    else if (annotation[i].type=='square') {
+                        context.lineWidth = annotation[i].lineWidth;
+                        context.strokeStyle = annotation[i].color;
+                        context.beginPath();
+                        context.rect(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y,
+                             annotation[i].end_x * img.width * scale, annotation[i].end_y * img.height * scale);
+                        context.stroke();
+                    }
+                    else if (annotation[i].type=='circle') {
+                        context.lineWidth = annotation[i].lineWidth;
+                        context.strokeStyle = annotation[i].color;
+                        context.beginPath();
+                        context.arc(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y,
+                            annotation[i].end_x * img.width * scale, 0, 2*Math.PI);
+                        context.stroke();
+                    }
+                    else if (annotation[i].type=='arrow') {
+                        context.lineWidth = annotation[i].lineWidth;
+                        context.strokeStyle = annotation[i].color;
+                        context.beginPath();
+                        canvas_arrow(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y,
+                            annotation[i].end_x * img.width * scale + x, annotation[i].end_y * img.height * scale + y);
+                    }
                 }
-                else if (annotation[i].type=='square') {
-                    context.lineWidth = annotation[i].lineWidth;
-                    context.strokeStyle = annotation[i].color;
-                    context.beginPath();
-                    context.rect(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y,
-                            annotation[i].end_x * img.width * scale, annotation[i].end_y * img.height * scale);
-                    context.stroke();
-                }
-                else if (annotation[i].type=='circle') {
-                    context.lineWidth = annotation[i].lineWidth;
-                    context.strokeStyle = annotation[i].color;
-                    context.beginPath();
-                    context.arc(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y,
-                        annotation[i].end_x * img.width * scale, 0, 2*Math.PI);
-                    context.stroke();
-                }
-                else if (annotation[i].type=='arrow') {
-                    context.lineWidth = annotation[i].lineWidth;
-                    context.strokeStyle = annotation[i].color;
-                    context.beginPath();
-                    canvas_arrow(annotation[i].start_x * img.width * scale + x, annotation[i].start_y * img.height * scale + y,
-                        annotation[i].end_x * img.width * scale + x, annotation[i].end_y * img.height * scale + y);
-                }
-            }
 
+            }
         }
         if(isClicked != (-1)){
             if (clicked_annotation.type=='line') {
@@ -946,6 +951,7 @@ function add_comment_list(order) {
     var list_date_id = "annotation_list_date".concat(order);
     var list_comment_id = "annotation_list_comment".concat(order);
     var comment_list_div_id = "annotation_list".concat(order);
+    //div.innerHTML = "Num: " + annotation[order].num +"<br/>User name: " + annotation[order].user_name + "<br/>type: " + annotation[order].type + "<br/>Date: "+ annotation[order].date;
     comment_list_div.id = comment_list_div_id;
     if (annotation[order].clicked) {
         comment_list_div.style.border = "2px solid red";
@@ -992,19 +998,15 @@ function add_comment_list(order) {
             var parent = comment_canvas_div.parentElement;
             parent.removeChild(comment_canvas_div);
 
-            count--;
-            console.log("Deleted the", order+1, "th annotation (",annotation[order].type,")");
-            console.log("Number of annotation: ", count);
-
-            annotation.splice(order,1);
-            console.log(annotation.length);
+            annotation[order].remain=false;
 
             toDelete = true;
-            
+            del_count++;
+            console.log("Deleted the", annotation[order].num, "th annotation the ",annotation[order].type);
+            console.log("Number of annotation: ", count-del_count);
             //이곳에 firebase에서의 데이터 삭제 내용도 추가할 것.
-            delete_annotation_info (order-1);
+            delete_annotation_info (order)
             draw_annotation();
-            
         }else{
             toDelete = true;
             return;
@@ -1026,6 +1028,7 @@ function add_comment_canvas(order) {
     var canvas_comment_id = "annotation_canvas_comment".concat(order);
     var canvas_confirm_id = "annotation_canvas_confirm".concat(order);
     var canvas_revise_id = "annotation_canvas_revise".concat(order);
+    //div.innerHTML = "Num: " + annotation[order].num +"<br/>User name: " + annotation[order].user_name + "<br/>type: " + annotation[order].type + "<br/>Date: "+ annotation[order].date;
     comment_div.id = comment_div_id;
 
     screen_ex = annotation[order].screen_ex * scale * img.width + x;
@@ -1079,17 +1082,14 @@ function add_comment_canvas(order) {
                 var parent = comment_list_div.parentElement;
                 parent.removeChild(comment_list_div);
                                 
-                count--;
-                console.log("Deleted the", order+1, "th annotation (",annotation[order].type,")");
-                console.log("Number of annotation: ", count);
-
-                annotation.splice(order,1);
-                console.log(annotation.length);
-
+                annotation[order].remain=false;
+ 
                 toDelete = true;
-                
+                del_count++;
+                console.log("Deleted the", annotation[order].num, "th annotation the ",annotation[order].type);
+                console.log("Number of annotation: ", count-del_count);
                 //이곳에 firebase에서의 데이터 삭제 내용도 추가할 것.
-                delete_annotation_info (order-1);
+                delete_annotation_info (order);
                 draw_annotation(order);
             }else{
                 toDelete = true;
@@ -1145,14 +1145,11 @@ function add_comment_canvas(order) {
         comment.innerHTML=textarea_div.value;
         comment_div.appendChild(comment);
         if(annotation[order].new) {
-            annotation[order].new = false;
-            annoRef.push(annotation[order]);
-
             if(comment_list){
                 annotation[order].clicked = true;
                 add_comment_list(order);
             }
-        
+            annotation[order].new = false;
             console.log("Number of annotation: ", count-del_count);
         }
         else {
@@ -1160,7 +1157,6 @@ function add_comment_canvas(order) {
             var list_comment_id = "annotation_list_comment".concat(order);
             document.getElementById(list_date_id).innerHTML = annotation[order].date;
             document.getElementById(list_comment_id).innerHTML = annotation[order].comment;
-            revise_firebase(order);
         }
         
         possible = true;
@@ -1189,7 +1185,7 @@ function add_comment_canvas(order) {
 
 
     if (!annotation[order].new) {
-        if (order != isClicked) {
+        if (annotation[order].num != isClicked) {
             $("#".concat(comment_div_id)).hide();
         }
     }
@@ -1239,13 +1235,7 @@ function add_annotation_info (order) {
     annotation_info.style.top = screen_sy.toString().concat("px");
     annotation_info.style.left = screen_sx.toString().concat("px");
     annotation_info.style.backgroundColor = annotation[order].color;
-    if (annotation[order].user.length >= 2) {
-        annotation_info.innerHTML = annotation[order].user.substring(1, 3);
-    }
-    else {
-        annotation_info.innerHTML = annotation[order].user;
-    }
-    
+    annotation_info.innerHTML = annotation[order].user;
     document.getElementById('editing_canvas').appendChild(annotation_info);
 
     annotation_info.onclick = function() {
@@ -1254,7 +1244,7 @@ function add_annotation_info (order) {
 }
 
 function delete_annotation_info (order) {
-    var annotation_info_id = "annotation_info".concat(order+1);
+    var annotation_info_id = "annotation_info".concat(order);
     var annotation_info_div = document.getElementById(annotation_info_id);
     document.getElementById('editing_canvas').removeChild(annotation_info_div);
 }
@@ -1305,14 +1295,4 @@ function annotation_click_event(order) {
         
     }
     draw_annotation();
-}
-
-
-function revise_firebase(order) {
-    var key;
-    annoRef.on("")
-    annoRef.child(key).update({
-        date: annotation[order].date,
-        comment: annotation[order].comment
-    });
 }
