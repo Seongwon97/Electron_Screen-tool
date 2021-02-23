@@ -56,7 +56,6 @@ window.onload = function(){
             snapshot.forEach(function (data) {
                 if(data.val().email == firebase.auth().currentUser.email) {
                     user_name = data.val().name;
-                    console.log(user_name);
                     document.getElementById("setting_user_name").innerHTML = data.val().name;
                     document.getElementById("email").innerHTML = data.val().email;
                     document.getElementById("company_name").innerHTML = data.val().companyName;
@@ -1256,6 +1255,8 @@ function add_comment_canvas(order) {
         var comment = document.createElement("div");
         comment.innerHTML=annotation[order].comment;
         comment.classList.add("comment_list_comment_div");
+        date_info.innerHTML = annotation[order].date;
+        comment_div.appendChild(date_info);
         comment_div.appendChild(comment);
     }
     
