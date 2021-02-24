@@ -717,7 +717,7 @@ label > span {
    width: 100%;
    position: relative;
    flex: 1;
-   border: 2px solid #959BA5;
+   border: 2px solid black;
 }
 
 .file_setting .file_setting_filter::after {
@@ -1326,11 +1326,13 @@ input[type=text]:focus {
    	background: url("../image/new_folder.png") no-repeat;
 	border: 3px dashed #ccc; 
 	border-radius: 4px;    
-	width: 150px;
-   	height: 150px;
-   	margin: 70px 0 0 70px;
+	width: 170px;
+   	height: 170px;
+   	margin: 50px 0 0 50px;
    	background-size: cover;
 	display: block; 
+	margin-bottom: 8px;
+	
 }
 
 .newfolder_list {
@@ -1360,34 +1362,49 @@ img.new_image {
 
 .new_p {
 	text-align: center;
-	margin: 0 0 0 70px;
+	margin: 0 0 0 50px;
 }
 
 .new_div {
 		/*	background: url( "../image/folder.png" ) no-repeat;*/
 	border: 1px solid #ccc; 
 	border-radius: 4px; 
-	width: 150px;
-	height: 150px;
-   	margin: 70px 0 0 70px;
+	width: 170px;
+	height: 170px;
+   	margin: 50px 0 0 50px;
    	background-size: cover;
   	display: block; 
   	margin-bottom: 8px;
 	padding: 65px 0 0 30px; /* 글씨 위치 조정 */
 	text-align: center;
 	position:relative;
-	float: left;
 }
 
 /* .new_td:hover {
 	
 } */
 
-.new_td {
+.add_new_file {
 	float: left;
 }
 
-.add_file_btn {
+.new_file_list {
+	float: left;
+}
+
+.file_list {
+	float: left;
+}
+
+.file_list_table {
+	float: left;
+}
+
+.folder_column {
+	float: left;
+}
+
+.folder_table {
 	float: left;
    
 }
