@@ -220,13 +220,14 @@ window.onload = function () {
         console.log(filter_menu[i]);
     }
 
-	// 새 파일 생성하는 팝업 창 열기
+    // 새 파일 생성하는 팝업 창 열기
 	function onClick() {
 		console.log("clicked");
         document.querySelector('.modal_wrap').style.display ='block';
         document.querySelector('.black_bg').style.display ='block';
 
     }   
+	
 	// 새 파일 생성하는 팝업 창 닫기
     function offClick() {
         document.querySelector('.modal_wrap').style.display ='none';
@@ -256,13 +257,14 @@ window.onload = function () {
 	pressed.addEventListener(count, add_folder);
 }
 
-// 새 파일 생성
+// 새 파일 생성 함구
 var add_folder  = function (count) {
 	console.log("count is " + count);
-	folder_name = document.getElementById('folder_name').value; // 팝업에서 입력한 파일 명을 받아옴
+	folder_name = document.getElementById('folder_name').value; // 팝업에서 입력한 파일 명을 받아옴 - 파베 저장
 	console.log("folder_name is " + folder_name);
+
 	
-	var file = document.getElementById('new_project_filechoose_btn');
+	var file = document.getElementById('new_file'); // 팝업에서 입력한 파일 값을 받아옴 - 파베 저장
 	//파일 경로.
 	var filePath = file.value;
 	//전체경로를 \ 나눔.
@@ -283,6 +285,7 @@ var add_folder  = function (count) {
 	console.log('파일 확장자 : ' + fileExt);
 	console.log('파일 크기 : ' + fileSize);
 
+	// 새 파일 동적 생성
 	var new_div = document.createElement('div');
 	new_div.classList.add("new_div");
 	document.getElementById('new_td').appendChild(new_div);
@@ -294,13 +297,8 @@ var add_folder  = function (count) {
 	
 	var new_p = document.createElement('p');
 	new_p.classList.add("new_p");
-	new_p.innerHTML = document.getElementById('folder_name').value;
-	new_image.appendChild(new_p);
-	
-//	document.getElementById("folder_column").innerHTML +=
-//		'<td class="new_td" id="new_td"><div class="new_div" id="new_div"> <img src = "../image/folder.png" class="new_image"></div> <p class="new_p" id="new_p">' + folder_name + '</p></td>';
-	
-	
+	new_p.innerHTML = folder_name;
+	document.getElementById('new_td').appendChild(new_p);
 	
 	console.log("new_file_list");
 }
