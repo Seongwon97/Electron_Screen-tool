@@ -112,6 +112,9 @@ window.onload = function () {
             setTimeout(() => { 
                 if(data.val().teamName == team_name) {
                     var li = document.createElement("li");
+                    li.onclick = function() {
+                        alert(data.val().projectName);
+                    }
                     var a = document.createElement("a");
                     a.setAttribute("href","####");
                     a.innerHTML = data.val().projectName;
@@ -122,6 +125,9 @@ window.onload = function () {
         else {
             if(data.val().teamName == team_name) {
                 var li = document.createElement("li");
+                li.onclick = function() {
+                    alert(data.val().projectName);
+                }
                 var a = document.createElement("a");
                 a.setAttribute("href","####");
                 a.innerHTML = data.val().projectName;
@@ -222,7 +228,6 @@ window.onload = function () {
     });
 
     $('.btn_dropdown').click(function(event){
-        console.log("detected");
         event.stopPropagation();
         $(this).next().slideToggle();
     });
@@ -231,15 +236,9 @@ window.onload = function () {
         $('.ul_dropdown').hide();
     });
 
-    var filter_menu = new Array(4);
-    for(var i=0; i<filter_menu.length; i++){
-        filter_menu[i] = $('#filter').children().eq(i);
-        console.log(filter_menu[i]);
-    }
 
 	// 새 파일 생성하는 팝업 창 열기
 	function onClick() {
-		console.log("clicked");
         document.querySelector('.modal_wrap').style.display ='block';
         document.querySelector('.black_bg').style.display ='block';
 
@@ -253,9 +252,7 @@ window.onload = function () {
 	
 	// 새 파일 생성하기 버튼 클릭 -> 팝업 창 열림
 	document.getElementById("new_file_btn").addEventListener("click", function(){   
-		 console.log("1");
 		 onClick();
-		 console.log("2");
 	 });
 
 	// 새 파일 생성하는 팝업 창 내 창 닫기 버튼

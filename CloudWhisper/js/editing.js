@@ -33,7 +33,7 @@ var count = 0; //annotation의 개수를 카운트
 var del_count = 0; //삭제된 annotation의 개수
 var comment_content = ""; //comment의 내용을 담을 변수
 var user_name = "유저"; // firebase에서 값 받아와서 저장
-var project_name = "Project A";
+var project_name = "1";
 var image_name = "Image A";
 var annoRef; //파이어베이스에 저장될 주소가 저장되는 변수
 var key = []; //annotation key를 저장하는 변수
