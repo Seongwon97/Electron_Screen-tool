@@ -257,7 +257,7 @@ window.onload = function () {
 	pressed.addEventListener(count, add_folder);
 }
 
-// 새 파일 생성 함구
+// 새 파일 생성 함수
 var add_folder  = function (count) {
 	console.log("count is " + count);
 	folder_name = document.getElementById('folder_name').value; // 팝업에서 입력한 파일 명을 받아옴 - 파베 저장
@@ -286,9 +286,14 @@ var add_folder  = function (count) {
 	console.log('파일 크기 : ' + fileSize);
 
 	// 새 파일 동적 생성
+	
+	var new_td = document.createElement('td');
+	new_td.classList.add("new_td");
+	document.getElementById('folder_column').appendChild(new_td);
+	
 	var new_div = document.createElement('div');
 	new_div.classList.add("new_div");
-	document.getElementById('new_td').appendChild(new_div);
+	new_td.appendChild(new_div);
 	
 	var new_image = document.createElement('img');
 	new_image.classList.add("new_image");
@@ -298,7 +303,9 @@ var add_folder  = function (count) {
 	var new_p = document.createElement('p');
 	new_p.classList.add("new_p");
 	new_p.innerHTML = folder_name;
-	document.getElementById('new_td').appendChild(new_p);
+	new_td.appendChild(new_p);
+	
+	
 	
 	console.log("new_file_list");
 }
