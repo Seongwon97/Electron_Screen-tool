@@ -283,10 +283,24 @@ var add_folder  = function (count) {
 	console.log('파일 확장자 : ' + fileExt);
 	console.log('파일 크기 : ' + fileSize);
 
-	document.getElementById("folder_column").innerHTML +=
-		'<td class="new_td" id="new_td"><div class="new_div" id="new_div"> <img src = "../image/folder.png" class="new_image"></div> <p class="new_p" id="new_p">' + folder_name + '</p></td>';
+	var new_div = document.createElement('div');
+	new_div.classList.add("new_div");
+	document.getElementById('new_td').appendChild(new_div);
+	
+	var new_image = document.createElement('img');
+	new_image.classList.add("new_image");
+	new_image.setAttribute('src', '../image/folder.png');
+	new_div.appendChild(new_image);
+	
+	var new_p = document.createElement('p');
+	new_p.classList.add("new_p");
+	new_p.innerHTML = document.getElementById('folder_name').value;
+	new_image.appendChild(new_p);
+	
+//	document.getElementById("folder_column").innerHTML +=
+//		'<td class="new_td" id="new_td"><div class="new_div" id="new_div"> <img src = "../image/folder.png" class="new_image"></div> <p class="new_p" id="new_p">' + folder_name + '</p></td>';
+	
+	
 	
 	console.log("new_file_list");
 }
-
-
