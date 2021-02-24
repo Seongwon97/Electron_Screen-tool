@@ -1,7 +1,8 @@
 var user_name = "유저"; // firebase에서 값 받아와서 저장
-
+var team_name = "team";
 var comment=false;
 var folder_list=true;
+var first_read = true;  //데이터를 처음 읽어오는지
 
 var count = 0; //annotation의 개수를 카운트
 var folder_name;
@@ -29,7 +30,8 @@ window.onload = function () {
                     user_name = data.val().name;
                     document.getElementById("setting_user_name").innerHTML = user_name;
                     document.getElementById("email").innerHTML = data.val().email;
-                    document.getElementById("company_name").innerHTML = data.val().companyName;
+                    team_name = data.val().companyName;
+                    document.getElementById("company_name").innerHTML = team_name;
                     if (data.val().name.length >= 2) {
                         document.getElementById("user_icon").innerHTML = data.val().name.substring(1, 3);
                         //이름이 3글자일 경우만 생각했다. 영어 이름이나 4글자부터는 다시 지정해야함.
@@ -103,6 +105,33 @@ window.onload = function () {
           }
     }
 
+    project_list_ref = firebase.database().ref("Project/");
+
+    project_list_ref.on('child_added', function(data) {
+        if(first_read) {
+            setTimeout(() => { 
+                if(data.val().teamName == team_name) {
+                    var li = document.createElement("li");
+                    var a = document.createElement("a");
+                    a.setAttribute("href","####");
+                    a.innerHTML = data.val().projectName;
+                    document.getElementById("group-2").nextSibling.nextSibling.nextSibling.nextSibling.appendChild(li);
+                    li.appendChild(a);
+                } }, 500);
+        }
+        else {
+            if(data.val().teamName == team_name) {
+                var li = document.createElement("li");
+                var a = document.createElement("a");
+                a.setAttribute("href","####");
+                a.innerHTML = data.val().projectName;
+                document.getElementById("group-2").nextSibling.nextSibling.nextSibling.nextSibling.appendChild(li);
+                li.appendChild(a);
+            }
+        }
+
+    })
+
 
 
 
@@ -116,19 +145,15 @@ window.onload = function () {
 
     // button hovering effect
     btn_add_pj.onmouseover = function () {
-        console.log("mouseover detected");
         ico_add_project.setAttribute("src", "../image/add_2.png");
     }
     btn_add_pj.onmouseout = function () {
-        console.log("mouseout detected");
         ico_add_project.setAttribute("src", "../image/add.png");
     }
     btn_add_rv.onmouseover = function(){
-        console.log("mouseover detected");
         ico_add_member.setAttribute("src", "../image/add_2.png");
     }
     btn_add_rv.onmouseout = function () {
-        console.log("mouseout detected");
         ico_add_member.setAttribute("src", "../image/add.png");
     }
 
@@ -152,22 +177,14 @@ window.onload = function () {
     const createProject = () =>{
         var project_name = document.getElementById("project_name");
         var projectName = project_name.value;
-        window.alert("project가 생성 되었습니다." + projectName);
+        window.alert("프로젝트", projectName, "가 생성 되었습니다.");
         
-        var li = document.createElement("li");
-        var a = document.createElement("a");
-        a.setAttribute("href","####");
-        a.innerHTML = projectName;
-        
-        document.getElementById("group-2").nextSibling.nextSibling.nextSibling.nextSibling.appendChild(li);
-        li.appendChild(a);
-        
-        //firebase 프로젝트 객체 생성
         var projectRef = firebase.database().ref("Project/");
         
         projectRef.child(projectName).set({
             HostName: user_name,
             projectName: projectName,
+            teamName: team_name,
             Images: "images",
             Members: "members"
         });
