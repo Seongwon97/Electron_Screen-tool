@@ -1384,4 +1384,6 @@ function update_file_recent_time() {
     imageRef.child(image_name).update({
         Date: new Date().toLocaleString()
     });
+    var revise_time_text = "최근 수정일: ".concat(new Date().toLocaleString());
+    document.getElementById('revise_time').innerHTML = revise_time_text;
 }
