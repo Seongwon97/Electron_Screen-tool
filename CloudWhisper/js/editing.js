@@ -77,7 +77,7 @@ window.onload = function(){
 
     //전 페이지에서 선택된 projcet의 이름을 받아오기
     //저장은 project_name변수에
-    var project_data_address = "Project/".concat(project_name+"/"+image_name+"/annotation/");
+    var project_data_address = "Project/".concat(project_name+"/Images/"+image_name+"/annotation/");
     annoRef = firebase.database().ref(project_data_address);
 
     annoRef.on('child_added', function(data) {
@@ -1264,9 +1264,8 @@ function add_comment_canvas(order) {
 
 function add_annotation_info (order) {
     screen_sx = annotation[order].screen_sx * scale * img.width + x;
-    screen_sy = annotation[order].screen_sy * scale * img.height + y;
-    screen_ex = annotation[order].screen_ex * scale * img.width + x;
-    screen_ey = annotation[order].screen_ey * scale * img.height + y;
+    screen_sy = annotation[order].screen_sy * scale * img.height + y - 16;
+
 
     var annotation_info = document.createElement('div');
     annotation_info.id = "annotation_info".concat(order);
