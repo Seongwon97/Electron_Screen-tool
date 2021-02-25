@@ -241,10 +241,12 @@ window.onload = function () {
 
 	// 새 파일 생성하는 팝업 창 열기
 	function onClick() {
+		console.log("clicked");
         document.querySelector('.modal_wrap').style.display ='block';
         document.querySelector('.black_bg').style.display ='block';
 
     }   
+	
 	// 새 파일 생성하는 팝업 창 닫기
     function offClick() {
         document.querySelector('.modal_wrap').style.display ='none';
@@ -254,7 +256,9 @@ window.onload = function () {
 	
 	// 새 파일 생성하기 버튼 클릭 -> 팝업 창 열림
 	document.getElementById("new_file_btn").addEventListener("click", function(){   
+		 console.log("1");
 		 onClick();
+		 console.log("2");
 	 });
 
 	// 새 파일 생성하는 팝업 창 내 창 닫기 버튼
@@ -272,13 +276,14 @@ window.onload = function () {
 	pressed.addEventListener(count, add_folder);
 }
 
-// 새 파일 생성
+// 새 파일 생성 함수
 var add_folder  = function (count) {
 	console.log("count is " + count);
-	folder_name = document.getElementById('folder_name').value; // 팝업에서 입력한 파일 명을 받아옴
+	folder_name = document.getElementById('folder_name').value; // 팝업에서 입력한 파일 명을 받아옴 - 파베 저장
 	console.log("folder_name is " + folder_name);
+
 	
-	var file = document.getElementById('new_project_filechoose_btn');
+	var file = document.getElementById('new_project_filechoose_btn'); // 팝업에서 입력한 파일 값을 받아옴 - 파베 저장
 	//파일 경로.
 	var filePath = file.value;
 	//전체경로를 \ 나눔.
@@ -299,10 +304,27 @@ var add_folder  = function (count) {
 	console.log('파일 확장자 : ' + fileExt);
 	console.log('파일 크기 : ' + fileSize);
 
-	document.getElementById("folder_column").innerHTML +=
-		'<td class="new_td" id="new_td"><div class="new_div" id="new_div"> <img src = "../image/folder.png" class="new_image"></div> <p class="new_p" id="new_p">' + folder_name + '</p></td>';
+	// 새 파일 동적 생성
+	var new_td = document.createElement('td');
+	new_td.classList.add("new_td");
+	document.getElementById('folder_column').appendChild(new_td);
 	
+	var new_div = document.createElement('div');
+	new_div.classList.add("new_div");
+	new_td.appendChild(new_div);
+	
+	var new_image = document.createElement('img');
+	new_image.classList.add("new_image");
+	new_image.setAttribute('src', '../image/folder.png');
+	new_div.appendChild(new_image);
+	
+	var new_p = document.createElement('p');
+	new_p.classList.add("new_p");
+	new_p.innerHTML = folder_name;
+	new_td.appendChild(new_p);
+
 	console.log("new_file_list");
 }
+
 
 
