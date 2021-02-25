@@ -83,6 +83,7 @@ body {
    border: 1px #666 solid;
    border-width: thin;
 }
+
 .login_box .signup_input:focus, .pwd_re_sub3 .signup_input:focus, .signUp .signup_input:focus {
    outline:none;
    background-color: white;
@@ -229,6 +230,7 @@ body {
    background-color: #393E46;
    height: 100%;
    width: 150px;
+   min-width:150px;
    border-top-right-radius: 15px;
 }
 .right_aside {
@@ -831,6 +833,7 @@ label > span {
    height:20%;
    border: none;
 }
+
 .bar{
    widows: 300px;
    height:1px;
@@ -927,6 +930,8 @@ label > span {
    padding: 40px 60px;
    width: 30%;
    height: 20%;
+   min-width: 450px; 
+   min-height: 160px;
    text-align: center;
    background-color: white;
    border-radius: 10px;
@@ -1009,16 +1014,16 @@ label > span {
 }
 
 .modal_input_group {
-  width:100%;
+   width:100%;
    position: relative;
    margin-bottom: 30px;
 }
 .comment_list_comment_div {
-  width: 100%;
-  padding: 8px 2px;
-  font-size: 15px;
-  word-break: normal;
-  text-overflow: ellipsis;
+   width: 100%;
+   padding: 8px 2px;
+   font-size: 15px;
+   word-break: normal;
+   text-overflow: ellipsis;
 }
 
 .comment_input {
@@ -1242,6 +1247,8 @@ label > span {
    padding: 20px 20px;
    width: 35%;
    height: 50%;
+   min-width: 480px; 
+   min-height: 420px; 
    display: none;
    top:50%;
    left: 50%;
@@ -1277,9 +1284,9 @@ label > span {
 
 #modal_title {
    height: 90px;
-	margin-top: 40px;
-	margin-bottom: 40px;
-	padding: 40px 30px;
+   margin-top: 40px;
+   margin-bottom: 40px;
+   padding: 40px 30px;
    text-align: center;
    line-height: 0px;
    font-size: 20px;
@@ -1328,24 +1335,21 @@ input[type=text]:focus {
 	border-radius: 4px;    
 	width: 150px;
    height: 150px;
-   margin: 50px 0 0 50px;
+   margin: 70px 0 0 70px;
    background-size: cover;
 	display: block; 
-	margin-bottom: 8px;
-	width="20%";
 }
 
 .newfolder_list {
 /*	background: url( "../image/folder.png" ) no-repeat;*/
 	border: 1px solid #ccc; 
 	border-radius: 4px; 
-	width: 150px;
-	height: 150px;
+	width: 170px;
+	height: 170px;
    margin: 50px 0 0 50px;
    background-size: cover;
   	display: block; 
   	margin-bottom: 8px;
-	width="20%";
 	padding: 65px 0 0 30px; /* 글씨 위치 조정 */
 }
 
@@ -1366,26 +1370,28 @@ img.new_image {
 }
 
 .new_div {
-/*	background: url( "../image/folder.png" ) no-repeat;*/
+		/*	background: url( "../image/folder.png" ) no-repeat;*/
 	border: 1px solid #ccc; 
 	border-radius: 4px; 
 	width: 150px;
 	height: 150px;
-   margin: 50px 0 0 50px;
-   background-size: cover;
+   	margin: 70px 0 0 70px;
+   	background-size: cover;
   	display: block; 
-  	margin-bottom: 8px;
-	width="20%";
 	padding: 65px 0 0 30px; /* 글씨 위치 조정 */
 	text-align: center;
 	position:relative;
 	float: left;
 }
 
+.new_td:hover {
+	
+}
+
 .new_td {
 	float: left;
 }
 
-#td_new_file_btn {
+.add_file_btn {
 	float: left;
 }

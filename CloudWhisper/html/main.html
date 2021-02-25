@@ -166,44 +166,41 @@
                             <span class="status_progress">Finalized<span id="finish">0</span></span>
                         </div>
                     </div>
-                    <div class="file_list">
+                      <div class="file_list">
 									
 						<div class="add_new_file" id="add_new_file">
-							<div class="black_bg"></div>
-							<div class="modal_wrap">
-								<div class="modal_close"><a href="#">close</a></div>
-								<div>
-									<table id="mytable">
-										 <form action="UploadService">
-											  <tr>
-												<td class="newproject_setting" id="modal_title">새 파일 생성</td>
-											  </tr>
-											  <tr>
-												<td class="newproject_setting_what">제목 </td>
-												<td><input type="text" class="newproject_setting_value" id="folder_name" placeholder="파일 명을 입력하세요."/></td>
-											  </tr>
-											  <tr>
-												<td class="newproject_setting_what">파일 </td>
-												<td><input type="file" value="파일 선택" id="new_project_filechoose_btn" name="new_project_filechoose_btn"/></td>
-											  </tr>
-											  <tr>
-												  <button id="OK_btn" ></button>
-											  </tr>
-										</form>
-								   </table>
-								</div>
-
-							</div>
-								
-							<table id="folder_table">
-											  <tr class="folder_column" id="folder_column">
-												<td>
-													<button type='button' class="file_list new_file_btn" id="new_file_btn"></button>
-												  </td>
-											  </tr>	 
-							</table>
-						</div>	
-			
+								<div class="black_bg"></div>
+								<div class="modal_wrap">
+									<div class="modal_close"><a href="#">close</a></div>
+									<div>
+										<table id="mytable">
+											 <form action="UploadService">
+												  <tr>
+													<td class="newproject_setting" id="modal_title">새 파일 생성</td>
+												  </tr>
+												  <tr>
+													<td class="newproject_setting_what">제목 </td>
+													<td><input type="text" class="newproject_setting_value" id="folder_name" placeholder="파일 명을 입력하세요."/></td>
+												  </tr>
+												  <tr>
+													<td class="newproject_setting_what">파일 </td>
+													<td><input type="file" name="new_file" value="파일 선택" id="new_file" accept="image/*"></td>
+												  </tr>
+												  <tr>
+													  <button id="OK_btn" ></button>
+												  </tr>
+											</form>
+									   </table>
+									</div>
+							</div>	
+								<table id="folder_table">
+									  <tr class="folder_column" id="folder_column">
+										  <td class="add_file_btn" id="add_file_btn">
+											<button type='button' class="file_list new_file_btn" id="new_file_btn"></button>
+										  </td>
+									  </tr>	 
+								</table>
+						</div>
 					</div>
                 </section>
                 <aside class="right_aside flex_column" id="right_aside">
@@ -234,7 +231,6 @@
                         id="project_name"
                         placeholder="프로젝트 명을 입력하세요."
                         class="input_modal">
-                    <div class="bar"></div>
                 </div>
                 <button id="btn_create_project">Create Project</button>
             </div>
@@ -243,6 +239,10 @@
         <div class="modal hidden" id="modal_invite">
             <div class="modal_overlay"></div>
             <div class="modal_content" id="modal_content_rv">
+                <div class="modal_head">
+                    <div class="text">Share the project</div>
+                    <button class="X">X</button>
+                </div>
                 <div class="section_link">
                     <div class="input_group_link">
                         <img src="../image/link.png" width="16" height="16"> Share this link for feedback by other collaborators</img>
