@@ -1,32 +1,21 @@
 var user_name = "유저"; // firebase에서 값 받아와서 저장
 var team_name = "team";
-var first_read = true;  //데이터를 처음 읽어오는지
-
 var comment=false;
 var folder_list=true;
+var first_read = true;  //데이터를 처음 읽어오는지
 
-// var count = 0; //annotation의 개수를 카운트
+var count = 0; //annotation의 개수를 카운트
 var folder_name;
 var comment_list_div;
-var count = 0;
+
+
+var count = 1;
+
 var add_folder_isClicked = false;
 var pressed = document.getElementById("OK_btn");
-
-// josh 0225
-let selectedFile;
-var fullFileName;
-var fileName;
-var fileExt;
+var newDiv;
+var send_data;
 var projectName;
-var fileLink;
-var image_storage_address;
-
-
-const storageRef = firebase.storage().ref();
-const databaseRef = firebase.database().ref();
-const projectRef = firebase.database().ref("Project/");
-
-
 window.onload = function () {
 
     windowHeight = window.innerHeight;
@@ -53,9 +42,7 @@ window.onload = function () {
                         document.getElementById("user_icon").innerHTML = data.val().name
                     }
                 }
-            });
-            snapshot.forEach(function (data) {
-                if(data.val().email != firebase.auth().currentUser.email) {
+                else {
                     if (data.val().companyName == team_name) {
                         var member_list_div = document.createElement('div');
                         member_list_div.classList.add("comment_list");
@@ -111,8 +98,6 @@ window.onload = function () {
         });
         }
     });
-
-
     document.getElementById("logout_btn").onclick = function() {
         logout();
     }
@@ -159,6 +144,7 @@ window.onload = function () {
 
 
 
+
     //add project & member
 
     var ico_add_project = document.getElementById("ico_add_project");
@@ -202,17 +188,19 @@ window.onload = function () {
         var project_name = document.getElementById("project_name");
         projectName = project_name.value;
         window.alert("프로젝트", projectName, "가 생성 되었습니다.");
-
+        
         var projectRef = firebase.database().ref("Project/");
         
         projectRef.child(projectName).set({
             HostName: user_name,
             projectName: projectName,
             teamName: team_name,
+            Images: "images",
+            Members: "members"
         });
 
 
-        project_name.value=null;
+//        project_name.value=null;
         closeModal();
     }
     overlay_pj.addEventListener("click", closeModal);
@@ -244,7 +232,6 @@ window.onload = function () {
     });
 
     $('.btn_dropdown').click(function(event){
-        console.log("detected");
         event.stopPropagation();
         $(this).next().slideToggle();
     });
@@ -254,7 +241,7 @@ window.onload = function () {
     });
 
 
-    // 새 파일 생성하는 팝업 창 열기
+	    // 새 파일 생성하는 팝업 창 열기
 	function onClick() {
 		console.log("clicked");
         document.querySelector('.modal_wrap').style.display ='block';
@@ -268,15 +255,10 @@ window.onload = function () {
         document.querySelector('.black_bg').style.display ='none';
 
     }
-
-     //  영억 외 선택 시 팝업 창 닫기
-     document.querySelector('.black_bg').addEventListener("click", offClick);
 	
 	// 새 파일 생성하기 버튼 클릭 -> 팝업 창 열림
 	document.getElementById("new_file_btn").addEventListener("click", function(){   
-		 console.log("1");
 		 onClick();
-		 console.log("2");
 	 });
 
 	// 새 파일 생성하는 팝업 창 내 창 닫기 버튼
@@ -285,30 +267,24 @@ window.onload = function () {
 	// 팝업 창 내 업로드 버튼 클릭 -> 새 파일 생성, 팝업 창 닫힘
 	document.getElementById("OK_btn").addEventListener("mousedown", function(){   
 		count++; // 생성되는 파일 갯수 카운트
-        upload();
-        setTimeout(()=>{
-            add_folder(count); 
 		add_folder(count); 
-            add_folder(count); 
-        },3000);
 		offClick(); 
+		console.log("Send projectName: " + projectName);
     });
 	
-    var file = document.getElementById('new_file'); // 팝업에서 입력한 파일 값을 받아옴 - 파베 저장
-    file.addEventListener('change', e => {
-        selectedFile = e.target.files[0];
-        fullFileName = selectedFile.name;
-        console.log("파싱전: " + fullFileName);
-        var fileNameSplit = fullFileName.split('.');
-        fileName = fileNameSplit[0];
-        fileExt = fileNameSplit[1];
-        console.log("file name is : " + fileName +", file Extension is : " + fileExt); 
-    });
 	
 	var pressed = document.getElementById("OK_btn");
 	pressed.addEventListener(count, add_folder);
+	
+	send_data = function (newDiv) { 
+		newDiv.addEventListener("click", function(){ 
+		folderName = folder_name;
+		location.href="editing.html?" + projectName + "/" + folderName;
+	  });
+	}
+	
+	project_name.value=null;
 }
-
 
 // 새 파일 생성 함수
 var add_folder  = function (count) {
@@ -316,84 +292,54 @@ var add_folder  = function (count) {
 	folder_name = document.getElementById('folder_name').value; // 팝업에서 입력한 파일 명을 받아옴 - 파베 저장
 	console.log("folder_name is " + folder_name);
 
-	// //파일 경로.
-	// var filePath = file.value;
-	// //전체경로를 \ 나눔.
-	// var filePathSplit = filePath.split('\\'); 
-	// //전체경로를 \로 나눈 길이.
-	// var filePathLength = filePathSplit.length;
-	// //마지막 경로를 .으로 나눔.
-	// var fileNameSplit = filePathSplit[filePathLength-1].split('.');
-	// //파일명 : .으로 나눈 앞부분
-	// var fileName = fileNameSplit[0];
-	// //파일 확장자 : .으로 나눈 뒷부분
-	// var fileExt = fileNameSplit[1];
-	// //파일 크기
-	// var fileSize = file.files[0].size;
+	
+	var file = document.getElementById('new_project_filechoose_btn'); // 팝업에서 입력한 파일 값을 받아옴 - 파베 저장
+	//파일 경로.
+	var filePath = file.value;
+	//전체경로를 \ 나눔.
+	var filePathSplit = filePath.split('\\'); 
+	//전체경로를 \로 나눈 길이.
+	var filePathLength = filePathSplit.length;
+	//마지막 경로를 .으로 나눔.
+	var fileNameSplit = filePathSplit[filePathLength-1].split('.');
+	//파일명 : .으로 나눈 앞부분
+	var fileName = fileNameSplit[0];
+	//파일 확장자 : .으로 나눈 뒷부분
+	var fileExt = fileNameSplit[1];
+	//파일 크기
+	var fileSize = file.files[0].size;
 
-	// console.log('파일 경로 : ' + filePath);
-	// console.log('파일명 : ' + fileName);
-	// console.log('파일 확장자 : ' + fileExt);
-	// console.log('파일 크기 : ' + fileSize);
+	console.log('파일 경로 : ' + filePath);
+	console.log('파일명 : ' + fileName);
+	console.log('파일 확장자 : ' + fileExt);
+	console.log('파일 크기 : ' + fileSize);
 
 	// 새 파일 동적 생성
-	
 	var new_td = document.createElement('td');
 	new_td.classList.add("new_td");
 	document.getElementById('folder_column').appendChild(new_td);
 	
 	var new_div = document.createElement('div');
 	new_div.classList.add("new_div");
+	new_div.id = "new_div";
 	new_td.appendChild(new_div);
-
-
-	// 이미지 생성(thumbnail)
-    console.log("--------------이미지 불러오기-------------")
-    var new_image = document.createElement('img');
-    new_image.classList.add("new_image");
-    storageRef.child(image_storage_address + fileName).getDownloadURL().then((url)=>{
-        console.log("download url is: "+url );
-        new_image.setAttribute('src',url);
-    });
-
-	//new_image.setAttribute('src', '../image/folder.png');
+	
+	var new_image = document.createElement('img');
+	new_image.classList.add("new_image");
+	new_image.setAttribute('src', '../image/folder.png');
 	new_div.appendChild(new_image);
 	
 	var new_p = document.createElement('p');
 	new_p.classList.add("new_p");
 	new_p.innerHTML = folder_name;
 	new_td.appendChild(new_p);
-	
-	
-	
-	console.log("new_file_list");
+
+	newDiv = new_div;
+
+	if (newDiv){
+		console.log("new_div exists");
+		send_data(newDiv);
+	}
+	console.log("add_folder is finished");
 }
 
-function upload() {
-    image_storage_address = "Image/".concat(projectName + "/");
-
-    storageRef  
-        .child(image_storage_address + fileName)
-        .put(selectedFile)
-        .on('state_changed', snapshot => {
-            console.log(snapshot)
-        }, error => {
-            console.log(error);
-        }, () => {
-            console.log('파일 업로드 성공: 파이어베이스-스토리지');
-            //firebase realtime databse 내 프로젝트 > 파일명() or key 값으로 저장하는 코드 작성. (key -->push) 
-            var path = projectName + "/Images/" + fileName;
-            console.log(path);
-            projectRef
-                .child(path)
-                .set({
-                    Date: "date",
-                    Status: "needs review",
-                    User: "UID",
-                    FileName: fileName,
-                    FileExt: fileExt,
-                    Annotations: "annotation 1",
-                    Link: "link~!@!"
-                });
-        });
-}

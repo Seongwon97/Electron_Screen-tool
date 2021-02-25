@@ -718,7 +718,7 @@ label > span {
    width: 100%;
    position: relative;
    flex: 1;
-   border: 2px solid black;
+   border: 2px solid #959BA5;
 }
 
 .file_setting .file_setting_filter::after {
@@ -861,7 +861,7 @@ label > span {
    position: absolute;
    left: 0;
    bottom: 20px;
-   width: 150px;
+   width: 140px;
    height: 50px;
    background: #393E46;
    margin: 0;
@@ -889,8 +889,8 @@ label > span {
    cursor: pointer;
    color: #fff;
    background-color: #FFC305;
-   width: 80%;
-   height: 70%;
+   width: 75%;
+   height: 60%;
    font-size: 0.9em;
    line-height: 1;
 }
@@ -1298,7 +1298,7 @@ label > span {
 	font-size: 17px;
 	color: #666;
 	padding: 40px 30px;
-
+	
 }
 
 input[type=text], newproject_setting_value { 
@@ -1330,27 +1330,15 @@ input[type=text]:focus {
 
 /* main.js에서 생성되는 새 파일 */
 #new_file_btn{
-   background: url("../image/new_folder.png") no-repeat;
+   	background: url("../image/new_folder.png") no-repeat;
 	border: 3px dashed #ccc; 
 	border-radius: 4px;    
 	width: 150px;
-   height: 150px;
-   margin: 70px 0 0 70px;
-   background-size: cover;
+   	height: 150px;
+   	margin: 70px 0 0 70px;
+   	background-size: cover;
 	display: block; 
-}
-
-.newfolder_list {
-/*	background: url( "../image/folder.png" ) no-repeat;*/
-	border: 1px solid #ccc; 
-	border-radius: 4px; 
-	width: 170px;
-	height: 170px;
-   margin: 50px 0 0 50px;
-   background-size: cover;
-  	display: block; 
-  	margin-bottom: 8px;
-	padding: 65px 0 0 30px; /* 글씨 위치 조정 */
+	width="20%";
 }
 
 img.new_image { 
@@ -1370,7 +1358,6 @@ img.new_image {
 }
 
 .new_div {
-		/*	background: url( "../image/folder.png" ) no-repeat;*/
 	border: 1px solid #ccc; 
 	border-radius: 4px; 
 	width: 150px;
@@ -1378,6 +1365,7 @@ img.new_image {
    	margin: 70px 0 0 70px;
    	background-size: cover;
   	display: block; 
+	width="20%";
 	padding: 65px 0 0 30px; /* 글씨 위치 조정 */
 	text-align: center;
 	position:relative;
