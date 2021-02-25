@@ -1,3 +1,4 @@
+const storageRef = firebase.storage().ref();
 var lastEvent;
 var isMouseDown = false;
 var line=false;
@@ -77,6 +78,13 @@ window.onload = function(){
 
     //전 페이지에서 선택된 projcet의 이름을 받아오기
     //저장은 project_name변수에
+    //projcet
+
+    document.getElementById('project_name').innerHTML = project_name;
+    
+
+
+
     var project_data_address = "Project/".concat(project_name+"/Images/"+image_name+"/annotation/");
     annoRef = firebase.database().ref(project_data_address);
 
@@ -90,7 +98,7 @@ window.onload = function(){
                     add_comment_list(count);
                     add_annotation_info(count);
                     count++;
-                    draw_annotation(); }, 500);
+                    draw_annotation();}, 1300);
             }
             else {
                 annotation.push(data.val());
@@ -118,10 +126,30 @@ window.onload = function(){
     var canvas =  document.getElementById("canvas");
     context = canvas.getContext("2d");
 
-    img = new Image();
-    img.src = "../image/temp2.jpg";
-    img.onload = function(){
+    //firebase strorage에서 이미지 파일을 읽어와 출력하는 부분
 
+    img = new Image();
+    var image_storage_address;
+    var image_data_address = "Project/".concat(project_name+"/Images/"+image_name);
+
+    firebase.database().ref(image_data_address).once('value').then((snapshot) => {
+        var revise_time_text = "최근 수정일: ".concat(snapshot.val().Date);
+        document.getElementById('revise_time').innerHTML = revise_time_text;
+        image_storage_address = "Image/".concat(project_name + "/" + snapshot.val().FileName + '.' + snapshot.val().FileExt);
+        image_storage_address = 'images/1.png';
+        //연동 후 삭제할 것
+        storageRef.child(image_storage_address).getDownloadURL().then((url)=>{
+            img.setAttribute('src',url);
+        });
+        
+    });
+
+    var image_data_address2 = "Project/".concat(project_name+"/Images/");
+    imageRef = firebase.database().ref(image_data_address2);
+    
+
+    //img.src = "../image/temp2.jpg";
+    img.onload = function(){
         canvas.width = canvas.offsetWidth;
         canvas.height = canvas.offsetHeight;
         scale = Math.min(canvas.width / img.width, canvas.height / img.height);
@@ -1200,7 +1228,7 @@ function add_comment_canvas(order) {
         possible = true;
         comment_div.removeChild(confirm_btn);
         comment_div.appendChild(revise_btn);
-        
+        update_file_recent_time();
         draw_annotation();
     };
 
@@ -1350,4 +1378,8 @@ function revise_firebase(order) {
     });
 }
 
-
+function update_file_recent_time() {
+    imageRef.child(image_name).update({
+        Date: new Date().toLocaleString()
+    });
+}
