@@ -2,26 +2,41 @@ var user_name = "유저"; // firebase에서 값 받아와서 저장
 var team_name = "team";
 var comment=false;
 var folder_list=true;
-var first_read = true;  //데이터를 처음 읽어오는지
+var current_project_name;
+var first_print = true;
 
-var count = 0; //annotation의 개수를 카운트
+var count = 0; 
 var folder_name;
 var comment_list_div;
 
 
-var count = 1;
 
 var add_folder_isClicked = false;
 var pressed = document.getElementById("OK_btn");
 var newDiv;
 var send_data;
+
+// josh 0225
+let selectedFile;
+var fullFileName;
+var fileName;
+var fileExt;
 var projectName;
+var fileLink;
+var image_storage_address;
+
+
+const storageRef = firebase.storage().ref();
+const databaseRef = firebase.database().ref();
+const projectRef = firebase.database().ref("Project/");
+
+
+
 window.onload = function () {
 
     windowHeight = window.innerHeight;
     var right_aside_content = document.getElementById("member_content");
     right_aside_content.style.height = windowHeight -158;
-
 
     firebase.auth().onAuthStateChanged(function(user){
         if(user){
@@ -42,7 +57,9 @@ window.onload = function () {
                         document.getElementById("user_icon").innerHTML = data.val().name
                     }
                 }
-                else {
+            });
+            snapshot.forEach(function (data) {
+                if(data.val().email != firebase.auth().currentUser.email) {
                     if (data.val().companyName == team_name) {
                         var member_list_div = document.createElement('div');
                         member_list_div.classList.add("comment_list");
@@ -98,6 +115,9 @@ window.onload = function () {
         });
         }
     });
+
+    
+    
     document.getElementById("logout_btn").onclick = function() {
         logout();
     }
@@ -112,38 +132,22 @@ window.onload = function () {
     project_list_ref = firebase.database().ref("Project/");
 
     project_list_ref.on('child_added', function(data) {
-        if(first_read) {
-            setTimeout(() => { 
-                if(data.val().teamName == team_name) {
-                    var li = document.createElement("li");
-                    li.onclick = function() {
-                        alert(data.val().projectName);
-                    }
-                    var a = document.createElement("a");
-                    a.setAttribute("href","####");
-                    a.innerHTML = data.val().projectName;
-                    document.getElementById("group-2").nextSibling.nextSibling.nextSibling.nextSibling.appendChild(li);
-                    li.appendChild(a);
-                } }, 500);
-        }
-        else {
+        setTimeout(() => { 
             if(data.val().teamName == team_name) {
+
                 var li = document.createElement("li");
                 li.onclick = function() {
-                    alert(data.val().projectName);
+                    first_print = true;
+                    current_project_name = data.val().projectName;
+                    print_project_image();
                 }
                 var a = document.createElement("a");
                 a.setAttribute("href","####");
                 a.innerHTML = data.val().projectName;
                 document.getElementById("group-2").nextSibling.nextSibling.nextSibling.nextSibling.appendChild(li);
                 li.appendChild(a);
-            }
-        }
-
+            } }, 500);
     })
-
-
-
 
     //add project & member
 
@@ -187,7 +191,7 @@ window.onload = function () {
     const createProject = () =>{
         var project_name = document.getElementById("project_name");
         projectName = project_name.value;
-        window.alert("프로젝트", projectName, "가 생성 되었습니다.");
+        window.alert("프로젝트"+ projectName+ "가 생성 되었습니다.");
         
         var projectRef = firebase.database().ref("Project/");
         
@@ -195,12 +199,9 @@ window.onload = function () {
             HostName: user_name,
             projectName: projectName,
             teamName: team_name,
-            Images: "images",
-            Members: "members"
         });
 
 
-//        project_name.value=null;
         closeModal();
     }
     overlay_pj.addEventListener("click", closeModal);
@@ -255,6 +256,9 @@ window.onload = function () {
         document.querySelector('.black_bg').style.display ='none';
 
     }
+
+    //  영억 외 선택 시 팝업 창 닫기
+    document.querySelector('.black_bg').addEventListener("click", offClick);
 	
 	// 새 파일 생성하기 버튼 클릭 -> 팝업 창 열림
 	document.getElementById("new_file_btn").addEventListener("click", function(){   
@@ -266,80 +270,104 @@ window.onload = function () {
 	
 	// 팝업 창 내 업로드 버튼 클릭 -> 새 파일 생성, 팝업 창 닫힘
 	document.getElementById("OK_btn").addEventListener("mousedown", function(){   
-		count++; // 생성되는 파일 갯수 카운트
-		add_folder(count); 
+		first_print = false;   
+        upload();
 		offClick(); 
-		console.log("Send projectName: " + projectName);
     });
 	
+    var file = document.getElementById('new_file'); // 팝업에서 입력한 파일 값을 받아옴 - 파베 저장
+    file.addEventListener('change', e => {
+        selectedFile = e.target.files[0];
+        fullFileName = selectedFile.name;
+        var fileNameSplit = fullFileName.split('.');
+        fileName = fileNameSplit[0];
+        fileExt = fileNameSplit[1];
+    });
+
 	
-	var pressed = document.getElementById("OK_btn");
-	pressed.addEventListener(count, add_folder);
+	// send_data = function (newDiv) { 
+	// 	newDiv.addEventListener("click", function(){ 
+	// 	folderName = folder_name;
+	// 	location.href="editing.html?" + projectName + "/" + folderName;
+	//   });
+	// }
 	
-	send_data = function (newDiv) { 
-		newDiv.addEventListener("click", function(){ 
-		folderName = folder_name;
-		location.href="editing.html?" + projectName + "/" + folderName;
-	  });
-	}
-	
-	project_name.value=null;
+
 }
 
-// 새 파일 생성 함수
-var add_folder  = function (count) {
-	console.log("count is " + count);
-	folder_name = document.getElementById('folder_name').value; // 팝업에서 입력한 파일 명을 받아옴 - 파베 저장
-	console.log("folder_name is " + folder_name);
+// newDiv = new_div;
 
-	
-	var file = document.getElementById('new_project_filechoose_btn'); // 팝업에서 입력한 파일 값을 받아옴 - 파베 저장
-	//파일 경로.
-	var filePath = file.value;
-	//전체경로를 \ 나눔.
-	var filePathSplit = filePath.split('\\'); 
-	//전체경로를 \로 나눈 길이.
-	var filePathLength = filePathSplit.length;
-	//마지막 경로를 .으로 나눔.
-	var fileNameSplit = filePathSplit[filePathLength-1].split('.');
-	//파일명 : .으로 나눈 앞부분
-	var fileName = fileNameSplit[0];
-	//파일 확장자 : .으로 나눈 뒷부분
-	var fileExt = fileNameSplit[1];
-	//파일 크기
-	var fileSize = file.files[0].size;
+// 	if (newDiv){
+// 		console.log("new_div exists");
+// 		send_data(newDiv);
+// 	}
 
-	console.log('파일 경로 : ' + filePath);
-	console.log('파일명 : ' + fileName);
-	console.log('파일 확장자 : ' + fileExt);
-	console.log('파일 크기 : ' + fileSize);
 
-	// 새 파일 동적 생성
-	var new_td = document.createElement('td');
-	new_td.classList.add("new_td");
-	document.getElementById('folder_column').appendChild(new_td);
-	
-	var new_div = document.createElement('div');
-	new_div.classList.add("new_div");
-	new_div.id = "new_div";
-	new_td.appendChild(new_div);
-	
-	var new_image = document.createElement('img');
-	new_image.classList.add("new_image");
-	new_image.setAttribute('src', '../image/folder.png');
-	new_div.appendChild(new_image);
-	
-	var new_p = document.createElement('p');
-	new_p.classList.add("new_p");
-	new_p.innerHTML = folder_name;
-	new_td.appendChild(new_p);
+function upload() {
+    image_storage_address = "Image/".concat(current_project_name + "/");
 
-	newDiv = new_div;
-
-	if (newDiv){
-		console.log("new_div exists");
-		send_data(newDiv);
-	}
-	console.log("add_folder is finished");
+    storageRef.child(image_storage_address + fileName).put(selectedFile).on('state_changed', snapshot => {
+            console.log(snapshot)
+        }, error => {
+            console.log(error);
+        }, () => {
+            console.log('파일 업로드 성공: 파이어베이스-스토리지');
+            //firebase realtime databse 내 프로젝트 > 파일명() or key 값으로 저장하는 코드 작성. (key -->push) 
+            var path = current_project_name + "/Images/" + fileName;
+            console.log(path);
+            image_name = document.getElementById('folder_name').value;
+            projectRef.child(path).set({
+                    Date: new Date().toLocaleString(),
+                    Status: "needs review",
+                    Author: user_name,
+                    FileName: fileName,
+                    FileExt: fileExt,
+                    imageName: image_name,
+                    Link: "link~!@!"
+                });
+                //file name은 파일의 진짜 이름, image name은 출력용 이름
+        });
 }
 
+function print_project_image() {
+    for (var i = 0; i < count; i++) {
+        var image_div = document.getElementById("image_list" + i);
+        document.getElementById('folder_column').removeChild(image_div);
+    }
+    count = 0;
+
+    ref = firebase.database().ref("Project/" + current_project_name + "/Images/");
+    ref.on('child_added', function(data) {
+            var new_td = document.createElement('td');
+            new_td.id = "image_list" + count;
+            count++;
+            new_td.classList.add("new_td");
+            document.getElementById('folder_column').appendChild(new_td);
+            
+            var new_div = document.createElement('div');
+            new_div.classList.add("new_div");
+            new_td.appendChild(new_div);
+
+            new_div.onclick = function() {
+		        location.href="editing.html?" + current_project_name + "/" + data.val().FileName;
+            }
+
+
+            // 이미지 생성(thumbnail)
+            var new_image = document.createElement('img');
+            new_image.classList.add("new_image");
+
+            image_storage_address = "Image/".concat(current_project_name + "/");
+            storageRef.child(image_storage_address + data.val().FileName).getDownloadURL().then((url)=>{
+                new_image.setAttribute('src',url);
+            });
+
+            new_div.appendChild(new_image);
+            
+            var new_p = document.createElement('p');
+            new_p.classList.add("new_p");
+            new_p.innerHTML = data.val().imageName;
+            new_td.appendChild(new_p);
+    })
+
+}

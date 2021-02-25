@@ -1,3 +1,4 @@
+const storageRef = firebase.storage().ref();
 var lastEvent;
 var isMouseDown = false;
 var line=false;
@@ -33,9 +34,7 @@ var count = 0; //annotation의 개수를 카운트
 var del_count = 0; //삭제된 annotation의 개수
 var comment_content = ""; //comment의 내용을 담을 변수
 var user_name = "유저"; // firebase에서 값 받아와서 저장
-//var project_name = "1";
 var project_name;
-//var image_name = "Image A";
 var image_name;
 var annoRef; //파이어베이스에 저장될 주소가 저장되는 변수
 var key = []; //annotation key를 저장하는 변수
@@ -85,7 +84,13 @@ window.onload = function(){
 
     //전 페이지에서 선택된 projcet의 이름을 받아오기
     //저장은 project_name변수에
-    var project_data_address = "Project/".concat(project_name+"/"+image_name+"/annotation/");
+
+    document.getElementById('project_name').innerHTML = project_name;
+    
+
+
+
+    var project_data_address = "Project/".concat(project_name+"/Images/"+image_name+"/annotation/");
     annoRef = firebase.database().ref(project_data_address);
 
     annoRef.on('child_added', function(data) {
@@ -98,7 +103,7 @@ window.onload = function(){
                     add_comment_list(count);
                     add_annotation_info(count);
                     count++;
-                    draw_annotation(); }, 500);
+                    draw_annotation(); }, 1300);
             }
             else {
                 annotation.push(data.val());
@@ -126,8 +131,26 @@ window.onload = function(){
     var canvas =  document.getElementById("canvas");
     context = canvas.getContext("2d");
 	
+    //firebase strorage에서 이미지 파일을 읽어와 출력하는 부분
+
     img = new Image();
-    img.src = "../image/temp2.jpg";
+    var image_storage_address;
+    var image_data_address = "Project/".concat(project_name+"/Images/"+image_name);
+
+    firebase.database().ref(image_data_address).once('value').then((snapshot) => {
+        var revise_time_text = "최근 수정일: ".concat(snapshot.val().Date);
+        document.getElementById('revise_time').innerHTML = revise_time_text;
+        image_storage_address = "Image/".concat(project_name + "/" + snapshot.val().FileName);
+        storageRef.child(image_storage_address).getDownloadURL().then((url)=>{
+            img.setAttribute('src',url);
+        });
+        
+    });
+
+    var image_data_address2 = "Project/".concat(project_name+"/Images/");
+    imageRef = firebase.database().ref(image_data_address2);
+    
+    
     img.onload = function(){
 
         canvas.width = canvas.offsetWidth;
@@ -1208,7 +1231,7 @@ function add_comment_canvas(order) {
         possible = true;
         comment_div.removeChild(confirm_btn);
         comment_div.appendChild(revise_btn);
-        
+        update_file_recent_time();
         draw_annotation();
     };
 
@@ -1272,9 +1295,7 @@ function add_comment_canvas(order) {
 
 function add_annotation_info (order) {
     screen_sx = annotation[order].screen_sx * scale * img.width + x;
-    screen_sy = annotation[order].screen_sy * scale * img.height + y;
-    screen_ex = annotation[order].screen_ex * scale * img.width + x;
-    screen_ey = annotation[order].screen_ey * scale * img.height + y;
+    screen_sy = annotation[order].screen_sy * scale * img.height + y - 16;
 
     var annotation_info = document.createElement('div');
     annotation_info.id = "annotation_info".concat(order);
@@ -1359,4 +1380,8 @@ function revise_firebase(order) {
     });
 }
 
-
+function update_file_recent_time() {
+    imageRef.child(image_name).update({
+        Date: new Date().toLocaleString()
+    });
+}
