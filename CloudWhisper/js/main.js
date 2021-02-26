@@ -140,7 +140,10 @@ window.onload = function () {
                     first_print = true;
                     current_project_name = data.val().projectName;
                     print_project_image();
+                    document.getElementById("projectName").innerHTML = current_project_name;
                 }
+                
+
                 var a = document.createElement("a");
                 a.setAttribute("href","####");
                 a.innerHTML = data.val().projectName;

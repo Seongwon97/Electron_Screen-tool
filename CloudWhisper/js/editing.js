@@ -7,6 +7,10 @@ var circle=false;
 var arrow=false;
 var comment=false;
 
+
+//####0226######//
+var fileURL;
+
 var file_list=false;        //오른쪽에 file list를 보일지 comment _list를 보일지 알려주는 변수
 var comment_list=true;
 
@@ -143,6 +147,8 @@ window.onload = function(){
         image_storage_address = "Image/".concat(project_name + "/" + snapshot.val().FileName);
         storageRef.child(image_storage_address).getDownloadURL().then((url)=>{
             img.setAttribute('src',url);
+            fileURL = url;
+            console.log("download url is: " + fileURL);
         });
         
     });
@@ -861,7 +867,7 @@ window.onresize = function(){
     var canvas =  document.querySelector("canvas");
     context = canvas.getContext("2d");
     img = new Image();
-    img.src = "../image/temp2.jpg";
+    img.src = fileURL;
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
     scale = Math.min(canvas.width / img.width, canvas.height / img.height);
